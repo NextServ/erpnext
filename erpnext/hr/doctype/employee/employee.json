@@ -4,7 +4,7 @@
  "allow_import": 1,
  "allow_rename": 1,
  "autoname": "naming_series:",
- "creation": "2013-03-07 09:04:18",
+ "creation": "2022-02-17 10:29:13.769161",
  "doctype": "DocType",
  "document_type": "Setup",
  "editable_grid": 1,
@@ -281,7 +281,7 @@
    "collapsible": 1,
    "fieldname": "erpnext_user",
    "fieldtype": "Section Break",
-   "label": "ERPNext User"
+   "label": "Lemonade User"
   },
   {
    "description": "System User (login) ID. If set, it will become default for all HR forms.",
@@ -813,11 +813,12 @@
  "idx": 24,
  "image_field": "image",
  "links": [],
- "modified": "2021-06-17 11:31:37.730760",
+ "modified": "2022-02-17 14:24:45.761913",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee",
  "name_case": "Title Case",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
@@ -859,5 +860,6 @@
  "show_name_in_global_search": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "title_field": "employee_name"
 }

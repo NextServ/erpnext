@@ -1,7 +1,7 @@
 {
  "action": "Show Form Tour",
  "action_label": "Let\u2019s walk-through Selling Settings",
- "creation": "2020-06-01 13:01:45.615189",
+ "creation": "2022-01-25 18:24:33.615589",
  "description": "# Selling Settings\n\nCRM and Selling module\u2019s features are configurable as per your business needs. Selling Settings is the place where you can set your preferences for:\n - Customer naming and default values\n - Billing and shipping preference in sales transactions\n",
  "docstatus": 0,
  "doctype": "Onboarding Step",
@@ -9,7 +9,7 @@
  "is_complete": 0,
  "is_single": 1,
  "is_skipped": 0,
- "modified": "2021-08-24 18:11:21.264335",
+ "modified": "2022-01-25 20:59:05.212003",
  "modified_by": "Administrator",
  "name": "Selling Settings",
  "owner": "Administrator",

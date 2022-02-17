@@ -13,13 +13,13 @@
    "role": "Stock User"
   }
  ],
- "creation": "2020-06-01 12:44:42.589930",
+ "creation": "2022-01-25 18:24:33.645997",
  "docstatus": 0,
  "doctype": "Module Onboarding",
  "documentation_url": "https://docs.erpnext.com/docs/user/manual/en/selling",
  "idx": 0,
  "is_complete": 0,
- "modified": "2021-08-24 18:12:38.052434",
+ "modified": "2022-02-07 18:48:55.214952",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Selling",
