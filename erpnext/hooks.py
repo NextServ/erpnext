@@ -236,6 +236,10 @@ doc_events = {
 		"on_update": "erpnext.lark.update_lark_department",
 		"on_trash": "erpnext.lark.delete_lark_department"
 	},
+	"Employee": {
+		"after_insert": ["erpnext.lark.update_lark_user_from_employee"],
+		"on_update": "erpnext.lark.update_lark_user_from_employee"
+	},
 	"Communication": {
 		"on_update": [
 			"erpnext.support.doctype.service_level_agreement.service_level_agreement.on_communication_update",
