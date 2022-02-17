@@ -1,45 +1,48 @@
 import frappe
 import requests
-#import frappe.utils.oauth
-#import urllib
-#
-#__version__ = '0.0.1'
-#
-#@frappe.whitelist(allow_guest=True)
-#def login():
-#  lark_settings = frappe.get_doc('Lark Settings')
-#  redirect_url = frappe.utils.get_url('/api/method/erpnext.lark.login_callback')
-#  redirect_url = urllib.parse.quote_plus(redirect_url)
-#
-#  frappe.local.response['type'] = 'redirect'
-#  frappe.local.response['location'] = 'https://open.larksuite.com/open-apis/authen/v1/index?redirect_uri=' + redirect_url + '&app_id=' + lark_settings.app_id
-#  return
-#
-#@frappe.whitelist(allow_guest=True)
-#def login_callback():
-#  lark_settings = frappe.get_doc('Lark Settings')
-#  app_access_token = lark_settings.get_app_access_token()
-#  code = frappe.local.request.args.get('code')
-#  r = requests.post('https://open.larksuite.com/open-apis/authen/v1/access_token', json={
-#    'app_access_token': app_access_token,
-#    'grant_type': 'authorization_code',
-#    'code': code,
-#  })
-#  r = r.json()
-#
-#  if (r['code'] == 0):
-#    user = r['data']
-#    
-#    # Fill in sub field for OAuth compliance
-#    user['sub'] = user['open_id']
-#    user['gender'] = ''
-#
-#    frappe.utils.oauth.login_oauth_user(user, provider='lark', state={
-#      'token': user['access_token']
-#    })
-#    return
-#
-#  return r
+import frappe.utils.oauth
+import urllib
+
+__version__ = '0.0.1'
+
+@frappe.whitelist(allow_guest=True)
+def login():
+  lark_settings = frappe.get_doc('Lark Settings')
+  redirect_url = frappe.utils.get_url('/api/method/erpnext.lark.login_callback')
+  redirect_url = urllib.parse.quote_plus(redirect_url)
+
+  frappe.local.response['type'] = 'redirect'
+  frappe.local.response['location'] = 'https://open.larksuite.com/open-apis/authen/v1/index?redirect_uri=' + redirect_url + '&app_id=' + lark_settings.app_id
+  return
+
+@frappe.whitelist(allow_guest=True)
+def login_callback():
+  lark_settings = frappe.get_doc('Lark Settings')
+  app_access_token = lark_settings.get_app_access_token()
+  code = frappe.local.request.args.get('code')
+  r = requests.post('https://open.larksuite.com/open-apis/authen/v1/access_token', json={
+    'app_access_token': app_access_token,
+    'grant_type': 'authorization_code',
+    'code': code,
+  })
+  r = r.json()
+
+  if (r['code'] == 0):
+    user = r['data']
+    
+    if frappe.db.exists('User Social Login', { 'provider': 'lark', 'userid': user['open_id'] }):
+      # Fill in sub field for OAuth compliance
+      user['sub'] = user['open_id']
+      user['gender'] = ''
+
+      frappe.utils.oauth.login_oauth_user(user, provider='lark', state={
+        'token': user['access_token']
+      })
+      return
+    else:
+      frappe.throw('You don\'t have permission to access Lemonade.')
+
+  return r
 
 def get_lark_settings():
   return frappe.get_doc('Lark Settings')
