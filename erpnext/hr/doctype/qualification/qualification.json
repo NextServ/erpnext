@@ -1,45 +1,36 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
- "autoname": "field:skill_name",
- "creation": "2022-02-17 10:29:18.767136",
- "default_import_order": "0",
+ "autoname": "field:qualification",
+ "creation": "2022-02-28 01:18:54.909042",
+ "default_import_order": "qualification,description",
  "doctype": "DocType",
+ "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "skill_name",
-  "classification",
+  "qualification",
   "description"
  ],
  "fields": [
   {
-   "allow_in_quick_entry": 1,
-   "fieldname": "skill_name",
+   "fieldname": "qualification",
    "fieldtype": "Data",
-   "label": "Skill Name",
+   "label": "Qualification",
    "unique": 1
   },
   {
-   "allow_in_quick_entry": 1,
    "fieldname": "description",
-   "fieldtype": "Text",
+   "fieldtype": "Small Text",
    "label": "Description"
-  },
-  {
-   "allow_in_quick_entry": 1,
-   "fieldname": "classification",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Classification",
-   "options": "Skill Class"
   }
  ],
+ "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-02-28 01:11:51.344087",
+ "modified": "2022-02-28 01:18:54.909042",
  "modified_by": "Administrator",
  "module": "HR",
- "name": "Skill",
+ "name": "Qualification",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
@@ -66,11 +57,19 @@
    "role": "HR Manager",
    "share": 1,
    "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "All",
+   "share": 1
   }
  ],
- "quick_entry": 1,
  "sort_field": "modified",
- "sort_order": "ASC",
+ "sort_order": "DESC",
  "states": [],
  "track_changes": 1
 }

@@ -4,7 +4,8 @@
  "allow_import": 1,
  "allow_rename": 1,
  "autoname": "naming_series:",
- "creation": "2022-02-17 10:29:13.769161",
+ "creation": "2022-02-28 00:53:55.716893",
+ "default_import_order": "0",
  "doctype": "DocType",
  "document_type": "Setup",
  "editable_grid": 1,
@@ -24,6 +25,10 @@
   "company",
   "status",
   "gender",
+  "citizenship",
+  "religion",
+  "ethnic_background",
+  "dietary_requirement",
   "date_of_birth",
   "date_of_joining",
   "employee_number",
@@ -54,6 +59,7 @@
   "approvers_section",
   "expense_approver",
   "leave_approver",
+  "qualifications",
   "column_break_45",
   "shift_request_approver",
   "attendance_and_leave_details",
@@ -104,6 +110,7 @@
   "resignation_letter_date",
   "relieving_date",
   "reason_for_leaving",
+  "termination_reason",
   "leave_encashed",
   "encashment_date",
   "exit_interview_details",
@@ -588,9 +595,9 @@
   },
   {
    "fieldname": "marital_status",
-   "fieldtype": "Select",
+   "fieldtype": "Link",
    "label": "Marital Status",
-   "options": "\nSingle\nMarried\nDivorced\nWidowed"
+   "options": "Marital Status"
   },
   {
    "fieldname": "blood_group",
@@ -807,13 +814,49 @@
    "fieldtype": "Link",
    "label": "Shift Request Approver",
    "options": "User"
+  },
+  {
+   "fieldname": "citizenship",
+   "fieldtype": "Link",
+   "label": "Citizenship",
+   "options": "Citizenship"
+  },
+  {
+   "fieldname": "religion",
+   "fieldtype": "Link",
+   "label": "Religion",
+   "options": "Religion"
+  },
+  {
+   "fieldname": "ethnic_background",
+   "fieldtype": "Link",
+   "label": "Ethnic Background",
+   "options": "Ethnic Background"
+  },
+  {
+   "fieldname": "dietary_requirement",
+   "fieldtype": "Table MultiSelect",
+   "label": "Dietary Requirement",
+   "options": "Child Dietary Requirement"
+  },
+  {
+   "fieldname": "termination_reason",
+   "fieldtype": "Link",
+   "label": "Termination Reason",
+   "options": "Termination Reason"
+  },
+  {
+   "fieldname": "qualifications",
+   "fieldtype": "Table MultiSelect",
+   "label": "Qualifications",
+   "options": "Child Qualification"
   }
  ],
  "icon": "fa fa-user",
  "idx": 24,
  "image_field": "image",
  "links": [],
- "modified": "2022-02-17 14:24:45.761913",
+ "modified": "2022-02-28 01:19:52.714322",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee",

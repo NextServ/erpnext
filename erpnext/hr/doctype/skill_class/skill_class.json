@@ -1,35 +1,28 @@
 {
  "actions": [],
- "autoname": "field:identification_document_type",
- "creation": "2022-02-17 10:29:10.426191",
- "default_import_order": "0",
+ "allow_rename": 1,
+ "autoname": "field:skill_class",
+ "creation": "2022-02-28 01:10:58.768722",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "identification_document_type",
-  "description"
+  "skill_class"
  ],
  "fields": [
   {
-   "fieldname": "identification_document_type",
+   "fieldname": "skill_class",
    "fieldtype": "Data",
-   "label": "Identification Document Type",
+   "label": "Skill Class",
    "unique": 1
-  },
-  {
-   "fieldname": "description",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Description"
   }
  ],
+ "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-02-28 01:08:10.901540",
+ "modified": "2022-02-28 01:10:58.768722",
  "modified_by": "Administrator",
  "module": "HR",
- "name": "Identification Document Type",
+ "name": "Skill Class",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
@@ -44,10 +37,19 @@
    "role": "System Manager",
    "share": 1,
    "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "All",
+   "share": 1
   }
  ],
- "quick_entry": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_changes": 1
 }
