@@ -4,7 +4,7 @@
  "allow_import": 1,
  "allow_rename": 1,
  "autoname": "naming_series:",
- "creation": "2022-02-28 00:53:55.716893",
+ "creation": "2022-03-08 18:36:31.882906",
  "default_import_order": "0",
  "doctype": "DocType",
  "document_type": "Setup",
@@ -119,7 +119,11 @@
   "feedback",
   "lft",
   "rgt",
-  "old_parent"
+  "old_parent",
+  "industrial_relations_section",
+  "discipline",
+  "grievance",
+  "counseling_conduct"
  ],
  "fields": [
   {
@@ -850,13 +854,36 @@
    "fieldtype": "Table MultiSelect",
    "label": "Qualifications",
    "options": "Child Qualification"
+  },
+  {
+   "fieldname": "industrial_relations_section",
+   "fieldtype": "Section Break",
+   "label": "Industrial Relations"
+  },
+  {
+   "fieldname": "discipline",
+   "fieldtype": "Table",
+   "label": "Discipline",
+   "options": "Discipline"
+  },
+  {
+   "fieldname": "grievance",
+   "fieldtype": "Table",
+   "label": "Grievance",
+   "options": "Grievance"
+  },
+  {
+   "fieldname": "counseling_conduct",
+   "fieldtype": "Table",
+   "label": "Counseling Conduct",
+   "options": "Counseling Conduct"
   }
  ],
  "icon": "fa fa-user",
  "idx": 24,
  "image_field": "image",
  "links": [],
- "modified": "2022-02-28 01:19:52.714322",
+ "modified": "2022-03-08 18:56:40.378390",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee",

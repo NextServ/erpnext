@@ -1,0 +1,125 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-03-08 18:55:52.196673",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "datetime",
+  "manager",
+  "incident",
+  "rule_category",
+  "spoken_to_before",
+  "did_you_know_section",
+  "what_you_did",
+  "why_it_was_wrong",
+  "what_was_expected",
+  "suggestions_section",
+  "employee_suggestions",
+  "manager_suggestions",
+  "resolution_section",
+  "warning_issued",
+  "disciplinary_hearing",
+  "follow_up_date"
+ ],
+ "fields": [
+  {
+   "fieldname": "datetime",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Date/Time"
+  },
+  {
+   "fieldname": "manager",
+   "fieldtype": "Link",
+   "label": "Manager",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "incident",
+   "fieldtype": "Text",
+   "in_list_view": 1,
+   "label": "Incident"
+  },
+  {
+   "fieldname": "rule_category",
+   "fieldtype": "Select",
+   "label": "Rule Category"
+  },
+  {
+   "default": "0",
+   "fieldname": "spoken_to_before",
+   "fieldtype": "Check",
+   "label": "Were you spoken to about this before?"
+  },
+  {
+   "fieldname": "did_you_know_section",
+   "fieldtype": "Section Break",
+   "label": "Did you know..."
+  },
+  {
+   "fieldname": "what_you_did",
+   "fieldtype": "Text",
+   "label": "What you did?"
+  },
+  {
+   "fieldname": "why_it_was_wrong",
+   "fieldtype": "Text",
+   "label": "Why it was wrong?"
+  },
+  {
+   "fieldname": "what_was_expected",
+   "fieldtype": "Text",
+   "label": "What was expected?"
+  },
+  {
+   "fieldname": "suggestions_section",
+   "fieldtype": "Section Break",
+   "label": "Suggestions"
+  },
+  {
+   "fieldname": "employee_suggestions",
+   "fieldtype": "Text",
+   "label": "Employee Suggestions"
+  },
+  {
+   "fieldname": "manager_suggestions",
+   "fieldtype": "Text",
+   "label": "Manager Suggestions"
+  },
+  {
+   "fieldname": "resolution_section",
+   "fieldtype": "Section Break",
+   "label": "Resolution"
+  },
+  {
+   "fieldname": "warning_issued",
+   "fieldtype": "Select",
+   "label": "Warning Issued"
+  },
+  {
+   "default": "0",
+   "fieldname": "disciplinary_hearing",
+   "fieldtype": "Check",
+   "label": "Disciplinary Hearing"
+  },
+  {
+   "fieldname": "follow_up_date",
+   "fieldtype": "Date",
+   "label": "Follow-up Date"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-03-08 18:55:56.781649",
+ "modified_by": "Administrator",
+ "module": "Industrial Relations",
+ "name": "Counseling Conduct",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

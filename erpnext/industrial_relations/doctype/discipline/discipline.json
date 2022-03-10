@@ -1,0 +1,108 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-03-08 18:47:47.718851",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "datetime",
+  "offence",
+  "resolved",
+  "category",
+  "sub_category",
+  "reported_to",
+  "datetime_of_hearing",
+  "disciplinary_action",
+  "effective_period",
+  "cost",
+  "end_date",
+  "follow_up_date",
+  "disciplinary_report"
+ ],
+ "fields": [
+  {
+   "fieldname": "datetime",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Date/Time"
+  },
+  {
+   "fieldname": "offence",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Offence",
+   "options": "Offence"
+  },
+  {
+   "default": "0",
+   "fieldname": "resolved",
+   "fieldtype": "Check",
+   "label": "Resolved"
+  },
+  {
+   "fieldname": "category",
+   "fieldtype": "Select",
+   "label": "Category"
+  },
+  {
+   "fieldname": "sub_category",
+   "fieldtype": "Select",
+   "label": "Sub Category"
+  },
+  {
+   "fieldname": "reported_to",
+   "fieldtype": "Link",
+   "label": "Reported To",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "datetime_of_hearing",
+   "fieldtype": "Datetime",
+   "label": "Date/Time of Hearing"
+  },
+  {
+   "fieldname": "disciplinary_action",
+   "fieldtype": "Link",
+   "label": "Disciplinary Action",
+   "options": "Disciplinary Action"
+  },
+  {
+   "fieldname": "effective_period",
+   "fieldtype": "Data",
+   "label": "Effective Period"
+  },
+  {
+   "fieldname": "cost",
+   "fieldtype": "Currency",
+   "label": "Cost"
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "label": "End Date"
+  },
+  {
+   "fieldname": "follow_up_date",
+   "fieldtype": "Date",
+   "label": "Follow Up Date"
+  },
+  {
+   "fieldname": "disciplinary_report",
+   "fieldtype": "Long Text",
+   "label": "Disciplinary Report"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-03-08 18:47:47.718851",
+ "modified_by": "Administrator",
+ "module": "Industrial Relations",
+ "name": "Discipline",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -1,0 +1,63 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-03-08 18:50:23.720220",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "reported_on",
+  "grievance",
+  "reported_to",
+  "sub_category",
+  "cost",
+  "grievance_report"
+ ],
+ "fields": [
+  {
+   "fieldname": "reported_on",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Reported On"
+  },
+  {
+   "fieldname": "grievance",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Grievance"
+  },
+  {
+   "fieldname": "reported_to",
+   "fieldtype": "Link",
+   "label": "Reported To",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "sub_category",
+   "fieldtype": "Select",
+   "label": "Sub Category"
+  },
+  {
+   "fieldname": "cost",
+   "fieldtype": "Currency",
+   "label": "Cost"
+  },
+  {
+   "fieldname": "grievance_report",
+   "fieldtype": "Long Text",
+   "label": "Grievance Report"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-03-08 18:50:23.720220",
+ "modified_by": "Administrator",
+ "module": "Industrial Relations",
+ "name": "Grievance",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
