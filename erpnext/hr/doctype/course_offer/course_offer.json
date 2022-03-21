@@ -1,0 +1,60 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "autoname": "field:course_offer",
+ "creation": "2022-03-10 13:10:16.443655",
+ "default_import_order": "course_offer",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "course_offer"
+ ],
+ "fields": [
+  {
+   "fieldname": "course_offer",
+   "fieldtype": "Data",
+   "label": "Course Offer",
+   "unique": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2022-03-10 13:10:16.443655",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Course Offer",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "All",
+   "share": 1
+  }
+ ],
+ "search_fields": "course_offer",
+ "show_name_in_global_search": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "course_offer",
+ "track_changes": 1
+}

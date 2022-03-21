@@ -4,11 +4,31 @@
  "allow_rename": 1,
  "autoname": "Prompt",
  "creation": "2018-04-13 16:14:24.174138",
+ "default_import_order": "0",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "default_salary_structure"
+  "default_salary_structure",
+  "functional_",
+  "department",
+  "section",
+  "location",
+  "location_category",
+  "cost_centre",
+  "primary_position",
+  "cost_centre_allocations",
+  "position_assignments",
+  "job_title",
+  "individual_job_title",
+  "ofo_code",
+  "grading",
+  "job_grade",
+  "job_function",
+  "occupational_level",
+  "grade_band",
+  "occupational_category",
+  "skill_category"
  ],
  "fields": [
   {
@@ -16,14 +36,132 @@
    "fieldtype": "Link",
    "label": "Default Salary Structure",
    "options": "Salary Structure"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "functional_",
+   "fieldtype": "Section Break",
+   "label": "Functional "
+  },
+  {
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "label": "Department",
+   "options": "Department"
+  },
+  {
+   "fieldname": "section",
+   "fieldtype": "Data",
+   "label": "Section",
+   "translatable": 1
+  },
+  {
+   "fieldname": "location",
+   "fieldtype": "Data",
+   "label": "Location",
+   "translatable": 1
+  },
+  {
+   "fieldname": "location_category",
+   "fieldtype": "Link",
+   "label": "Location Category",
+   "options": "Location Category"
+  },
+  {
+   "fieldname": "cost_centre",
+   "fieldtype": "Link",
+   "label": "Cost Centre",
+   "options": "Cost Centre"
+  },
+  {
+   "fieldname": "primary_position",
+   "fieldtype": "Link",
+   "label": "Primary Position",
+   "options": "Position"
+  },
+  {
+   "fieldname": "cost_centre_allocations",
+   "fieldtype": "Table",
+   "label": "Cost Centre Allocations",
+   "options": "Cost Centre Allocation"
+  },
+  {
+   "fieldname": "position_assignments",
+   "fieldtype": "Table",
+   "label": "Position Assignments",
+   "options": "Position Assignment"
+  },
+  {
+   "fieldname": "job_title",
+   "fieldtype": "Link",
+   "label": "Job Title",
+   "options": "Job Title"
+  },
+  {
+   "fieldname": "individual_job_title",
+   "fieldtype": "Select",
+   "label": "Individual Job Title",
+   "options": "\nNo Position\nCoordinator\nDepartment Manager\nDeputy Division Manager\nDivision Manager\nExpert\nGeneral Leader\nGroup Head\nGroup Leader\nManager\nOffice Staff\nPresident\nSenior Office Staff\nSpecial Staff\nStaff\nStaff II\nStaff III\nSupervisor\nTeam Leader\nTeam Member\nTrainee\nVice President",
+   "translatable": 1
+  },
+  {
+   "fieldname": "ofo_code",
+   "fieldtype": "Select",
+   "label": "OFO Code",
+   "options": "\nLine\nManager\nOffice Staff",
+   "translatable": 1
+  },
+  {
+   "fieldname": "grading",
+   "fieldtype": "Section Break",
+   "label": "Grading"
+  },
+  {
+   "fieldname": "job_grade",
+   "fieldtype": "Link",
+   "label": "Job Grade",
+   "options": "Job Grade"
+  },
+  {
+   "fieldname": "job_function",
+   "fieldtype": "Link",
+   "label": "Job Function",
+   "options": "Job Function"
+  },
+  {
+   "fieldname": "occupational_level",
+   "fieldtype": "Select",
+   "label": "Occupational Level",
+   "options": "\nTop\nSenior\nProfessional\nSkilled\nSemi-Skilled\nUnskilled",
+   "translatable": 1
+  },
+  {
+   "fieldname": "grade_band",
+   "fieldtype": "Data",
+   "label": "Grade Band",
+   "translatable": 1
+  },
+  {
+   "fieldname": "occupational_category",
+   "fieldtype": "Select",
+   "label": "Occupational Category",
+   "options": "\nExecutive\nJunior Management\nProfessional\nTechnician\nClerical/Admin\nSales & Service\nOperator\nCraft & Trade\nGeneral Worker",
+   "translatable": 1
+  },
+  {
+   "fieldname": "skill_category",
+   "fieldtype": "Link",
+   "label": "Skill Category",
+   "options": "Skill Category"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2020-08-26 13:12:07.815330",
+ "modified": "2022-03-22 04:00:06.566412",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Grade",
+ "naming_rule": "Set by user",
  "owner": "Administrator",
  "permissions": [
   {
@@ -65,5 +203,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "track_changes": 1
 }

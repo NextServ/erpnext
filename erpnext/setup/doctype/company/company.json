@@ -4,6 +4,7 @@
  "allow_rename": 1,
  "autoname": "field:company_name",
  "creation": "2013-04-10 08:35:39",
+ "default_import_order": "0",
  "description": "Legal Entity / Subsidiary with a separate Chart of Accounts belonging to the Organization.",
  "doctype": "DocType",
  "document_type": "Setup",
@@ -31,24 +32,42 @@
   "date_of_commencement",
   "fax",
   "website",
+  "location",
   "address_html",
   "section_break_28",
   "create_chart_of_accounts_based_on",
+  "complex_unit_no",
+  "complex_name",
   "existing_company",
   "column_break_26",
+  "street_no",
+  "street_name",
   "chart_of_accounts",
+  "suburb",
   "charts_section",
   "sales_settings",
+  "city",
+  "zip",
   "default_buying_terms",
   "sales_monthly_history",
+  "country_code",
+  "timezone",
   "monthly_sales_target",
+  "branch",
+  "divisions",
   "total_monthly_sales",
+  "sub_division",
   "column_break_goals",
   "default_selling_terms",
+  "column_break_97",
   "default_warehouse_for_sales_return",
   "credit_limit",
+  "company_type",
   "transactions_annual_history",
+  "registration_number",
   "hr_settings_section",
+  "vat_number",
+  "contact_information",
   "default_holiday_list",
   "default_expense_claim_payable_account",
   "column_break_10",
@@ -102,7 +121,17 @@
   "registration_details",
   "lft",
   "rgt",
-  "old_parent"
+  "old_parent",
+  "hra_section",
+  "basic_component",
+  "hra_component",
+  "hra_column_break",
+  "arrear_component",
+  "non_profit_section",
+  "company_80g_number",
+  "with_effect_from",
+  "non_profit_column_break",
+  "pan_details"
  ],
  "fields": [
   {
@@ -741,6 +770,161 @@
    "fieldname": "section_break_28",
    "fieldtype": "Section Break",
    "label": "Chart of Accounts"
+  },
+  {
+   "fieldname": "location",
+   "fieldtype": "Column Break",
+   "label": "Location"
+  },
+  {
+   "fieldname": "complex_unit_no",
+   "fieldtype": "Data",
+   "label": "Complex Unit No",
+   "translatable": 1
+  },
+  {
+   "fieldname": "complex_name",
+   "fieldtype": "Data",
+   "label": "Complex Name",
+   "translatable": 1
+  },
+  {
+   "fieldname": "street_no",
+   "fieldtype": "Int",
+   "label": "Street No"
+  },
+  {
+   "fieldname": "street_name",
+   "fieldtype": "Data",
+   "label": "Street Name",
+   "translatable": 1
+  },
+  {
+   "fieldname": "suburb",
+   "fieldtype": "Select",
+   "label": "Suburb",
+   "translatable": 1
+  },
+  {
+   "fieldname": "city",
+   "fieldtype": "Select",
+   "label": "City",
+   "translatable": 1
+  },
+  {
+   "fieldname": "zip",
+   "fieldtype": "Data",
+   "label": "ZIP",
+   "translatable": 1
+  },
+  {
+   "fieldname": "country_code",
+   "fieldtype": "Select",
+   "label": "Country Code",
+   "translatable": 1
+  },
+  {
+   "fieldname": "timezone",
+   "fieldtype": "Select",
+   "label": "TimeZone",
+   "translatable": 1
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Branch"
+  },
+  {
+   "fieldname": "divisions",
+   "fieldtype": "Section Break",
+   "label": "Division"
+  },
+  {
+   "fieldname": "sub_division",
+   "fieldtype": "Select",
+   "label": "Sub-Division",
+   "translatable": 1
+  },
+  {
+   "fieldname": "column_break_97",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company_type",
+   "fieldtype": "Select",
+   "label": "Company Type",
+   "translatable": 1
+  },
+  {
+   "fieldname": "registration_number",
+   "fieldtype": "Int",
+   "label": "Registration Number"
+  },
+  {
+   "fieldname": "vat_number",
+   "fieldtype": "Int",
+   "label": "VAT Number"
+  },
+  {
+   "fieldname": "contact_information",
+   "fieldtype": "Section Break",
+   "label": "Contact Information"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "hra_section",
+   "fieldtype": "Section Break",
+   "label": "HRA Settings"
+  },
+  {
+   "fieldname": "basic_component",
+   "fieldtype": "Link",
+   "label": "Basic Component",
+   "options": "Salary Component"
+  },
+  {
+   "fieldname": "hra_component",
+   "fieldtype": "Link",
+   "label": "HRA Component",
+   "options": "Salary Component"
+  },
+  {
+   "fieldname": "hra_column_break",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "arrear_component",
+   "fieldtype": "Link",
+   "label": "Arrear Component",
+   "options": "Salary Component"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "non_profit_section",
+   "fieldtype": "Section Break",
+   "label": "Non Profit Settings"
+  },
+  {
+   "fieldname": "company_80g_number",
+   "fieldtype": "Data",
+   "label": "80G Number",
+   "translatable": 1
+  },
+  {
+   "fieldname": "with_effect_from",
+   "fieldtype": "Date",
+   "label": "80G With Effect From"
+  },
+  {
+   "fieldname": "non_profit_column_break",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "pan_details",
+   "fieldtype": "Data",
+   "label": "PAN Number",
+   "translatable": 1
   }
  ],
  "icon": "fa fa-building",
@@ -748,7 +932,7 @@
  "image_field": "company_logo",
  "is_tree": 1,
  "links": [],
- "modified": "2021-10-04 12:09:25.833133",
+ "modified": "2022-03-22 03:57:09.136516",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Company",
@@ -809,5 +993,6 @@
  "show_name_in_global_search": 1,
  "sort_field": "modified",
  "sort_order": "ASC",
+ "states": [],
  "track_changes": 1
 }

@@ -1,0 +1,88 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-03-07 15:32:16.150306",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "name1",
+  "surname",
+  "relationship",
+  "date_of_birth",
+  "id_number",
+  "nationality",
+  "contact_number",
+  "on_medical_aid",
+  "life_beneficiary",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "fieldname": "name1",
+   "fieldtype": "Data",
+   "label": "Name"
+  },
+  {
+   "fieldname": "surname",
+   "fieldtype": "Data",
+   "label": "Surname"
+  },
+  {
+   "fieldname": "relationship",
+   "fieldtype": "Link",
+   "label": "Relationship",
+   "options": "Relation"
+  },
+  {
+   "fieldname": "date_of_birth",
+   "fieldtype": "Date",
+   "label": "Date of Birth"
+  },
+  {
+   "fieldname": "id_number",
+   "fieldtype": "Data",
+   "label": "ID Number"
+  },
+  {
+   "fieldname": "nationality",
+   "fieldtype": "Link",
+   "label": "Nationality",
+   "options": "Nationality"
+  },
+  {
+   "fieldname": "contact_number",
+   "fieldtype": "Data",
+   "label": "Contact Number"
+  },
+  {
+   "default": "0",
+   "fieldname": "on_medical_aid",
+   "fieldtype": "Check",
+   "label": "On Medical Aid "
+  },
+  {
+   "default": "0",
+   "fieldname": "life_beneficiary",
+   "fieldtype": "Check",
+   "label": "Life Beneficiary"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Text",
+   "label": "Remarks"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-03-09 21:14:37.198522",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Dependant",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

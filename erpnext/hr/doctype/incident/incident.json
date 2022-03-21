@@ -1,0 +1,520 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "Prompt",
+ "creation": "2022-03-10 14:15:43.151701",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "employee",
+  "employee_name",
+  "occurence_section",
+  "date_occurred",
+  "reported_on",
+  "notified_on",
+  "reported_by",
+  "job_title1",
+  "reported_to",
+  "job_title2",
+  "classification_column",
+  "multiple_classification",
+  "confirmed",
+  "classification",
+  "sub_classification",
+  "occupational",
+  "related_to_hazard",
+  "hazard_no",
+  "details_section",
+  "type",
+  "description",
+  "witness",
+  "cause_mechanism",
+  "comments",
+  "column_break_21",
+  "bodily_location",
+  "description2",
+  "breakdown_agency",
+  "location",
+  "item_object",
+  "productivity_section",
+  "employment_details_column",
+  "appointment_type",
+  "department",
+  "shift_type",
+  "experience_in_task_years",
+  "experience_in_task_months",
+  "safety_representative",
+  "duties_column",
+  "duties_stopped",
+  "proportion_of_shift_worked",
+  "date_stopped_normal_work",
+  "total_working_days_lost",
+  "total_working_hours_lost",
+  "total_value_of_lost_time",
+  "duties_resumed",
+  "short_term_alternative__duties",
+  "permanent_alternative_duties",
+  "normal_duties",
+  "early_retirement",
+  "retirement_date",
+  "permanent_disability",
+  "fatal_title_column",
+  "fatal",
+  "work_related",
+  "deceased_date",
+  "treatments_section",
+  "treatment_at_time",
+  "treatment",
+  "practitioner",
+  "preventive_action",
+  "action",
+  "taken",
+  "notes",
+  "rehabilitation_section",
+  "rehabilitation_required",
+  "liability_section",
+  "claim_estimate_column",
+  "expense_claim",
+  "total",
+  "total_paid",
+  "total_claimed",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Employee",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "default": "Employee",
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name"
+  },
+  {
+   "fieldname": "occurence_section",
+   "fieldtype": "Section Break",
+   "label": "Occurence"
+  },
+  {
+   "fieldname": "date_occurred",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date Occurred",
+   "reqd": 1
+  },
+  {
+   "fieldname": "reported_on",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Reported On",
+   "reqd": 1
+  },
+  {
+   "fieldname": "notified_on",
+   "fieldtype": "Date",
+   "label": "Notified On"
+  },
+  {
+   "fieldname": "reported_by",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Reported By",
+   "reqd": 1
+  },
+  {
+   "fieldname": "job_title1",
+   "fieldtype": "Data",
+   "label": "Job Title"
+  },
+  {
+   "fieldname": "reported_to",
+   "fieldtype": "Data",
+   "label": "Reported To"
+  },
+  {
+   "fieldname": "job_title2",
+   "fieldtype": "Data",
+   "label": "Job Title"
+  },
+  {
+   "fieldname": "classification_column",
+   "fieldtype": "Column Break",
+   "label": "Classification"
+  },
+  {
+   "fieldname": "multiple_classification",
+   "fieldtype": "Select",
+   "label": "Multiple Classification",
+   "options": "Yes\nNo"
+  },
+  {
+   "default": "0",
+   "fieldname": "confirmed",
+   "fieldtype": "Check",
+   "label": "Confirmed"
+  },
+  {
+   "fieldname": "classification",
+   "fieldtype": "Select",
+   "label": "Classification",
+   "options": "\nEnvironmental\nHealth\nSafety"
+  },
+  {
+   "fieldname": "sub_classification",
+   "fieldtype": "Data",
+   "label": "Sub Classification"
+  },
+  {
+   "fieldname": "occupational",
+   "fieldtype": "Select",
+   "label": "Occupational",
+   "options": "\nCompensation for Occupational Injuries and Disease\nDI\nDisabling\nF/A\nFatal\nMinor\nNear Miss\nNM\nReportable"
+  },
+  {
+   "default": "0",
+   "fieldname": "related_to_hazard",
+   "fieldtype": "Check",
+   "label": "Related to Hazard"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "details_section",
+   "fieldtype": "Section Break",
+   "label": "Details"
+  },
+  {
+   "fieldname": "type",
+   "fieldtype": "Select",
+   "label": "Type",
+   "options": "\nBruising\nBurning\nLaceration\nContusion\nOpen Skin\nSprain",
+   "reqd": 1
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "witness",
+   "fieldtype": "Data",
+   "label": "Witness"
+  },
+  {
+   "fieldname": "cause_mechanism",
+   "fieldtype": "Data",
+   "label": "Cause/Mechanism"
+  },
+  {
+   "fieldname": "comments",
+   "fieldtype": "Text Editor",
+   "label": "Comments"
+  },
+  {
+   "fieldname": "column_break_21",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "bodily_location",
+   "fieldtype": "Data",
+   "label": "Bodily Location"
+  },
+  {
+   "fieldname": "description2",
+   "fieldtype": "Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "breakdown_agency",
+   "fieldtype": "Select",
+   "label": "Breakdown Agency",
+   "options": "\nMachinery & Fixed Plant\nSpeeding\nUnsafe Handling\nImproper Usage\nRelated Hazard\nNon-Powered Hand Tools\nNon-Powered Equipment\nChemicals\nNon Metallic Substances\nOther Materials or Objects\nOutdoor Environments\nIndoor Environment\nUnderground Environment\nLive Animals\nNon-Living Animals\nHuman Agencies\nBiological Agencies\nNon-Physical Agencies\nOther Agencies\nUnspecified Agencies\nChemicals\nDefective Machines\nDefective Plant\nElectricity\nFault of Employer\nFault of Injured Employee\nFault of Supervisor\nLifting machine/s\nPoisoning\nRotating machine\nUnfavorable conditions at work"
+  },
+  {
+   "fieldname": "location",
+   "fieldtype": "Data",
+   "label": "Location"
+  },
+  {
+   "fieldname": "item_object",
+   "fieldtype": "Data",
+   "label": "Item/Object"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "productivity_section",
+   "fieldtype": "Section Break",
+   "label": "Productivity"
+  },
+  {
+   "fieldname": "employment_details_column",
+   "fieldtype": "Column Break",
+   "label": "Employment Details"
+  },
+  {
+   "fieldname": "appointment_type",
+   "fieldtype": "Link",
+   "label": "Appointment Type",
+   "options": "Employment Type"
+  },
+  {
+   "fetch_if_empty": 1,
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "label": "Department",
+   "options": "Department"
+  },
+  {
+   "fieldname": "shift_type",
+   "fieldtype": "Link",
+   "label": "Shift Type",
+   "options": "Shift Type"
+  },
+  {
+   "fieldname": "experience_in_task_years",
+   "fieldtype": "Int",
+   "label": "Experience in Task (years)"
+  },
+  {
+   "fieldname": "experience_in_task_months",
+   "fieldtype": "Float",
+   "label": "Experience in Task (months)"
+  },
+  {
+   "fieldname": "safety_representative",
+   "fieldtype": "Data",
+   "label": "Safety Representative"
+  },
+  {
+   "fieldname": "duties_column",
+   "fieldtype": "Column Break",
+   "label": "Duties"
+  },
+  {
+   "fieldname": "duties_stopped",
+   "fieldtype": "Read Only",
+   "label": "Duties Stopped"
+  },
+  {
+   "fieldname": "proportion_of_shift_worked",
+   "fieldtype": "Select",
+   "label": "Proportion of Shift Worked",
+   "options": "\n0-25%\n26%-50%\n51%-75%\n76%-100%\nDoubletime\nOvertime"
+  },
+  {
+   "fieldname": "date_stopped_normal_work",
+   "fieldtype": "Date",
+   "label": "Date Stopped Normal Work"
+  },
+  {
+   "fieldname": "total_working_days_lost",
+   "fieldtype": "Float",
+   "label": "Total Working Days Lost"
+  },
+  {
+   "fieldname": "total_working_hours_lost",
+   "fieldtype": "Float",
+   "label": "Total Working Hours Lost"
+  },
+  {
+   "fieldname": "total_value_of_lost_time",
+   "fieldtype": "Float",
+   "label": "Total Value of Lost Time"
+  },
+  {
+   "fieldname": "duties_resumed",
+   "fieldtype": "Read Only",
+   "label": "Duties Resumed"
+  },
+  {
+   "fieldname": "short_term_alternative__duties",
+   "fieldtype": "Date",
+   "label": "Short Term Alternative  Duties"
+  },
+  {
+   "fieldname": "permanent_alternative_duties",
+   "fieldtype": "Datetime",
+   "label": "Permanent Alternative Duties"
+  },
+  {
+   "fieldname": "normal_duties",
+   "fieldtype": "Time",
+   "label": "Normal Duties"
+  },
+  {
+   "default": "0",
+   "fieldname": "early_retirement",
+   "fieldtype": "Check",
+   "label": "Early Retirement"
+  },
+  {
+   "fieldname": "retirement_date",
+   "fieldtype": "Date",
+   "label": "Retirement Date"
+  },
+  {
+   "default": "0",
+   "fieldname": "permanent_disability",
+   "fieldtype": "Check",
+   "label": "Permanent Disability"
+  },
+  {
+   "fieldname": "fatal_title_column",
+   "fieldtype": "Column Break",
+   "label": "Fatal "
+  },
+  {
+   "default": "0",
+   "fieldname": "fatal",
+   "fieldtype": "Check",
+   "label": "Fatal"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "default": "0",
+   "depends_on": "fatal == \"Yes\";",
+   "fieldname": "work_related",
+   "fieldtype": "Check",
+   "label": "Work Related"
+  },
+  {
+   "fieldname": "deceased_date",
+   "fieldtype": "Date",
+   "label": "Deceased Date"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "treatments_section",
+   "fieldtype": "Section Break",
+   "label": "Treatments"
+  },
+  {
+   "fieldname": "treatment_at_time",
+   "fieldtype": "Read Only",
+   "label": "Treatment at Time"
+  },
+  {
+   "fieldname": "treatment",
+   "fieldtype": "Data",
+   "label": "Treatment"
+  },
+  {
+   "fieldname": "practitioner",
+   "fieldtype": "Data",
+   "label": "Practitioner"
+  },
+  {
+   "fieldname": "preventive_action",
+   "fieldtype": "Read Only",
+   "label": "Preventive Action"
+  },
+  {
+   "fieldname": "action",
+   "fieldtype": "Data",
+   "label": "Action"
+  },
+  {
+   "fieldname": "taken",
+   "fieldtype": "Data",
+   "label": "Taken"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Text",
+   "label": "Notes"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "rehabilitation_section",
+   "fieldtype": "Section Break",
+   "label": "Rehabilitation"
+  },
+  {
+   "default": "0",
+   "fieldname": "rehabilitation_required",
+   "fieldtype": "Check",
+   "label": "Rehabilitation Required"
+  },
+  {
+   "fieldname": "liability_section",
+   "fieldtype": "Section Break",
+   "label": "Liability"
+  },
+  {
+   "fieldname": "claim_estimate_column",
+   "fieldtype": "Column Break",
+   "label": "Claim Estimate / Liability towards the Company"
+  },
+  {
+   "fieldname": "expense_claim",
+   "fieldtype": "Table",
+   "label": "Expense Claim",
+   "options": "Expense Claim Detail"
+  },
+  {
+   "fieldname": "total",
+   "fieldtype": "Currency",
+   "label": "Total"
+  },
+  {
+   "fieldname": "total_paid",
+   "fieldtype": "Currency",
+   "label": "Total Paid"
+  },
+  {
+   "fieldname": "total_claimed",
+   "fieldtype": "Currency",
+   "label": "Total Claimed"
+  },
+  {
+   "depends_on": "eval:doc.related_to_hazard",
+   "fieldname": "hazard_no",
+   "fieldtype": "Data",
+   "label": "Hazard No."
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Incident",
+   "print_hide": 1,
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2022-03-21 14:11:28.649669",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Incident",
+ "name_case": "Title Case",
+ "naming_rule": "Set by user",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

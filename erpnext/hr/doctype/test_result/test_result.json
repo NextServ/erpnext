@@ -1,0 +1,57 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-02-23 14:11:39.924045",
+ "default_import_order": "0",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "element",
+  "unit",
+  "result",
+  "normal",
+  "abnormal"
+ ],
+ "fields": [
+  {
+   "fieldname": "element",
+   "fieldtype": "Data",
+   "label": "Element"
+  },
+  {
+   "fieldname": "unit",
+   "fieldtype": "Float",
+   "label": "Unit"
+  },
+  {
+   "fieldname": "result",
+   "fieldtype": "Data",
+   "label": "Result"
+  },
+  {
+   "default": "0",
+   "fieldname": "normal",
+   "fieldtype": "Check",
+   "label": "Normal"
+  },
+  {
+   "default": "0",
+   "fieldname": "abnormal",
+   "fieldtype": "Check",
+   "label": "Abnormal"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-03-09 21:08:23.469283",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Test Result",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

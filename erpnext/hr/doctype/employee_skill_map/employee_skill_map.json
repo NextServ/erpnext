@@ -2,6 +2,7 @@
  "actions": [],
  "autoname": "field:employee",
  "creation": "2019-04-16 10:07:48.303426",
+ "default_import_order": "0",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
@@ -12,7 +13,15 @@
   "skills_section",
   "employee_skills",
   "trainings_section",
-  "trainings"
+  "trainings",
+  "unit_standard",
+  "unit_std",
+  "evaluation",
+  "scheme",
+  "attribute",
+  "attributes",
+  "qualification",
+  "qualifications"
  ],
  "fields": [
   {
@@ -59,13 +68,58 @@
   {
    "fieldname": "column_break_3",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "unit_standard",
+   "fieldtype": "Section Break",
+   "label": "Unit Standard"
+  },
+  {
+   "fieldname": "unit_std",
+   "fieldtype": "Table",
+   "label": "Unit Std",
+   "options": "Unit Standard"
+  },
+  {
+   "fieldname": "evaluation",
+   "fieldtype": "Section Break",
+   "label": "Evaluation"
+  },
+  {
+   "fieldname": "scheme",
+   "fieldtype": "Table",
+   "label": "Scheme",
+   "options": "Evaluation"
+  },
+  {
+   "fieldname": "attribute",
+   "fieldtype": "Section Break",
+   "label": "Attributes"
+  },
+  {
+   "fieldname": "attributes",
+   "fieldtype": "Table",
+   "label": "Attributes",
+   "options": "Attributes"
+  },
+  {
+   "fieldname": "qualification",
+   "fieldtype": "Section Break",
+   "label": "Qualifications"
+  },
+  {
+   "fieldname": "qualifications",
+   "fieldtype": "Table",
+   "label": "Qualifications",
+   "options": "Child Qualification"
   }
  ],
  "links": [],
- "modified": "2019-12-16 11:31:09.916893",
+ "modified": "2022-03-22 04:01:48.493650",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Skill Map",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {
@@ -84,5 +138,6 @@
  "quick_entry": 1,
  "sort_field": "modified",
  "sort_order": "ASC",
+ "states": [],
  "title_field": "employee_name"
 }

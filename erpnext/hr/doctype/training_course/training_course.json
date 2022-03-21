@@ -1,0 +1,54 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-02-28 15:09:32.432516",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "course_name",
+  "program_name",
+  "event_no",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "course_name",
+   "fieldtype": "Select",
+   "label": "Course Name"
+  },
+  {
+   "fieldname": "program_name",
+   "fieldtype": "Select",
+   "label": "Program Name"
+  },
+  {
+   "fieldname": "event_no",
+   "fieldtype": "Data",
+   "label": "Event No"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Training Course",
+   "print_hide": 1,
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-03-09 21:09:25.790165",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Training Course",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

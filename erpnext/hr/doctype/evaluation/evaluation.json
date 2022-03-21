@@ -1,0 +1,44 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-02-16 13:21:00.350425",
+ "default_import_order": "0",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "scheme",
+  "importance",
+  "description"
+ ],
+ "fields": [
+  {
+   "fieldname": "scheme",
+   "fieldtype": "Link",
+   "label": "Scheme",
+   "options": "Scheme"
+  },
+  {
+   "fieldname": "importance",
+   "fieldtype": "Data",
+   "label": "Importance"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-03-09 21:09:56.907742",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Evaluation",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

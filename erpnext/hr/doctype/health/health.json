@@ -1,0 +1,68 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-03-07 16:06:34.603571",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "last_medical_examination",
+  "examination_type",
+  "doctor_name",
+  "doctor_tel_no",
+  "remarks_ailments",
+  "blood_group",
+  "next_examination"
+ ],
+ "fields": [
+  {
+   "fieldname": "last_medical_examination",
+   "fieldtype": "Date",
+   "label": "Last Medical Examination"
+  },
+  {
+   "fieldname": "examination_type",
+   "fieldtype": "Link",
+   "label": "Examination Type",
+   "options": "Examination Type"
+  },
+  {
+   "fieldname": "doctor_name",
+   "fieldtype": "Data",
+   "label": "Doctor Name"
+  },
+  {
+   "fieldname": "doctor_tel_no",
+   "fieldtype": "Data",
+   "label": "Doctor Tel No."
+  },
+  {
+   "fieldname": "remarks_ailments",
+   "fieldtype": "Text",
+   "label": "Remarks/ Ailments"
+  },
+  {
+   "fieldname": "blood_group",
+   "fieldtype": "Link",
+   "label": "Blood Group",
+   "options": "Blood Group"
+  },
+  {
+   "fieldname": "next_examination",
+   "fieldtype": "Data",
+   "label": "Next Examination"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-03-09 21:14:42.323139",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Health",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

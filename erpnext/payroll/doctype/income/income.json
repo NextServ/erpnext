@@ -1,0 +1,104 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-03-15 17:06:10.763980",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "code",
+  "description",
+  "13th_month",
+  "bir_2316",
+  "bir_2136",
+  "ceiling_amount",
+  "taxable",
+  "order_number",
+  "bank_file",
+  "adjustment"
+ ],
+ "fields": [
+  {
+   "fieldname": "code",
+   "fieldtype": "Data",
+   "label": "Code"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text",
+   "label": "Description"
+  },
+  {
+   "default": "0",
+   "fieldname": "13th_month",
+   "fieldtype": "Check",
+   "label": "13th Month"
+  },
+  {
+   "fieldname": "bir_2316",
+   "fieldtype": "Select",
+   "label": "BIR 2316",
+   "options": "BIR 2316\nGross Compensation Income\nLess: Total Non-Taxable/Exempt\nTaxable Compensation Income from Present Employer\nAdd: Taxable Compensation Income from Previous Employer\nGross Taxable Compensation Income\nLess: Total Exemptions\nLess: Premium Paid on Health and/or Hospital Insurance\nNet Taxable Compensation Income\nTax Due\nAmount of Taxes Witheld(Present Employer)\nAmount of Taxes Witheld (Previous Employer)\nTotal Amount of Taxes Witheld as Adjusted\nBasic Salary/Statutory Minimum Wage\nHoliday Pay (MWE)\nOvertime Pay (MWE)\nNight Shift Differential (MWE)\nHazard Pay (MWE)\n13th Month Pay and other Benefits\nDe Minimis Benefits\nSSS, GSIS, PHIC & Pag-ibig Contributions & Union Dues\nSalaries and Other Forms of Compensation\nTotal Non-Taxable/Exempt Compensation Income\nBasic Salary\nRepresentation\nTransportation\nCost of Living Allowance\nFixed Housing Allowance\nOthers\nComission\nProfit Sharing\nFees including Director's Fees\nTaxable 13th monthpay and other Benefits\nHazard Pay\nOvertime Pay\nTotal Taxable Compensation Income"
+  },
+  {
+   "fieldname": "bir_2136",
+   "fieldtype": "Select",
+   "label": "BIR 2136",
+   "options": "BIR 2136\nGross Compensation Income\nLess: Total Non-Taxable/Exempt\nTaxable Compensation Income from Present Employer\nAdd: Taxable Compensation Income from Previous Employer\nGross Taxable Compensation Income\nLess: Total Exemptions\nLess: Premium Paid on Health and/or Hospital Insurance\nNet Taxable Compensation Income\nTax Due\nAmount of Taxes Witheld(Present Employer)\nAmount of Taxes Witheld (Previous Employer)\nTotal Amount of Taxes Witheld as Adjusted\nBasic Salary/Statutory Minimum Wage\nHoliday Pay (MWE)\nOvertime Pay (MWE)\nNight Shift Differential (MWE)\nHazard Pay (MWE)\n13th Month Pay and other Benefits\nDe Minimis Benefits\nSSS, GSIS, PHIC & Pag-ibig Contributions & Union Dues\nSalaries and Other Forms of Compensation\nTotal Non-Taxable/Exempt Compensation Income\nBasic Salary\nRepresentation\nTransportation\nCost of Living Allowance\nFixed Housing Allowance\nOthers\nComission\nProfit Sharing\nFees including Director's Fees\nTaxable 13th monthpay and other Benefits\nHazard Pay\nOvertime Pay\nTotal Taxable Compensation Income"
+  },
+  {
+   "fieldname": "ceiling_amount",
+   "fieldtype": "Currency",
+   "label": "Ceiling Amount"
+  },
+  {
+   "default": "0",
+   "fieldname": "taxable",
+   "fieldtype": "Check",
+   "label": "Taxable"
+  },
+  {
+   "fieldname": "order_number",
+   "fieldtype": "Data",
+   "label": "Order Number"
+  },
+  {
+   "default": "0",
+   "fieldname": "bank_file",
+   "fieldtype": "Check",
+   "label": "Bank File"
+  },
+  {
+   "fieldname": "adjustment",
+   "fieldtype": "Select",
+   "label": "Adjustment",
+   "options": "\nYes\nNo"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2022-03-15 17:31:56.285567",
+ "modified_by": "Administrator",
+ "module": "Payroll",
+ "name": "Income",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

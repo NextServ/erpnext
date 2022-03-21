@@ -2,7 +2,8 @@
  "actions": [],
  "allow_import": 1,
  "autoname": "naming_series:",
- "creation": "2013-02-20 19:10:38",
+ "creation": "2022-02-18 13:44:08.898577",
+ "default_import_order": "0",
  "doctype": "DocType",
  "document_type": "Setup",
  "engine": "InnoDB",
@@ -18,6 +19,7 @@
   "to_date",
   "section_break_6",
   "new_leaves_allocated",
+  "adjustment_type",
   "carry_forward",
   "unused_leaves",
   "total_leaves_allocated",
@@ -230,6 +232,12 @@
    "options": "Company",
    "read_only": 1,
    "reqd": 1
+  },
+  {
+   "fieldname": "adjustment_type",
+   "fieldtype": "Data",
+   "label": "Adjustment Type",
+   "translatable": 1
   }
  ],
  "icon": "fa fa-ok",
@@ -237,7 +245,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-01-18 19:15:53.262536",
+ "modified": "2022-03-22 04:03:17.248011",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Allocation",

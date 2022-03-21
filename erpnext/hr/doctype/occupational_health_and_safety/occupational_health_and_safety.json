@@ -1,0 +1,135 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-03-10 14:15:37.730528",
+ "default_import_order": "0",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "employee_name",
+  "emp_name",
+  "amended_from",
+  "test_date",
+  "test_name",
+  "test_type",
+  "department",
+  "follow_up",
+  "expiry_date",
+  "test_result",
+  "performed_by_section",
+  "name1",
+  "contact_details"
+ ],
+ "fields": [
+  {
+   "fieldname": "employee_name",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Employee Name",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "allow_on_submit": 1,
+   "default": "Employee",
+   "fetch_from": "employee_name.employee_name",
+   "fieldname": "emp_name",
+   "fieldtype": "Data",
+   "in_global_search": 1,
+   "label": "Emp Name",
+   "translatable": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Occupational Health and Safety",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "test_date",
+   "fieldtype": "Datetime",
+   "label": "Test Date"
+  },
+  {
+   "fieldname": "test_name",
+   "fieldtype": "Data",
+   "label": "Test Name"
+  },
+  {
+   "fieldname": "test_type",
+   "fieldtype": "Data",
+   "label": "Test Type "
+  },
+  {
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "label": "Department",
+   "options": "Department"
+  },
+  {
+   "fieldname": "follow_up",
+   "fieldtype": "Date",
+   "label": "Follow Up"
+  },
+  {
+   "fieldname": "expiry_date",
+   "fieldtype": "Date",
+   "label": "Expiry Date"
+  },
+  {
+   "fieldname": "test_result",
+   "fieldtype": "Table",
+   "label": "Test Result",
+   "options": "Test Result"
+  },
+  {
+   "fieldname": "performed_by_section",
+   "fieldtype": "Section Break",
+   "label": "Performed By"
+  },
+  {
+   "fieldname": "name1",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "contact_details",
+   "fieldtype": "Int",
+   "label": "Contact Details"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2022-03-21 14:34:33.670634",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Occupational Health and Safety",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

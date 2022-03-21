@@ -2,21 +2,25 @@
  "actions": [],
  "allow_import": 1,
  "allow_rename": 1,
- "creation": "2022-02-17 10:29:18.136857",
+ "creation": "2022-02-18 13:44:12.827947",
+ "default_import_order": "0",
  "doctype": "DocType",
  "document_type": "Setup",
  "engine": "InnoDB",
  "field_order": [
   "department_name",
   "parent_department",
+  "description",
   "column_break_3",
   "company",
   "is_group",
   "disabled",
   "section_break_4",
+  "manager",
   "payroll_cost_center",
   "column_break_9",
   "leave_block_list",
+  "budget",
   "approvers",
   "leave_approvers",
   "expense_approvers",
@@ -143,13 +147,30 @@
    "fieldname": "sync_id",
    "fieldtype": "Data",
    "label": "Sync ID"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text",
+   "label": "Description",
+   "translatable": 1
+  },
+  {
+   "fieldname": "manager",
+   "fieldtype": "Select",
+   "label": "Manager",
+   "translatable": 1
+  },
+  {
+   "fieldname": "budget",
+   "fieldtype": "Float",
+   "label": "Budget"
   }
  ],
  "icon": "fa fa-sitemap",
  "idx": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2022-02-17 14:53:02.587613",
+ "modified": "2022-03-22 03:58:29.845731",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Department",

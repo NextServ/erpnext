@@ -1,0 +1,303 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-03-10 13:10:57.271832",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "course_name",
+  "provider",
+  "column_break_3",
+  "start_date",
+  "completion_date",
+  "particulars_section",
+  "internal_course",
+  "event_no",
+  "category",
+  "sub_category",
+  "nqf_level",
+  "training_priority",
+  "educ_band",
+  "unit_standard",
+  "column_break_15",
+  "duration",
+  "delivery_method",
+  "description",
+  "delivery_section",
+  "objective",
+  "authorized_by",
+  "venue",
+  "contacts",
+  "payment_section",
+  "costs",
+  "total_costs",
+  "payment_date",
+  "payment_ref",
+  "payment_type",
+  "details",
+  "module_section",
+  "modules",
+  "outcome_section",
+  "certificate_no",
+  "date_issued",
+  "mark",
+  "renewal_date",
+  "assessment_method",
+  "result",
+  "training_status",
+  "notes",
+  "create_training_to_be_done"
+ ],
+ "fields": [
+  {
+   "fieldname": "course_name",
+   "fieldtype": "Link",
+   "label": "Course Name",
+   "options": "Course Offer"
+  },
+  {
+   "fieldname": "provider",
+   "fieldtype": "Data",
+   "label": "Provider"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "label": "Start Date"
+  },
+  {
+   "fieldname": "completion_date",
+   "fieldtype": "Date",
+   "label": "Completion Date"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "particulars_section",
+   "fieldtype": "Section Break",
+   "label": "Particulars"
+  },
+  {
+   "default": "0",
+   "fieldname": "internal_course",
+   "fieldtype": "Check",
+   "label": "Internal Course"
+  },
+  {
+   "fieldname": "event_no",
+   "fieldtype": "Data",
+   "label": "Event No"
+  },
+  {
+   "fieldname": "category",
+   "fieldtype": "Data",
+   "label": "Category"
+  },
+  {
+   "fieldname": "sub_category",
+   "fieldtype": "Data",
+   "label": "Sub Category"
+  },
+  {
+   "fieldname": "nqf_level",
+   "fieldtype": "Data",
+   "label": "NQF Level"
+  },
+  {
+   "fieldname": "training_priority",
+   "fieldtype": "Data",
+   "label": "Training Priority"
+  },
+  {
+   "fieldname": "educ_band",
+   "fieldtype": "Data",
+   "label": "Educ Band"
+  },
+  {
+   "fieldname": "duration",
+   "fieldtype": "Duration",
+   "label": "Duration"
+  },
+  {
+   "fieldname": "delivery_method",
+   "fieldtype": "Data",
+   "label": "Delivery Method"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "column_break_15",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "unit_standard",
+   "fieldtype": "Table",
+   "label": "Unit Standard",
+   "options": "Unit Standard"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "delivery_section",
+   "fieldtype": "Section Break",
+   "label": "Delivery"
+  },
+  {
+   "fieldname": "objective",
+   "fieldtype": "Select",
+   "label": "Objective",
+   "options": "\nBasic Life Skills\nCareer Development\nJob Competence\nJob Performance\nJob Skills"
+  },
+  {
+   "fieldname": "authorized_by",
+   "fieldtype": "Data",
+   "label": "Authorized By"
+  },
+  {
+   "fieldname": "venue",
+   "fieldtype": "Data",
+   "label": "Venue"
+  },
+  {
+   "fieldname": "contacts",
+   "fieldtype": "Table",
+   "label": "Contacts",
+   "options": "Contact Details"
+  },
+  {
+   "fieldname": "costs",
+   "fieldtype": "Table",
+   "label": "Costs",
+   "options": "Cost Centre Allocation"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "payment_section",
+   "fieldtype": "Section Break",
+   "label": "Payment"
+  },
+  {
+   "fieldname": "total_costs",
+   "fieldtype": "Currency",
+   "label": "Total Costs"
+  },
+  {
+   "fieldname": "payment_date",
+   "fieldtype": "Date",
+   "label": "Payment Date"
+  },
+  {
+   "fieldname": "payment_ref",
+   "fieldtype": "Data",
+   "label": "Payment Ref"
+  },
+  {
+   "fieldname": "payment_type",
+   "fieldtype": "Link",
+   "label": "Payment Type",
+   "options": "Payment Type"
+  },
+  {
+   "fieldname": "details",
+   "fieldtype": "Text",
+   "label": "Details"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "module_section",
+   "fieldtype": "Section Break",
+   "label": "Modules"
+  },
+  {
+   "fieldname": "modules",
+   "fieldtype": "Table",
+   "label": "Modules",
+   "options": "Module"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "outcome_section",
+   "fieldtype": "Section Break",
+   "label": "Outcome"
+  },
+  {
+   "fieldname": "certificate_no",
+   "fieldtype": "Data",
+   "label": "Certificate No"
+  },
+  {
+   "fieldname": "date_issued",
+   "fieldtype": "Date",
+   "label": "Date Issued"
+  },
+  {
+   "fieldname": "mark",
+   "fieldtype": "Data",
+   "label": "Mark"
+  },
+  {
+   "fieldname": "renewal_date",
+   "fieldtype": "Data",
+   "label": "Renewal Date"
+  },
+  {
+   "fieldname": "assessment_method",
+   "fieldtype": "Select",
+   "label": "Assessment Method",
+   "options": "\nMultiple Question Test\nOral Exam\nPractical Exam\nWritten Exam"
+  },
+  {
+   "fieldname": "result",
+   "fieldtype": "Select",
+   "label": "Result",
+   "options": "\nCompetent\nFailed\nNot Yet Competent\nPassed"
+  },
+  {
+   "fieldname": "training_status",
+   "fieldtype": "Data",
+   "label": "Training Status"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Text",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "create_training_to_be_done",
+   "fieldtype": "Button",
+   "label": "Create Training to be Done",
+   "options": "Training Event"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2022-03-10 14:01:30.295341",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Training Completed",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

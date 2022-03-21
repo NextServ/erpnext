@@ -1,0 +1,42 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-03-09 13:19:01.860647",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "invoiced",
+  "expense_type",
+  "paid_to"
+ ],
+ "fields": [
+  {
+   "fieldname": "invoiced",
+   "fieldtype": "Data",
+   "label": "Invoiced"
+  },
+  {
+   "fieldname": "expense_type",
+   "fieldtype": "Data",
+   "label": "Expense Type"
+  },
+  {
+   "fieldname": "paid_to",
+   "fieldtype": "Data",
+   "label": "Paid To"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-03-09 21:23:28.676484",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Accounting Occupational Health and Safety",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

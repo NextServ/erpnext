@@ -1,0 +1,43 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-02-16 13:23:00.335469",
+ "default_import_order": "0",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "job_attribute",
+  "level",
+  "importance"
+ ],
+ "fields": [
+  {
+   "fieldname": "job_attribute",
+   "fieldtype": "Data",
+   "label": "Job Attribute"
+  },
+  {
+   "fieldname": "level",
+   "fieldtype": "Select",
+   "label": "Level"
+  },
+  {
+   "fieldname": "importance",
+   "fieldtype": "Small Text",
+   "label": "Importance"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-03-09 21:06:21.298418",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Attributes",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

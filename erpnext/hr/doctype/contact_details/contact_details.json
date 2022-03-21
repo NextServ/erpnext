@@ -1,0 +1,66 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-03-10 13:37:22.804066",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "name1",
+  "type",
+  "telephone_number",
+  "fax_number",
+  "email",
+  "mobile_number",
+  "registered_number"
+ ],
+ "fields": [
+  {
+   "fieldname": "name1",
+   "fieldtype": "Data",
+   "label": "Name"
+  },
+  {
+   "fieldname": "type",
+   "fieldtype": "Data",
+   "label": "Type"
+  },
+  {
+   "fieldname": "telephone_number",
+   "fieldtype": "Data",
+   "label": "Telephone Number"
+  },
+  {
+   "fieldname": "fax_number",
+   "fieldtype": "Data",
+   "label": "Fax Number"
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email"
+  },
+  {
+   "fieldname": "mobile_number",
+   "fieldtype": "Data",
+   "label": "Mobile Number"
+  },
+  {
+   "fieldname": "registered_number",
+   "fieldtype": "Data",
+   "label": "Registered Number"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-03-10 13:38:40.957804",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Contact Details",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

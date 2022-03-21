@@ -1,0 +1,143 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-03-10 14:15:38.875849",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "employee",
+  "name1",
+  "amended_from",
+  "consultation_date",
+  "type",
+  "classification",
+  "date_confirmed",
+  "next_examination_date",
+  "diagnosis",
+  "consultation",
+  "section_break_11",
+  "attended_by",
+  "referral",
+  "section_break_14",
+  "linked_documents"
+ ],
+ "fields": [
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Employee",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "allow_on_submit": 1,
+   "default": "Employee",
+   "fetch_from": "employee.employee_name",
+   "fieldname": "name1",
+   "fieldtype": "Data",
+   "in_global_search": 1,
+   "label": "Name",
+   "translatable": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Consultation",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "consultation_date",
+   "fieldtype": "Date",
+   "label": "Consultation Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "type",
+   "fieldtype": "Data",
+   "label": "Type",
+   "reqd": 1
+  },
+  {
+   "fieldname": "classification",
+   "fieldtype": "Data",
+   "label": "Classification"
+  },
+  {
+   "fieldname": "date_confirmed",
+   "fieldtype": "Date",
+   "label": "Date Confirmed/ Diagnosed"
+  },
+  {
+   "fieldname": "next_examination_date",
+   "fieldtype": "Date",
+   "label": "Next Examination Date"
+  },
+  {
+   "fieldname": "diagnosis",
+   "fieldtype": "Data",
+   "label": "Diagnosis"
+  },
+  {
+   "fieldname": "consultation",
+   "fieldtype": "Data",
+   "label": "Consultation"
+  },
+  {
+   "fieldname": "section_break_11",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "attended_by",
+   "fieldtype": "Data",
+   "label": "Attended By"
+  },
+  {
+   "fieldname": "referral",
+   "fieldtype": "Data",
+   "label": "Referral"
+  },
+  {
+   "fieldname": "section_break_14",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "linked_documents",
+   "fieldtype": "Table",
+   "label": "Linked Documents",
+   "options": "Linked Document"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2022-03-21 14:59:22.053313",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Consultation",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

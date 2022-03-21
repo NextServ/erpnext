@@ -2,7 +2,8 @@
  "actions": [],
  "allow_rename": 1,
  "autoname": "HR-TRR-.YYYY.-.#####",
- "creation": "2016-11-04 02:13:48.407576",
+ "creation": "2022-02-18 13:44:09.746470",
+ "default_import_order": "0",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -11,7 +12,27 @@
   "section_break_3",
   "employees",
   "amended_from",
-  "employee_emails"
+  "employee_emails",
+  "skills",
+  "skills_learned",
+  "date_from",
+  "reference",
+  "category",
+  "field",
+  "column_break_12",
+  "nqf_level",
+  "date_to",
+  "reference_type",
+  "sub_category",
+  "sub_field",
+  "assessment",
+  "section_break_17",
+  "portfolio_of_evidence",
+  "poe_number",
+  "date_issued",
+  "column_break_20",
+  "ref",
+  "remarks"
  ],
  "fields": [
   {
@@ -48,11 +69,124 @@
    "hidden": 1,
    "label": "Employee Emails",
    "options": "Email"
+  },
+  {
+   "fieldname": "skills",
+   "fieldtype": "Section Break",
+   "label": "Skills"
+  },
+  {
+   "fieldname": "skills_learned",
+   "fieldtype": "Data",
+   "label": "Skills Learned",
+   "translatable": 1
+  },
+  {
+   "fieldname": "date_from",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date From",
+   "reqd": 1
+  },
+  {
+   "fieldname": "reference",
+   "fieldtype": "Data",
+   "label": "Reference",
+   "translatable": 1
+  },
+  {
+   "fieldname": "category",
+   "fieldtype": "Data",
+   "label": "Category",
+   "translatable": 1
+  },
+  {
+   "fieldname": "field",
+   "fieldtype": "Data",
+   "label": "Field",
+   "translatable": 1
+  },
+  {
+   "fieldname": "column_break_12",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "nqf_level",
+   "fieldtype": "Data",
+   "label": "NQF Level",
+   "translatable": 1
+  },
+  {
+   "fieldname": "date_to",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date To",
+   "reqd": 1
+  },
+  {
+   "fieldname": "reference_type",
+   "fieldtype": "Data",
+   "label": "Reference Type",
+   "translatable": 1
+  },
+  {
+   "fieldname": "sub_category",
+   "fieldtype": "Data",
+   "label": "Sub Category",
+   "translatable": 1
+  },
+  {
+   "fieldname": "sub_field",
+   "fieldtype": "Data",
+   "label": "Sub Field",
+   "translatable": 1
+  },
+  {
+   "fieldname": "assessment",
+   "fieldtype": "Table",
+   "label": "Assessment",
+   "options": "Assessment"
+  },
+  {
+   "fieldname": "section_break_17",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "portfolio_of_evidence",
+   "fieldtype": "Section Break",
+   "label": "Portfolio of Evidence"
+  },
+  {
+   "fieldname": "poe_number",
+   "fieldtype": "Data",
+   "label": "POE number",
+   "translatable": 1
+  },
+  {
+   "fieldname": "date_issued",
+   "fieldtype": "Date",
+   "label": "Date Issued"
+  },
+  {
+   "fieldname": "column_break_20",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ref",
+   "fieldtype": "Data",
+   "label": "Reference",
+   "translatable": 1
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Text",
+   "label": "Remarks",
+   "translatable": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-01-18 19:31:44.900034",
+ "modified": "2022-03-22 04:04:21.781986",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Training Result",

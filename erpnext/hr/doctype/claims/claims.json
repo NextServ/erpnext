@@ -1,0 +1,150 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "Prompt",
+ "creation": "2022-03-10 14:16:22.515894",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "details_section",
+  "employee",
+  "employee_name",
+  "date_attended",
+  "last_payment_made",
+  "next_review_date",
+  "total_amount_paid",
+  "claim_status",
+  "remarks",
+  "column_break_10",
+  "hs_reference_no",
+  "insurer_name",
+  "date_logged",
+  "last_review_date",
+  "last_doctor_review",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "details_section",
+   "fieldtype": "Section Break",
+   "label": "Details"
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Employee",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "default": "Employee",
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name"
+  },
+  {
+   "fieldname": "date_attended",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date Attended",
+   "reqd": 1
+  },
+  {
+   "fieldname": "last_payment_made",
+   "fieldtype": "Date",
+   "label": "Last Payment Made"
+  },
+  {
+   "fieldname": "next_review_date",
+   "fieldtype": "Date",
+   "label": "Next Review Date"
+  },
+  {
+   "fieldname": "total_amount_paid",
+   "fieldtype": "Currency",
+   "label": "Total Amount Paid",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "claim_status",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Claim Status",
+   "reqd": 1
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "column_break_10",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "hs_reference_no",
+   "fieldtype": "Data",
+   "label": "HS Reference No"
+  },
+  {
+   "fieldname": "insurer_name",
+   "fieldtype": "Data",
+   "label": "Insurer Name"
+  },
+  {
+   "fieldname": "date_logged",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date Logged",
+   "reqd": 1
+  },
+  {
+   "fieldname": "last_review_date",
+   "fieldtype": "Date",
+   "label": "Last Review Date"
+  },
+  {
+   "fieldname": "last_doctor_review",
+   "fieldtype": "Date",
+   "label": "Last Doctor Review"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Claims",
+   "print_hide": 1,
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2022-03-21 14:31:49.300271",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Claims",
+ "naming_rule": "Set by user",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

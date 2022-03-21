@@ -4,6 +4,7 @@
  "allow_rename": 1,
  "autoname": "field:bank_name",
  "creation": "2018-04-07 16:59:59.496668",
+ "default_import_order": "0",
  "doctype": "DocType",
  "document_type": "Setup",
  "editable_grid": 1,
@@ -12,8 +13,20 @@
   "bank_details_section",
   "bank_name",
   "swift_number",
+  "currency_id",
   "column_break_1",
   "website",
+  "section_break_7",
+  "cash_settings_column",
+  "next_cash_number",
+  "cash_lay_out",
+  "cheque_settings_column",
+  "next_cheque_number",
+  "cheque_layout",
+  "eft_settings_column",
+  "next_eft_number",
+  "eft_layout",
+  "eft_file_location",
   "address_and_contact",
   "address_html",
   "column_break_13",
@@ -98,13 +111,74 @@
    "label": "Plaid Access Token",
    "no_copy": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "currency_id",
+   "fieldtype": "Link",
+   "label": "Currency ID",
+   "options": "Currency"
+  },
+  {
+   "fieldname": "section_break_7",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "cash_settings_column",
+   "fieldtype": "Column Break",
+   "label": "Cash Settings"
+  },
+  {
+   "fieldname": "next_cash_number",
+   "fieldtype": "Data",
+   "label": "Next Cash Number"
+  },
+  {
+   "fieldname": "cash_lay_out",
+   "fieldtype": "Data",
+   "label": "Cash Lay Out"
+  },
+  {
+   "fieldname": "cheque_settings_column",
+   "fieldtype": "Column Break",
+   "label": "Cheque Settings"
+  },
+  {
+   "fieldname": "next_cheque_number",
+   "fieldtype": "Data",
+   "label": "Next Cheque Number"
+  },
+  {
+   "fieldname": "cheque_layout",
+   "fieldtype": "Data",
+   "label": "Cheque Layout"
+  },
+  {
+   "fieldname": "eft_settings_column",
+   "fieldtype": "Column Break",
+   "label": "EFT Settings"
+  },
+  {
+   "fieldname": "next_eft_number",
+   "fieldtype": "Data",
+   "label": "Next EFT Number"
+  },
+  {
+   "fieldname": "eft_layout",
+   "fieldtype": "Data",
+   "label": "EFT Layout"
+  },
+  {
+   "fieldname": "eft_file_location",
+   "fieldtype": "Attach",
+   "label": "EFT File Location"
   }
  ],
  "links": [],
- "modified": "2020-07-17 14:00:13.105433",
+ "modified": "2022-03-14 11:46:49.951984",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Bank",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {
@@ -123,5 +197,6 @@
  "quick_entry": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "track_changes": 1
 }

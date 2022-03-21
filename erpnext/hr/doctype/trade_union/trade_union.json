@@ -2,7 +2,8 @@
  "actions": [],
  "allow_rename": 1,
  "autoname": "field:trade_union",
- "creation": "2022-02-28 01:16:47.694322",
+ "creation": "2022-02-28 01:22:58.178456",
+ "default_import_order": "0",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -16,7 +17,9 @@
   {
    "fieldname": "trade_union",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Trade Union",
+   "reqd": 1,
    "unique": 1
   },
   {
@@ -39,7 +42,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-02-28 01:16:47.694322",
+ "modified": "2022-03-17 11:53:42.670129",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Trade Union",

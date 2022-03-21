@@ -1,0 +1,50 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-03-07 15:11:15.154360",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "name1",
+  "relation",
+  "phone_number",
+  "work"
+ ],
+ "fields": [
+  {
+   "fieldname": "name1",
+   "fieldtype": "Data",
+   "label": "Name"
+  },
+  {
+   "fieldname": "relation",
+   "fieldtype": "Link",
+   "label": "Relation",
+   "options": "Relation"
+  },
+  {
+   "fieldname": "phone_number",
+   "fieldtype": "Int",
+   "label": "Phone Number",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "work",
+   "fieldtype": "Data",
+   "label": "Work"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-03-09 21:14:04.763366",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Next Of Kin",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

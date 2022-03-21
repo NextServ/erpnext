@@ -2,7 +2,8 @@
  "actions": [],
  "allow_rename": 1,
  "autoname": "HR-APP-.YYYY.-.#####",
- "creation": "2013-01-29 19:25:37",
+ "creation": "2022-02-18 13:44:11.943586",
+ "default_import_order": "0",
  "description": "Applicant for a Job",
  "doctype": "DocType",
  "document_type": "Document",
@@ -14,10 +15,22 @@
   "email_id",
   "phone_number",
   "country",
+  "position_code",
+  "company",
+  "date_available",
+  "date_acknowledge",
+  "date_form_completed",
+  "withdrawal_date",
+  "referral_method",
+  "publication",
+  "advertisement_date",
   "column_break_3",
   "job_title",
   "designation",
   "status",
+  "applied_on",
+  "job_title1",
+  "job_grade",
   "source_and_rating_section",
   "source",
   "source_name",
@@ -28,12 +41,29 @@
   "notes",
   "cover_letter",
   "resume_attachment",
+  "cv_received",
   "resume_link",
   "section_break_16",
   "currency",
   "column_break_18",
   "lower_range",
-  "upper_range"
+  "upper_range",
+  "current_situation_tab",
+  "current_employer",
+  "current_salary",
+  "asking_salary",
+  "current_job_title",
+  "current_job_grade",
+  "appointment_type",
+  "date_employed",
+  "available_date",
+  "notice_period",
+  "process_tab",
+  "interviews__cost_section",
+  "interviews",
+  "recruitment_agency",
+  "cost_title_section",
+  "cost"
  ],
  "fields": [
   {
@@ -87,6 +117,7 @@
    "options": "Employee"
   },
   {
+   "collapsible": 1,
    "fieldname": "section_break_6",
    "fieldtype": "Section Break",
    "label": "Resume"
@@ -131,6 +162,7 @@
    "label": "Applicant Rating"
   },
   {
+   "collapsible": 1,
    "fieldname": "section_break_16",
    "fieldtype": "Section Break",
    "label": "Salary Expectation"
@@ -169,7 +201,7 @@
   {
    "fieldname": "details_section",
    "fieldtype": "Section Break",
-   "label": "Details"
+   "label": "Application Details"
   },
   {
    "fieldname": "source_and_rating_section",
@@ -186,13 +218,165 @@
    "fieldtype": "Link",
    "label": "Designation",
    "options": "Designation"
+  },
+  {
+   "fieldname": "position_code",
+   "fieldtype": "Data",
+   "label": "Position Code"
+  },
+  {
+   "fieldname": "applied_on",
+   "fieldtype": "Date",
+   "label": "Applied On"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "fieldname": "job_title1",
+   "fieldtype": "Link",
+   "label": "Job Title",
+   "options": "Job Title"
+  },
+  {
+   "fieldname": "job_grade",
+   "fieldtype": "Link",
+   "label": "Job Grade",
+   "options": "Job Grade"
+  },
+  {
+   "fieldname": "date_available",
+   "fieldtype": "Date",
+   "label": "Date Available"
+  },
+  {
+   "fieldname": "date_acknowledge",
+   "fieldtype": "Date",
+   "label": "Date Acknowledge"
+  },
+  {
+   "fieldname": "date_form_completed",
+   "fieldtype": "Date",
+   "label": "Date Form Completed"
+  },
+  {
+   "fieldname": "withdrawal_date",
+   "fieldtype": "Date",
+   "label": "Withdrawal Date"
+  },
+  {
+   "fieldname": "referral_method",
+   "fieldtype": "Data",
+   "label": "Referral Method"
+  },
+  {
+   "default": "0",
+   "fieldname": "cv_received",
+   "fieldtype": "Check",
+   "label": "CV Received"
+  },
+  {
+   "fieldname": "current_situation_tab",
+   "fieldtype": "Tab Break",
+   "label": "Current Situation"
+  },
+  {
+   "fieldname": "publication",
+   "fieldtype": "Data",
+   "label": "Publication"
+  },
+  {
+   "fieldname": "advertisement_date",
+   "fieldtype": "Date",
+   "label": "Advertisement Date"
+  },
+  {
+   "fieldname": "current_employer",
+   "fieldtype": "Data",
+   "label": "Current Employer"
+  },
+  {
+   "fieldname": "current_salary",
+   "fieldtype": "Currency",
+   "label": "Current Salary"
+  },
+  {
+   "fieldname": "asking_salary",
+   "fieldtype": "Currency",
+   "label": "Asking Salary"
+  },
+  {
+   "fieldname": "current_job_title",
+   "fieldtype": "Data",
+   "label": "Current Job Title"
+  },
+  {
+   "fieldname": "current_job_grade",
+   "fieldtype": "Data",
+   "label": "Current Job Grade"
+  },
+  {
+   "fieldname": "appointment_type",
+   "fieldtype": "Data",
+   "label": "Appointment Type"
+  },
+  {
+   "fieldname": "date_employed",
+   "fieldtype": "Date",
+   "label": "Date Employed"
+  },
+  {
+   "fieldname": "available_date",
+   "fieldtype": "Date",
+   "label": "Available Date"
+  },
+  {
+   "fieldname": "notice_period",
+   "fieldtype": "Data",
+   "label": "Notice Period"
+  },
+  {
+   "fieldname": "process_tab",
+   "fieldtype": "Tab Break",
+   "label": "Process"
+  },
+  {
+   "fieldname": "interviews__cost_section",
+   "fieldtype": "Section Break",
+   "label": "Interviews & Cost"
+  },
+  {
+   "fieldname": "interviews",
+   "fieldtype": "Table",
+   "label": "Interviews",
+   "options": "Interview Detail"
+  },
+  {
+   "fieldname": "recruitment_agency",
+   "fieldtype": "Link",
+   "label": "Recruitment Agency",
+   "options": "Recruitment Agency"
+  },
+  {
+   "fieldname": "cost_title_section",
+   "fieldtype": "Section Break",
+   "label": "Cost"
+  },
+  {
+   "fieldname": "cost",
+   "fieldtype": "Table",
+   "label": "Cost",
+   "options": "Cost Centre Allocation"
   }
  ],
  "icon": "fa fa-user",
  "idx": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-01-12 16:28:53.196881",
+ "modified": "2022-03-10 12:16:17.608329",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Job Applicant",

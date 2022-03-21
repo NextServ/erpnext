@@ -2,7 +2,8 @@
  "actions": [],
  "allow_rename": 1,
  "autoname": "field:termination_reason",
- "creation": "2022-02-28 01:14:32.903758",
+ "creation": "2022-02-28 01:22:57.513996",
+ "default_import_order": "0",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -26,13 +27,14 @@
   },
   {
    "fieldname": "category",
-   "fieldtype": "Select",
-   "label": "Category"
+   "fieldtype": "Link",
+   "label": "Category",
+   "options": "Termination Category"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-02-28 01:14:32.903758",
+ "modified": "2022-03-16 16:42:41.991199",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Termination Reason",

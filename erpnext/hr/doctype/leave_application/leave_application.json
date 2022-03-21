@@ -3,6 +3,7 @@
  "allow_import": 1,
  "autoname": "naming_series:",
  "creation": "2013-02-20 11:18:11",
+ "default_import_order": "0",
  "description": "Apply / Approve Leaves",
  "doctype": "DocType",
  "document_type": "Document",
@@ -36,7 +37,15 @@
   "column_break_17",
   "company",
   "letter_head",
-  "amended_from"
+  "amended_from",
+  "section_break_29",
+  "decline_reason",
+  "sick_leave",
+  "doctor_certificate",
+  "doctor",
+  "section_break_35",
+  "details",
+  "leave_linked_documents"
  ],
  "fields": [
   {
@@ -243,6 +252,53 @@
    "options": "Leave Application",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "section_break_29",
+   "fieldtype": "Section Break",
+   "label": "Approver"
+  },
+  {
+   "fieldname": "decline_reason",
+   "fieldtype": "Text",
+   "label": "Decline Reason",
+   "translatable": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "depends_on": "eval:doc.leave_type == \"Sick Leave\";\n\n",
+   "fieldname": "sick_leave",
+   "fieldtype": "Section Break",
+   "label": "Sick Leave"
+  },
+  {
+   "default": "0",
+   "fieldname": "doctor_certificate",
+   "fieldtype": "Check",
+   "label": "A Doctor Certificate is provided",
+   "options": "Yes\nNo"
+  },
+  {
+   "fieldname": "doctor",
+   "fieldtype": "Data",
+   "label": "Doctor",
+   "translatable": 1
+  },
+  {
+   "fieldname": "section_break_35",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "details",
+   "fieldtype": "Text Editor",
+   "label": "Details",
+   "translatable": 1
+  },
+  {
+   "fieldname": "leave_linked_documents",
+   "fieldtype": "Table",
+   "label": "Leave Linked Documents",
+   "options": "Linked Document"
   }
  ],
  "icon": "fa fa-calendar",
@@ -250,10 +306,11 @@
  "is_submittable": 1,
  "links": [],
  "max_attachments": 3,
- "modified": "2020-05-18 13:00:41.577327",
+ "modified": "2022-03-22 03:55:27.387665",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Application",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
@@ -333,6 +390,7 @@
  "search_fields": "employee,employee_name,leave_type,from_date,to_date,total_leave_days",
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "timeline_field": "employee",
  "title_field": "employee_name"
 }

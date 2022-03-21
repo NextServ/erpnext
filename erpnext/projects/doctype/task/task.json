@@ -3,10 +3,12 @@
  "allow_import": 1,
  "autoname": "TASK-.YYYY.-.#####",
  "creation": "2013-01-29 19:25:50",
+ "default_import_order": "0",
  "doctype": "DocType",
  "document_type": "Setup",
  "engine": "InnoDB",
  "field_order": [
+  "github_sync_id",
   "subject",
   "project",
   "issue",
@@ -32,8 +34,12 @@
   "is_milestone",
   "sb_details",
   "description",
+  "email_notification",
   "sb_depends_on",
+  "email_address",
+  "notify_if_error",
   "depends_on",
+  "notify",
   "depends_on_tasks",
   "sb_actual",
   "act_start_date",
@@ -390,6 +396,38 @@
    "fieldtype": "Date",
    "label": "Completed On",
    "mandatory_depends_on": "eval: doc.status == \"Completed\""
+  },
+  {
+   "fieldname": "github_sync_id",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "GitHub Sync ID",
+   "no_copy": 1,
+   "read_only": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "email_notification",
+   "fieldtype": "Section Break",
+   "label": "Email Notification"
+  },
+  {
+   "fieldname": "email_address",
+   "fieldtype": "Data",
+   "label": "Email Address",
+   "translatable": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "notify_if_error",
+   "fieldtype": "Check",
+   "label": "Notify if errors were encountered"
+  },
+  {
+   "default": "0",
+   "fieldname": "notify",
+   "fieldtype": "Check",
+   "label": "Notify if task completed successfully"
   }
  ],
  "icon": "fa fa-check",
@@ -397,10 +435,11 @@
  "is_tree": 1,
  "links": [],
  "max_attachments": 5,
- "modified": "2021-04-16 12:46:51.556741",
+ "modified": "2022-03-22 04:03:51.982809",
  "modified_by": "Administrator",
  "module": "Projects",
  "name": "Task",
+ "naming_rule": "Expression (old style)",
  "nsm_parent_field": "parent_task",
  "owner": "Administrator",
  "permissions": [
@@ -421,6 +460,7 @@
  "show_preview_popup": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "timeline_field": "project",
  "title_field": "subject",
  "track_seen": 1

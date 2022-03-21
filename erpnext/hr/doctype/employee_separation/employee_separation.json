@@ -2,6 +2,7 @@
  "actions": [],
  "autoname": "HR-EMP-SEP-.YYYY.-.#####",
  "creation": "2018-05-10 02:29:16.740490",
+ "default_import_order": "0",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -17,13 +18,32 @@
   "resignation_letter_date",
   "boarding_begins_on",
   "project",
+  "termination",
   "table_for_activity",
   "employee_separation_template",
+  "notice",
+  "notice_given",
   "activities",
   "notify_users_by_email",
+  "notice_handed_in_on",
   "section_break_14",
+  "reason",
+  "last_working_day",
   "exit_interview",
-  "amended_from"
+  "amended_from",
+  "termination_1",
+  "terminated",
+  "termination_reason",
+  "termination_date",
+  "withdrawals",
+  "withdrawal_date",
+  "withdrawal_reason",
+  "re_employ",
+  "do_not_re_employ",
+  "date_recorded",
+  "comments",
+  "column_break_30",
+  "do_re_employ"
  ],
  "fields": [
   {
@@ -151,14 +171,121 @@
    "fieldtype": "Date",
    "label": "Separation Begins On",
    "reqd": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "termination",
+   "fieldtype": "Section Break",
+   "label": "Termination"
+  },
+  {
+   "bold": 1,
+   "fieldname": "notice",
+   "fieldtype": "Column Break",
+   "label": "Notice"
+  },
+  {
+   "default": "0",
+   "fieldname": "notice_given",
+   "fieldtype": "Check",
+   "label": "Notice Given"
+  },
+  {
+   "fieldname": "notice_handed_in_on",
+   "fieldtype": "Date",
+   "label": "Notice Handed In on"
+  },
+  {
+   "fieldname": "reason",
+   "fieldtype": "Data",
+   "label": "Reason",
+   "translatable": 1
+  },
+  {
+   "fieldname": "last_working_day",
+   "fieldtype": "Date",
+   "label": "Last Working Day"
+  },
+  {
+   "fieldname": "termination_1",
+   "fieldtype": "Column Break",
+   "label": "Termination"
+  },
+  {
+   "default": "0",
+   "fieldname": "terminated",
+   "fieldtype": "Check",
+   "label": "Terminated"
+  },
+  {
+   "depends_on": "eval:doc.terminated",
+   "fieldname": "termination_reason",
+   "fieldtype": "Link",
+   "label": "Termination Reason",
+   "options": "Termination Reason"
+  },
+  {
+   "depends_on": "eval:doc.terminated",
+   "fieldname": "termination_date",
+   "fieldtype": "Date",
+   "label": "Termination Date"
+  },
+  {
+   "fieldname": "withdrawals",
+   "fieldtype": "Column Break",
+   "label": "Withdrawals"
+  },
+  {
+   "fieldname": "withdrawal_date",
+   "fieldtype": "Date",
+   "label": "Withdrawal Date"
+  },
+  {
+   "fieldname": "withdrawal_reason",
+   "fieldtype": "Data",
+   "label": "Withdrawal Reason",
+   "translatable": 1
+  },
+  {
+   "fieldname": "re_employ",
+   "fieldtype": "Section Break",
+   "label": "Re-Employ"
+  },
+  {
+   "default": "0",
+   "fieldname": "do_not_re_employ",
+   "fieldtype": "Check",
+   "label": "DO NOT Re-employ"
+  },
+  {
+   "fieldname": "date_recorded",
+   "fieldtype": "Date",
+   "label": "Date Recorded"
+  },
+  {
+   "fieldname": "comments",
+   "fieldtype": "Text",
+   "label": "Comments",
+   "translatable": 1
+  },
+  {
+   "fieldname": "column_break_30",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "do_re_employ",
+   "fieldtype": "Check",
+   "label": "DO Re-employ"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2021-07-30 14:03:51.218791",
+ "modified": "2022-03-22 04:00:44.762170",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Separation",
+ "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
   {
@@ -180,6 +307,7 @@
  "quick_entry": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "title_field": "employee_name",
  "track_changes": 1
 }

@@ -1,0 +1,44 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-03-14 11:00:13.325931",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "pay_frequency",
+  "label",
+  "include"
+ ],
+ "fields": [
+  {
+   "fieldname": "pay_frequency",
+   "fieldtype": "Select",
+   "label": "Pay Frequency",
+   "options": "Annually\nDaily\nMonthly\nSemi-monthly\nWeekly"
+  },
+  {
+   "fieldname": "label",
+   "fieldtype": "Data",
+   "label": "Label"
+  },
+  {
+   "default": "0",
+   "fieldname": "include",
+   "fieldtype": "Check",
+   "label": "Include"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-03-14 11:11:53.198939",
+ "modified_by": "Administrator",
+ "module": "Payroll",
+ "name": "Pay Frequency Calendar",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

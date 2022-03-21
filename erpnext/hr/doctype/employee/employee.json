@@ -4,7 +4,7 @@
  "allow_import": 1,
  "allow_rename": 1,
  "autoname": "naming_series:",
- "creation": "2022-03-08 18:36:31.882906",
+ "creation": "2022-03-22 03:53:12.867024",
  "default_import_order": "0",
  "doctype": "DocType",
  "document_type": "Setup",
@@ -12,6 +12,7 @@
  "engine": "InnoDB",
  "field_order": [
   "basic_information",
+  "personal",
   "employee",
   "naming_series",
   "first_name",
@@ -26,8 +27,10 @@
   "status",
   "gender",
   "citizenship",
+  "nationality",
   "religion",
   "ethnic_background",
+  "language",
   "dietary_requirement",
   "date_of_birth",
   "date_of_joining",
@@ -53,6 +56,7 @@
   "department",
   "designation",
   "reports_to",
+  "recruitment_agent",
   "column_break_31",
   "grade",
   "branch",
@@ -78,19 +82,29 @@
   "health_insurance_no",
   "contact_details",
   "cell_number",
+  "special_considerations",
   "prefered_email",
+  "medical",
   "personal_email",
+  "disability",
   "unsubscribed",
+  "notes",
   "permanent_accommodation_type",
+  "dietary",
+  "diet",
   "permanent_address",
+  "nat_services",
   "column_break4",
   "prefered_contact_email",
+  "health",
   "company_email",
   "current_accommodation_type",
   "current_address",
   "sb53",
   "bio",
   "personal_details",
+  "home_number",
+  "fax_no",
   "passport_number",
   "date_of_issue",
   "valid_upto",
@@ -102,28 +116,108 @@
   "health_details",
   "educational_qualification",
   "education",
+  "section_break_103",
   "previous_work_experience",
   "external_work_history",
+  "street_address_short",
   "history_in_company",
+  "street",
   "internal_work_history",
+  "suburb",
   "exit",
+  "city",
+  "zip",
   "resignation_letter_date",
+  "province",
   "relieving_date",
   "reason_for_leaving",
+  "country",
   "termination_reason",
+  "column_break_106",
+  "complex_unit_no",
   "leave_encashed",
+  "complex_name",
   "encashment_date",
   "exit_interview_details",
+  "street_no",
   "held_on",
+  "street_name",
   "new_workplace",
+  "state",
   "feedback",
+  "country_code",
   "lft",
+  "latitude",
   "rgt",
+  "longitude",
   "old_parent",
+  "postal_address",
   "industrial_relations_section",
+  "box",
+  "bag",
   "discipline",
+  "area",
   "grievance",
-  "counseling_conduct"
+  "counseling_conduct",
+  "family",
+  "marital_stat",
+  "marriage_date",
+  "marriage_contract",
+  "spouse_particulars",
+  "spouse_name",
+  "maiden_name",
+  "surname",
+  "title",
+  "birth_date",
+  "id_number",
+  "passport_num",
+  "section_break_134",
+  "next_of_kin",
+  "section_break_136",
+  "dependants",
+  "professional_membership",
+  "professional_mem",
+  "references",
+  "reference",
+  "section_break_127",
+  "linked_documents",
+  "tab_break_165",
+  "counseling_work_performance",
+  "date_time",
+  "manager_counseling",
+  "reason_for_counseling",
+  "were_you_spoken_to_about_this_before",
+  "column_break_174",
+  "good_performance",
+  "poor_performance",
+  "section_break_179",
+  "development_suggestions",
+  "work_process",
+  "what",
+  "how",
+  "why",
+  "when",
+  "available_tool_material",
+  "success_criteria",
+  "employee_suggestions",
+  "column_break_188",
+  "employee_cwp",
+  "experience",
+  "knowledge",
+  "skills",
+  "competency",
+  "personal_characteristics",
+  "physical",
+  "mental",
+  "manager_suggestions",
+  "follow_up",
+  "assistance",
+  "internal_training",
+  "external_training",
+  "followup_supervisor",
+  "warning_issued",
+  "formal_discipline",
+  "follow_up_date"
  ],
  "fields": [
   {
@@ -877,13 +971,582 @@
    "fieldtype": "Table",
    "label": "Counseling Conduct",
    "options": "Counseling Conduct"
+  },
+  {
+   "fieldname": "personal",
+   "fieldtype": "Tab Break",
+   "label": "Personal"
+  },
+  {
+   "fieldname": "nationality",
+   "fieldtype": "Link",
+   "label": "Nationality",
+   "options": "Nationality"
+  },
+  {
+   "fieldname": "language",
+   "fieldtype": "Link",
+   "label": "Language",
+   "options": "Language"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "recruitment_agent",
+   "fieldtype": "Select",
+   "label": "Recruitment Agent",
+   "length": 33,
+   "options": "Facebook Page\nPerson who works inside the Company\nAds",
+   "translatable": 1,
+   "width": "32"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "special_considerations",
+   "fieldtype": "Section Break",
+   "label": "Special Considerations"
+  },
+  {
+   "fieldname": "medical",
+   "fieldtype": "Table",
+   "label": "Medical",
+   "options": "Medical"
+  },
+  {
+   "fieldname": "disability",
+   "fieldtype": "Data",
+   "label": "Physical Disability",
+   "translatable": 1
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Text",
+   "label": "Notes",
+   "translatable": 1
+  },
+  {
+   "fieldname": "dietary",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "diet",
+   "fieldtype": "Table",
+   "label": "Dietary",
+   "options": "Dietary"
+  },
+  {
+   "fieldname": "nat_services",
+   "fieldtype": "Table",
+   "label": "NAT Service",
+   "options": "NAT Service"
+  },
+  {
+   "fieldname": "health",
+   "fieldtype": "Table",
+   "label": "Health",
+   "options": "Health"
+  },
+  {
+   "fieldname": "home_number",
+   "fieldtype": "Data",
+   "label": "Home Number",
+   "translatable": 1
+  },
+  {
+   "fieldname": "fax_no",
+   "fieldtype": "Int",
+   "label": "Fax No"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_103",
+   "fieldtype": "Section Break",
+   "label": "Address & Telephone"
+  },
+  {
+   "fieldname": "street_address_short",
+   "fieldtype": "Column Break",
+   "label": "Street Address (Short)"
+  },
+  {
+   "fieldname": "street",
+   "fieldtype": "Data",
+   "label": "Street",
+   "translatable": 1
+  },
+  {
+   "fieldname": "suburb",
+   "fieldtype": "Data",
+   "label": "Suburb",
+   "translatable": 1
+  },
+  {
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "label": "City",
+   "translatable": 1
+  },
+  {
+   "fieldname": "zip",
+   "fieldtype": "Int",
+   "label": "ZIP"
+  },
+  {
+   "fieldname": "province",
+   "fieldtype": "Data",
+   "label": "Province",
+   "translatable": 1
+  },
+  {
+   "fieldname": "country",
+   "fieldtype": "Link",
+   "label": "Country",
+   "options": "Country"
+  },
+  {
+   "fieldname": "column_break_106",
+   "fieldtype": "Column Break",
+   "label": "Street Address (Long)"
+  },
+  {
+   "fieldname": "complex_unit_no",
+   "fieldtype": "Data",
+   "label": "Complex Unit No",
+   "translatable": 1
+  },
+  {
+   "fieldname": "complex_name",
+   "fieldtype": "Data",
+   "label": "Complex Name",
+   "translatable": 1
+  },
+  {
+   "fieldname": "street_no",
+   "fieldtype": "Data",
+   "label": "Street No",
+   "translatable": 1
+  },
+  {
+   "fieldname": "street_name",
+   "fieldtype": "Data",
+   "label": "Street Name",
+   "translatable": 1
+  },
+  {
+   "fieldname": "state",
+   "fieldtype": "Data",
+   "label": "State",
+   "translatable": 1
+  },
+  {
+   "fieldname": "country_code",
+   "fieldtype": "Data",
+   "label": "Country Code",
+   "translatable": 1
+  },
+  {
+   "fieldname": "latitude",
+   "fieldtype": "Data",
+   "label": "Latitude",
+   "translatable": 1
+  },
+  {
+   "fieldname": "longitude",
+   "fieldtype": "Data",
+   "label": "Longitude",
+   "translatable": 1
+  },
+  {
+   "fieldname": "postal_address",
+   "fieldtype": "Column Break",
+   "label": "Postal Address"
+  },
+  {
+   "fieldname": "box",
+   "fieldtype": "Data",
+   "label": "Box",
+   "translatable": 1
+  },
+  {
+   "fieldname": "bag",
+   "fieldtype": "Data",
+   "label": "Bag",
+   "translatable": 1
+  },
+  {
+   "fieldname": "area",
+   "fieldtype": "Data",
+   "label": "Area",
+   "translatable": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "family",
+   "fieldtype": "Section Break",
+   "label": "Family"
+  },
+  {
+   "depends_on": "eval:doc.marital_status == 'Married'",
+   "fieldname": "marital_stat",
+   "fieldtype": "Column Break",
+   "label": "Marital Status"
+  },
+  {
+   "depends_on": "eval:doc.marital_status == 'Married'",
+   "fieldname": "marriage_date",
+   "fieldtype": "Date",
+   "label": "Marriage Date"
+  },
+  {
+   "depends_on": "eval:doc.marital_status == 'Married'",
+   "fieldname": "marriage_contract",
+   "fieldtype": "Data",
+   "label": "Marriage Contract",
+   "translatable": 1
+  },
+  {
+   "depends_on": "eval:doc.marital_status == 'Married'",
+   "fieldname": "spouse_particulars",
+   "fieldtype": "Column Break",
+   "label": "Spouse Particulars"
+  },
+  {
+   "depends_on": "eval:doc.marital_status == 'Married'",
+   "fieldname": "spouse_name",
+   "fieldtype": "Data",
+   "label": "Spouse Name",
+   "translatable": 1
+  },
+  {
+   "depends_on": "eval:doc.marital_status == 'Married'",
+   "fieldname": "maiden_name",
+   "fieldtype": "Data",
+   "label": "Maiden Name",
+   "translatable": 1
+  },
+  {
+   "depends_on": "eval:doc.marital_status == 'Married'",
+   "fieldname": "surname",
+   "fieldtype": "Data",
+   "label": "Surname",
+   "translatable": 1
+  },
+  {
+   "depends_on": "eval:doc.marital_status == 'Married'",
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "label": "Title",
+   "translatable": 1
+  },
+  {
+   "depends_on": "eval:doc.marital_status == 'Married'",
+   "fieldname": "birth_date",
+   "fieldtype": "Date",
+   "label": "Birth date"
+  },
+  {
+   "depends_on": "eval:doc.marital_status == 'Married'",
+   "fieldname": "id_number",
+   "fieldtype": "Data",
+   "label": "ID Number",
+   "translatable": 1
+  },
+  {
+   "depends_on": "eval:doc.marital_status == 'Married'",
+   "fieldname": "passport_num",
+   "fieldtype": "Data",
+   "label": "Passport Number",
+   "translatable": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_134",
+   "fieldtype": "Section Break",
+   "label": "Next of Kin"
+  },
+  {
+   "default": "Next of Kin",
+   "depends_on": "eval:doc.marital_status == 'Married'",
+   "fieldname": "next_of_kin",
+   "fieldtype": "Table",
+   "label": "Next of Kin",
+   "options": "Next Of Kin"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_136",
+   "fieldtype": "Section Break",
+   "label": "Dependants"
+  },
+  {
+   "depends_on": "eval:doc.marital_status == 'Married'",
+   "fieldname": "dependants",
+   "fieldtype": "Table",
+   "label": "Dependants",
+   "options": "Dependant"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "professional_membership",
+   "fieldtype": "Section Break",
+   "label": "Professional Membership"
+  },
+  {
+   "fieldname": "professional_mem",
+   "fieldtype": "Table",
+   "label": "Professional Membership",
+   "options": "Professional Membership"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "references",
+   "fieldtype": "Section Break",
+   "label": "References"
+  },
+  {
+   "fieldname": "reference",
+   "fieldtype": "Table",
+   "label": "References",
+   "options": "Reference"
+  },
+  {
+   "fieldname": "section_break_127",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "linked_documents",
+   "fieldtype": "Table",
+   "label": "Linked Documents",
+   "options": "Linked Document"
+  },
+  {
+   "fieldname": "tab_break_165",
+   "fieldtype": "Tab Break",
+   "label": "Industrial Relations"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "counseling_work_performance",
+   "fieldtype": "Section Break",
+   "label": "Counseling Work Performance"
+  },
+  {
+   "fieldname": "date_time",
+   "fieldtype": "Datetime",
+   "label": "Date/Time"
+  },
+  {
+   "fieldname": "manager_counseling",
+   "fieldtype": "Data",
+   "label": "Manager",
+   "translatable": 1
+  },
+  {
+   "fieldname": "reason_for_counseling",
+   "fieldtype": "Text",
+   "label": "Reason for Counseling",
+   "translatable": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "were_you_spoken_to_about_this_before",
+   "fieldtype": "Check",
+   "label": "Were you spoken to about this before?"
+  },
+  {
+   "fieldname": "column_break_174",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "good_performance",
+   "fieldtype": "Check",
+   "label": "Good Performance"
+  },
+  {
+   "default": "0",
+   "fieldname": "poor_performance",
+   "fieldtype": "Check",
+   "label": "Poor Performance"
+  },
+  {
+   "fieldname": "section_break_179",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "development_suggestions",
+   "fieldtype": "Column Break",
+   "label": "Development Suggestions"
+  },
+  {
+   "default": "0",
+   "fieldname": "work_process",
+   "fieldtype": "Check",
+   "label": "Work Process"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.work_process",
+   "fieldname": "what",
+   "fieldtype": "Check",
+   "label": "What"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.work_process",
+   "fieldname": "how",
+   "fieldtype": "Check",
+   "label": "How"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.work_process",
+   "fieldname": "why",
+   "fieldtype": "Check",
+   "label": "Why"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.work_process",
+   "fieldname": "when",
+   "fieldtype": "Check",
+   "label": "When"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.work_process",
+   "fieldname": "available_tool_material",
+   "fieldtype": "Check",
+   "label": "Available Tool Material"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.work_process",
+   "fieldname": "success_criteria",
+   "fieldtype": "Check",
+   "label": "Success Criteria"
+  },
+  {
+   "fieldname": "employee_suggestions",
+   "fieldtype": "Text",
+   "label": "Employee Suggestions",
+   "translatable": 1
+  },
+  {
+   "fieldname": "column_break_188",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "employee_cwp",
+   "fieldtype": "Check",
+   "label": "Employee"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.employee_cwp",
+   "fieldname": "experience",
+   "fieldtype": "Check",
+   "label": "Experience"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.employee_cwp",
+   "fieldname": "knowledge",
+   "fieldtype": "Check",
+   "label": "Knowledge"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.employee_cwp",
+   "fieldname": "skills",
+   "fieldtype": "Check",
+   "label": "Skills"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.employee_cwp",
+   "fieldname": "competency",
+   "fieldtype": "Check",
+   "label": "Competency"
+  },
+  {
+   "depends_on": "eval:doc.employee_cwp",
+   "fieldname": "personal_characteristics",
+   "fieldtype": "Read Only",
+   "label": "Personal Characteristics"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.employee_cwp",
+   "fieldname": "physical",
+   "fieldtype": "Check",
+   "label": "Physical"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.employee_cwp",
+   "fieldname": "mental",
+   "fieldtype": "Check",
+   "label": "Mental"
+  },
+  {
+   "fieldname": "manager_suggestions",
+   "fieldtype": "Text",
+   "label": "Manager Suggestions",
+   "translatable": 1
+  },
+  {
+   "fieldname": "follow_up",
+   "fieldtype": "Column Break",
+   "label": "Follow up"
+  },
+  {
+   "default": "0",
+   "fieldname": "assistance",
+   "fieldtype": "Check",
+   "label": "Assistance"
+  },
+  {
+   "default": "0",
+   "fieldname": "internal_training",
+   "fieldtype": "Check",
+   "label": "Internal Training"
+  },
+  {
+   "default": "0",
+   "fieldname": "external_training",
+   "fieldtype": "Check",
+   "label": "External Training"
+  },
+  {
+   "default": "0",
+   "fieldname": "followup_supervisor",
+   "fieldtype": "Check",
+   "label": "Followup Supervisor"
+  },
+  {
+   "fieldname": "warning_issued",
+   "fieldtype": "Data",
+   "label": "Warning Issued",
+   "translatable": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "formal_discipline",
+   "fieldtype": "Check",
+   "label": "Formal Discipline"
+  },
+  {
+   "fieldname": "follow_up_date",
+   "fieldtype": "Date",
+   "label": "Follow Up Date"
   }
  ],
  "icon": "fa fa-user",
  "idx": 24,
  "image_field": "image",
  "links": [],
- "modified": "2022-03-08 18:56:40.378390",
+ "modified": "2022-03-22 04:02:41.792523",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee",
@@ -931,5 +1594,6 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
- "title_field": "employee_name"
+ "title_field": "employee_name",
+ "track_changes": 1
 }

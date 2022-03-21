@@ -3,11 +3,13 @@
  "allow_rename": 1,
  "autoname": "Prompt",
  "creation": "2021-04-12 14:44:40.664034",
+ "default_import_order": "0",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "description"
+  "description",
+  "interview_type"
  ],
  "fields": [
   {
@@ -15,6 +17,11 @@
    "fieldtype": "Text",
    "in_list_view": 1,
    "label": "Description"
+  },
+  {
+   "fieldname": "interview_type",
+   "fieldtype": "Data",
+   "label": "Interview Type"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -24,10 +31,11 @@
    "link_fieldname": "interview_type"
   }
  ],
- "modified": "2021-09-30 13:00:16.471518",
+ "modified": "2022-03-10 12:04:42.940110",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Interview Type",
+ "naming_rule": "Set by user",
  "owner": "Administrator",
  "permissions": [
   {
@@ -69,5 +77,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "track_changes": 1
 }

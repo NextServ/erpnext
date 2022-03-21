@@ -1,0 +1,97 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-03-08 11:02:07.999113",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "company_no",
+  "company_name",
+  "cost_centre",
+  "allocation",
+  "remarks",
+  "type",
+  "date",
+  "amount",
+  "debit",
+  "credit",
+  "date_paid",
+  "description"
+ ],
+ "fields": [
+  {
+   "fieldname": "company_no",
+   "fieldtype": "Data",
+   "label": "Company No"
+  },
+  {
+   "fieldname": "company_name",
+   "fieldtype": "Link",
+   "label": "Company Name",
+   "options": "Company"
+  },
+  {
+   "fieldname": "cost_centre",
+   "fieldtype": "Data",
+   "label": "Cost Centre"
+  },
+  {
+   "fieldname": "allocation",
+   "fieldtype": "Currency",
+   "label": "Allocation"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "type",
+   "fieldtype": "Data",
+   "label": "Type"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "label": "Amount"
+  },
+  {
+   "fieldname": "debit",
+   "fieldtype": "Currency",
+   "label": "Debit"
+  },
+  {
+   "fieldname": "credit",
+   "fieldtype": "Currency",
+   "label": "Credit"
+  },
+  {
+   "fieldname": "date_paid",
+   "fieldtype": "Data",
+   "label": "Date Paid"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text",
+   "label": "Description"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-03-10 13:42:19.934619",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Cost Centre Allocation",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
