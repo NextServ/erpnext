@@ -12,15 +12,19 @@ from erpnext.hr.doctype.employee.employee import get_employee_emails
 
 class TrainingEvent(Document):
 	def validate(self):
-		self.set_employee_emails()
 		self.validate_period()
 
+	def on_submit(self):
+		self.set_employee_emails()
+		self.set_status_for_attendees()
+
 	def on_update_after_submit(self):
+		self.set_employee_emails()
 		self.set_status_for_attendees()
 
 	def set_employee_emails(self):
 		self.employee_emails = ', '.join(get_employee_emails([d.employee
-			for d in self.employees]))
+			for d in self.employees if d.status == 'Open']))
 
 	def validate_period(self):
 		if time_diff_in_seconds(self.end_time, self.start_time) <= 0:
@@ -34,6 +38,7 @@ class TrainingEvent(Document):
 
 		elif self.event_status == 'Scheduled':
 			for employee in self.employees:
-				employee.status = 'Open'
+				if employee.status != 'Invited':
+					employee.status = 'Invited'
 
 		self.db_update_all()
