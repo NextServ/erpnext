@@ -496,13 +496,14 @@
   {
    "fieldname": "prefered_contact_email",
    "fieldtype": "Select",
-   "label": "Prefered Contact Email",
-   "options": "\nCompany Email\nPersonal Email\nUser ID"
+   "label": "Preferred Contact Email",
+   "options": "\nCompany Email\nPersonal Email",
+   "reqd": 1
   },
   {
    "fieldname": "prefered_email",
    "fieldtype": "Data",
-   "label": "Prefered Email",
+   "label": "Preferred Email",
    "options": "Email",
    "read_only": 1
   },
