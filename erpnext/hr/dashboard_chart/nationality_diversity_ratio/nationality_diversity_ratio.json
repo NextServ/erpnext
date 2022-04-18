@@ -1,0 +1,31 @@
+{
+ "chart_name": "Nationality Diversity Ratio",
+ "chart_type": "Report",
+ "creation": "2022-04-19 00:15:59.800172",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "dynamic_filters_json": "{}",
+ "filters_json": "{}",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "modified": "2022-04-19 00:44:55.367646",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Nationality Diversity Ratio",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "report_name": "Employee Count by Nationality",
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Percentage",
+ "use_report_chart": 0,
+ "x_field": "nationality",
+ "y_axis": [
+  {
+   "y_field": "employees"
+  }
+ ]
+}

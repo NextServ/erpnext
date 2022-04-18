@@ -1,0 +1,44 @@
+{
+ "add_total_row": 0,
+ "columns": [],
+ "creation": "2022-04-18 23:54:00.940054",
+ "disable_prepared_report": 0,
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [
+  {
+   "fieldname": "interval",
+   "fieldtype": "Int",
+   "label": "Interval",
+   "mandatory": 1,
+   "wildcard_filter": 0
+  }
+ ],
+ "idx": 0,
+ "is_standard": "Yes",
+ "modified": "2022-04-19 00:12:37.782692",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Employee Count by Age Range",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "query": "SELECT\n    CONCAT(\n        '>= ',\n        FLOOR((TIMESTAMPDIFF(YEAR, date_of_birth, CURDATE()) - %(first_age)s) / %(interval)s) * %(interval)s + %(first_age)s,\n        ', <= ',\n        FLOOR((TIMESTAMPDIFF(YEAR, date_of_birth, CURDATE()) - %(first_age)s) / %(interval)s) * %(interval)s + %(first_age)s + %(interval)s - 1\n    ) AS `Age Range:Data:100`,\n    COUNT(*) AS 'Employees:Int:100'\nFROM\n    `tabEmployee`\nWHERE\n    `status` = 'Active'\nGROUP BY\n    CONCAT(\n        '>= ',\n        FLOOR((TIMESTAMPDIFF(YEAR, date_of_birth, CURDATE()) - %(first_age)s) / %(interval)s) * %(interval)s + %(first_age)s,\n        ', <= ',\n        FLOOR((TIMESTAMPDIFF(YEAR, date_of_birth, CURDATE()) - %(first_age)s) / %(interval)s) * %(interval)s + %(first_age)s + %(interval)s - 1\n    )\nORDER BY\n    TIMESTAMPDIFF(YEAR, date_of_birth, CURDATE()) ASC;\n",
+ "ref_doctype": "Employee",
+ "report_name": "Employee Count by Age Range",
+ "report_type": "Query Report",
+ "roles": [
+  {
+   "role": "Employee"
+  },
+  {
+   "role": "HR User"
+  },
+  {
+   "role": "HR Manager"
+  },
+  {
+   "role": "Employee Self Service"
+  }
+ ]
+}
