@@ -1,0 +1,31 @@
+{
+ "chart_name": "Head Count",
+ "chart_type": "Report",
+ "creation": "2022-04-19 01:31:02.234628",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "dynamic_filters_json": "{}",
+ "filters_json": "{}",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "modified": "2022-04-19 01:33:48.990040",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Head Count",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "report_name": "Headcount",
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Table",
+ "use_report_chart": 0,
+ "x_field": "company",
+ "y_axis": [
+  {
+   "y_field": "actual"
+  }
+ ]
+}

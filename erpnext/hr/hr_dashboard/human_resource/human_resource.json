@@ -19,7 +19,23 @@
    "width": "Full"
   },
   {
+   "chart": "Head Count",
+   "width": "Full"
+  },
+  {
    "chart": "Gender Diversity Ratio",
+   "width": "Half"
+  },
+  {
+   "chart": "Age Diversity Ratio",
+   "width": "Half"
+  },
+  {
+   "chart": "Nationality Diversity Ratio",
+   "width": "Half"
+  },
+  {
+   "chart": "Ethnic Diversity Ratio",
    "width": "Half"
   },
   {
@@ -43,14 +59,14 @@
    "width": "Half"
   }
  ],
- "creation": "2020-07-22 11:56:33.015888",
+ "creation": "2022-02-17 13:04:38.738891",
  "dashboard_name": "Human Resource",
  "docstatus": 0,
  "doctype": "Dashboard",
  "idx": 0,
  "is_default": 0,
  "is_standard": 1,
- "modified": "2020-07-22 14:42:12.789249",
+ "modified": "2022-04-19 01:33:54.316657",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Human Resource",
