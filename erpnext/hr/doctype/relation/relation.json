@@ -1,7 +1,8 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2022-03-07 15:10:44.272378",
+ "autoname": "field:relation",
+ "creation": "2022-03-10 14:15:39.684127",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -12,15 +13,17 @@
   {
    "fieldname": "relation",
    "fieldtype": "Data",
-   "label": "Relation"
+   "label": "Relation",
+   "unique": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-03-09 21:13:44.528384",
+ "modified": "2022-04-11 15:33:55.990486",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Relation",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {

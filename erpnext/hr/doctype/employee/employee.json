@@ -4,7 +4,7 @@
  "allow_import": 1,
  "allow_rename": 1,
  "autoname": "naming_series:",
- "creation": "2022-03-22 03:53:12.867024",
+ "creation": "2022-04-19 01:56:42.143575",
  "default_import_order": "0",
  "doctype": "DocType",
  "document_type": "Setup",
@@ -21,6 +21,8 @@
   "salutation",
   "employee_name",
   "employment_type",
+  "date_of_birth",
+  "date_of_joining",
   "image",
   "column_break1",
   "company",
@@ -31,9 +33,10 @@
   "religion",
   "ethnic_background",
   "language",
+  "read",
+  "write",
+  "other_language",
   "dietary_requirement",
-  "date_of_birth",
-  "date_of_joining",
   "employee_number",
   "personal_details",
   "home_number",
@@ -85,13 +88,15 @@
   "relation",
   "column_break_19",
   "emergency_phone_number",
+  "section_break_78",
+  "license",
   "special_considerations",
   "medical",
   "disability",
   "diet",
   "nat_services",
-  "health",
   "health_insurance_section",
+  "health",
   "health_insurance_provider",
   "health_insurance_no",
   "sb53",
@@ -153,11 +158,6 @@
   "rgt",
   "professional_membership",
   "professional_mem",
-  "references",
-  "reference",
-  "section_break_127",
-  "linked_documents",
-  "qualifications",
   "tab_break_165",
   "counseling_work_performance",
   "industrial_relations_section",
@@ -199,6 +199,8 @@
   "warning_issued",
   "formal_discipline",
   "follow_up_date",
+  "section_break_189",
+  "ir_linked_documents",
   "curriculum_vitae_tab",
   "educational_qualification",
   "education",
@@ -206,6 +208,11 @@
   "external_work_history",
   "history_in_company",
   "internal_work_history",
+  "references",
+  "reference",
+  "section_break_127",
+  "linked_documents",
+  "qualifications",
   "exit",
   "resignation_letter_date",
   "relieving_date",
@@ -359,6 +366,7 @@
   },
   {
    "allow_in_quick_entry": 1,
+   "collapsible": 1,
    "fieldname": "emergency_contact_details",
    "fieldtype": "Section Break",
    "label": "Emergency Contact"
@@ -560,7 +568,7 @@
    "collapsible": 1,
    "fieldname": "health_insurance_section",
    "fieldtype": "Section Break",
-   "label": "Health Insurance"
+   "label": "Health"
   },
   {
    "fieldname": "health_insurance_provider",
@@ -950,6 +958,7 @@
    "options": "Child Qualification"
   },
   {
+   "collapsible": 1,
    "fieldname": "industrial_relations_section",
    "fieldtype": "Section Break",
    "label": "Industrial Relations"
@@ -986,7 +995,7 @@
   {
    "fieldname": "language",
    "fieldtype": "Link",
-   "label": "Language",
+   "label": "Home Language",
    "options": "Language"
   },
   {
@@ -1285,7 +1294,7 @@
   {
    "fieldname": "reference",
    "fieldtype": "Table",
-   "label": "References",
+   "label": "Reference",
    "options": "Reference"
   },
   {
@@ -1530,13 +1539,53 @@
    "fieldname": "organisational_tab",
    "fieldtype": "Tab Break",
    "label": "Organisational"
+  },
+  {
+   "default": "0",
+   "fieldname": "read",
+   "fieldtype": "Check",
+   "label": "Read"
+  },
+  {
+   "default": "0",
+   "fieldname": "write",
+   "fieldtype": "Check",
+   "label": "Write"
+  },
+  {
+   "fieldname": "other_language",
+   "fieldtype": "Table",
+   "label": "Other Language",
+   "options": "Other Language"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_78",
+   "fieldtype": "Section Break",
+   "label": "License"
+  },
+  {
+   "fieldname": "license",
+   "fieldtype": "Table",
+   "label": "License",
+   "options": "License Table"
+  },
+  {
+   "fieldname": "section_break_189",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "ir_linked_documents",
+   "fieldtype": "Table",
+   "label": "Linked Documents",
+   "options": "Linked Document"
   }
  ],
  "icon": "fa fa-user",
  "idx": 24,
  "image_field": "image",
  "links": [],
- "modified": "2022-03-31 17:23:18.202209",
+ "modified": "2022-04-21 13:13:05.293905",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee",

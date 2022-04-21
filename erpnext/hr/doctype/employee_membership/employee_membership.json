@@ -1,13 +1,14 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:employee",
- "creation": "2022-03-08 12:21:34.529166",
+ "autoname": "field:name1",
+ "creation": "2022-03-10 14:15:43.945336",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "employee",
+  "name1",
   "union_title_section",
   "union",
   "committee_title_section",
@@ -58,11 +59,18 @@
    "fieldname": "team",
    "fieldtype": "Data",
    "label": "Team"
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "name1",
+   "fieldtype": "Data",
+   "label": "Name",
+   "unique": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-03-09 21:23:59.222011",
+ "modified": "2022-04-18 14:07:03.165143",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Membership",

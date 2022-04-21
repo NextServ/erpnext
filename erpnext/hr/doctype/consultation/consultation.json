@@ -1,7 +1,8 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2022-03-10 14:15:38.875849",
+ "autoname": "field:name1",
+ "creation": "2022-03-22 03:53:10.004989",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -40,7 +41,8 @@
    "fieldtype": "Data",
    "in_global_search": 1,
    "label": "Name",
-   "translatable": 1
+   "translatable": 1,
+   "unique": 1
   },
   {
    "fieldname": "amended_from",
@@ -116,10 +118,11 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-03-21 14:59:22.053313",
+ "modified": "2022-04-18 16:05:52.693918",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Consultation",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {

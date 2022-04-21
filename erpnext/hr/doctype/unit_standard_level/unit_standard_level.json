@@ -1,28 +1,30 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
- "autoname": "field:examination_type",
- "creation": "2022-03-10 14:16:19.307447",
+ "autoname": "field:unit_standard_level",
+ "creation": "2022-04-21 12:22:52.798535",
+ "default_import_order": "unit_standard_level",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "examination_type"
+  "unit_standard_level"
  ],
  "fields": [
   {
-   "fieldname": "examination_type",
+   "fieldname": "unit_standard_level",
    "fieldtype": "Data",
-   "label": "Examination Type",
+   "label": "Unit Standard Level",
    "unique": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-04-11 16:40:19.447553",
+ "modified": "2022-04-21 12:22:52.798535",
  "modified_by": "Administrator",
  "module": "HR",
- "name": "Examination Type",
+ "name": "Unit Standard Level",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
@@ -37,10 +39,22 @@
    "role": "System Manager",
    "share": 1,
    "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "All",
+   "share": 1
   }
  ],
+ "search_fields": "unit_standard_level",
+ "show_name_in_global_search": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
+ "title_field": "unit_standard_level",
  "track_changes": 1
 }

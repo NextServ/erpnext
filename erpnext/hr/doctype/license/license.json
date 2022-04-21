@@ -1,47 +1,35 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2022-03-17 15:39:03.334346",
+ "autoname": "field:license_code",
+ "creation": "2022-04-11 10:37:02.828874",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "scheme_name",
-  "description",
-  "leave_rules_section",
-  "leave_rule"
+  "license_code",
+  "description"
  ],
  "fields": [
   {
-   "fieldname": "scheme_name",
+   "fieldname": "license_code",
    "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Scheme Name",
-   "reqd": 1
+   "label": "License Code",
+   "unique": 1
   },
   {
    "fieldname": "description",
    "fieldtype": "Text",
    "label": "Description"
-  },
-  {
-   "fieldname": "leave_rules_section",
-   "fieldtype": "Section Break",
-   "label": "Leave Scheme Rules"
-  },
-  {
-   "fieldname": "leave_rule",
-   "fieldtype": "Table",
-   "label": "Leave Rule",
-   "options": "Leave Scheme Rule"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-03-17 16:06:11.771426",
+ "modified": "2022-04-11 10:45:04.173533",
  "modified_by": "Administrator",
  "module": "HR",
- "name": "Leave Scheme",
+ "name": "License",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {

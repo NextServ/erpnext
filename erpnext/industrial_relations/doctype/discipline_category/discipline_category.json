@@ -1,28 +1,28 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:examination_type",
- "creation": "2022-03-10 14:16:19.307447",
+ "autoname": "field:category",
+ "creation": "2022-04-19 14:57:16.839420",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "examination_type"
+  "category"
  ],
  "fields": [
   {
-   "fieldname": "examination_type",
+   "fieldname": "category",
    "fieldtype": "Data",
-   "label": "Examination Type",
+   "label": "Category",
    "unique": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-04-11 16:40:19.447553",
+ "modified": "2022-04-21 13:29:40.838467",
  "modified_by": "Administrator",
- "module": "HR",
- "name": "Examination Type",
+ "module": "Industrial Relations",
+ "name": "Discipline Category",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
@@ -41,6 +41,5 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": [],
- "track_changes": 1
+ "states": []
 }

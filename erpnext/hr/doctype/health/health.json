@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2022-03-07 16:06:34.603571",
+ "creation": "2022-03-10 14:16:17.184270",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -49,14 +49,14 @@
   },
   {
    "fieldname": "next_examination",
-   "fieldtype": "Data",
+   "fieldtype": "Date",
    "label": "Next Examination"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-03-09 21:14:42.323139",
+ "modified": "2022-04-15 13:42:23.693939",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Health",

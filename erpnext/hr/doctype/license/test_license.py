@@ -4,5 +4,5 @@
 # import frappe
 import unittest
 
-class TestLeaveScheme(unittest.TestCase):
+class TestLicense(unittest.TestCase):
 	pass

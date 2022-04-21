@@ -2,7 +2,7 @@
  "actions": [],
  "allow_rename": 1,
  "autoname": "Prompt",
- "creation": "2022-03-10 14:15:43.151701",
+ "creation": "2022-03-22 03:53:11.480912",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -193,8 +193,7 @@
    "fieldname": "type",
    "fieldtype": "Select",
    "label": "Type",
-   "options": "\nBruising\nBurning\nLaceration\nContusion\nOpen Skin\nSprain",
-   "reqd": 1
+   "options": "\nBruising\nBurning\nLaceration\nContusion\nOpen Skin\nSprain"
   },
   {
    "fieldname": "description",
@@ -491,7 +490,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-03-21 14:11:28.649669",
+ "modified": "2022-04-18 15:35:57.553233",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Incident",

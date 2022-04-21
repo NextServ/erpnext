@@ -4,5 +4,5 @@
 # import frappe
 from frappe.model.document import Document
 
-class LeaveSchemeRule(Document):
+class UnitStandardLevel(Document):
 	pass

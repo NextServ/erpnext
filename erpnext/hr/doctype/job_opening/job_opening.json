@@ -2,6 +2,7 @@
  "actions": [],
  "autoname": "field:route",
  "creation": "2013-01-15 16:13:36",
+ "default_import_order": "0",
  "description": "Description of a Job Opening",
  "doctype": "DocType",
  "document_type": "Document",
@@ -161,10 +162,11 @@
  "icon": "fa fa-bookmark",
  "idx": 1,
  "links": [],
- "modified": "2020-09-18 11:23:29.488923",
+ "modified": "2022-04-13 21:18:20.935839",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Job Opening",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {
@@ -184,5 +186,6 @@
   }
  ],
  "sort_field": "modified",
- "sort_order": "ASC"
+ "sort_order": "ASC",
+ "states": []
 }

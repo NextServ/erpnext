@@ -2,7 +2,7 @@
  "actions": [],
  "allow_import": 1,
  "allow_rename": 1,
- "creation": "2022-02-18 13:44:12.827947",
+ "creation": "2022-04-05 01:54:39.281084",
  "default_import_order": "0",
  "doctype": "DocType",
  "document_type": "Setup",
@@ -156,7 +156,7 @@
   },
   {
    "fieldname": "manager",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "label": "Manager",
    "translatable": 1
   },
@@ -170,7 +170,7 @@
  "idx": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2022-03-22 03:58:29.845731",
+ "modified": "2022-04-15 14:05:34.931424",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Department",

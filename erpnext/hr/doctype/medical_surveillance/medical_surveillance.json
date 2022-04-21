@@ -1,7 +1,8 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2022-03-10 14:15:37.730528",
+ "autoname": "field:emp_name",
+ "creation": "2022-03-22 03:53:10.996226",
  "default_import_order": "0",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -39,7 +40,8 @@
    "fieldtype": "Data",
    "in_global_search": 1,
    "label": "Emp Name",
-   "translatable": 1
+   "translatable": 1,
+   "unique": 1
   },
   {
    "fieldname": "amended_from",
@@ -108,10 +110,11 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-03-21 14:37:06.841825",
+ "modified": "2022-04-18 16:11:39.950341",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Medical Surveillance",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {
