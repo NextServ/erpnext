@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2022-03-10 14:16:23.455231",
+ "creation": "2022-04-19 01:56:49.164581",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -15,29 +15,33 @@
   {
    "fieldname": "medical_ailments",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Medical Ailments"
   },
   {
    "fieldname": "notes",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Notes"
   },
   {
    "fieldname": "risk_profile",
    "fieldtype": "Select",
+   "in_list_view": 1,
    "label": "Risk Profile",
    "options": "\nHigh\nMedium\nLow"
   },
   {
    "fieldname": "risk_profile_date",
    "fieldtype": "Date",
+   "in_list_view": 1,
    "label": "Risk Profile Date"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-04-15 13:49:20.297080",
+ "modified": "2022-04-21 23:09:50.130069",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Medical",

@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2022-03-07 15:32:16.150306",
+ "creation": "2022-03-10 14:15:41.921594",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -21,22 +21,26 @@
   {
    "fieldname": "name1",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Name"
   },
   {
    "fieldname": "surname",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Surname"
   },
   {
    "fieldname": "relationship",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Relationship",
    "options": "Relation"
   },
   {
    "fieldname": "date_of_birth",
    "fieldtype": "Date",
+   "in_list_view": 1,
    "label": "Date of Birth"
   },
   {
@@ -65,6 +69,7 @@
    "default": "0",
    "fieldname": "life_beneficiary",
    "fieldtype": "Check",
+   "in_list_view": 1,
    "label": "Life Beneficiary"
   },
   {
@@ -76,7 +81,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-03-09 21:14:37.198522",
+ "modified": "2022-04-21 23:12:24.205594",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Dependant",
