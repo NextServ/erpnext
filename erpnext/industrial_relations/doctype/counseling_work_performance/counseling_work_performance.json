@@ -1,0 +1,270 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-04-22 14:39:25.590586",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "date",
+  "manager",
+  "manager_name",
+  "reason_for_counseling",
+  "were_you_spoken_to_about_these_before",
+  "column_break_5",
+  "poor_performance",
+  "good_performance",
+  "development_suggestions_section",
+  "work_process",
+  "what",
+  "how",
+  "why",
+  "when",
+  "available_tools",
+  "success_criteria",
+  "employee_suggestions",
+  "manager_suggestions",
+  "column_break_17",
+  "employee",
+  "experience",
+  "knowledge",
+  "skill",
+  "competency",
+  "personal_characteristic",
+  "physical",
+  "mental",
+  "follow_up_section",
+  "assistance",
+  "internal_training",
+  "external_training",
+  "follow_up_supervisor",
+  "warning_issued",
+  "formal_discipline",
+  "follow_up_date"
+ ],
+ "fields": [
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "manager",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Manager",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "reason_for_counseling",
+   "fieldtype": "Text",
+   "label": "Reason for Counseling"
+  },
+  {
+   "default": "0",
+   "fieldname": "were_you_spoken_to_about_these_before",
+   "fieldtype": "Check",
+   "label": "Were you spoken to about these before"
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "poor_performance",
+   "fieldtype": "Check",
+   "label": "Poor Performance"
+  },
+  {
+   "default": "0",
+   "fieldname": "good_performance",
+   "fieldtype": "Check",
+   "label": "Good Performance"
+  },
+  {
+   "fetch_from": "manager.employee_name",
+   "fieldname": "manager_name",
+   "fieldtype": "Read Only",
+   "label": "Manager Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "development_suggestions_section",
+   "fieldtype": "Section Break",
+   "label": "Development Suggestions"
+  },
+  {
+   "default": "0",
+   "fieldname": "work_process",
+   "fieldtype": "Check",
+   "label": "Work Process"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.work_process",
+   "fieldname": "what",
+   "fieldtype": "Check",
+   "label": "What"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.work_process",
+   "fieldname": "how",
+   "fieldtype": "Check",
+   "label": "How"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.work_process",
+   "fieldname": "why",
+   "fieldtype": "Check",
+   "label": "Why"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.work_process",
+   "fieldname": "when",
+   "fieldtype": "Check",
+   "label": "When"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.work_process",
+   "fieldname": "available_tools",
+   "fieldtype": "Check",
+   "label": "Available Tools/Materials"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.work_process",
+   "fieldname": "success_criteria",
+   "fieldtype": "Check",
+   "label": "Success Criteria"
+  },
+  {
+   "fieldname": "column_break_17",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "employee",
+   "fieldtype": "Check",
+   "label": "Employee"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.employee",
+   "fieldname": "experience",
+   "fieldtype": "Check",
+   "label": "Experience"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.employee",
+   "fieldname": "knowledge",
+   "fieldtype": "Check",
+   "label": "Knowledge"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.employee",
+   "fieldname": "skill",
+   "fieldtype": "Check",
+   "label": "Skill"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.employee",
+   "fieldname": "competency",
+   "fieldtype": "Check",
+   "label": "Competency"
+  },
+  {
+   "depends_on": "eval:doc.employee",
+   "fieldname": "personal_characteristic",
+   "fieldtype": "Read Only",
+   "label": "Personal Characteristic"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.employee",
+   "fieldname": "physical",
+   "fieldtype": "Check",
+   "label": "Physical"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.employee",
+   "fieldname": "mental",
+   "fieldtype": "Check",
+   "label": "Mental"
+  },
+  {
+   "fieldname": "employee_suggestions",
+   "fieldtype": "Text",
+   "label": "Employee Suggestions"
+  },
+  {
+   "fieldname": "manager_suggestions",
+   "fieldtype": "Text",
+   "label": "Manager Suggestions"
+  },
+  {
+   "fieldname": "follow_up_section",
+   "fieldtype": "Section Break",
+   "label": "Follow Up"
+  },
+  {
+   "default": "0",
+   "fieldname": "assistance",
+   "fieldtype": "Check",
+   "label": "Assistance"
+  },
+  {
+   "default": "0",
+   "fieldname": "internal_training",
+   "fieldtype": "Check",
+   "label": "Internal Training"
+  },
+  {
+   "default": "0",
+   "fieldname": "external_training",
+   "fieldtype": "Check",
+   "label": "External Training"
+  },
+  {
+   "fieldname": "follow_up_supervisor",
+   "fieldtype": "Data",
+   "label": "Follow Up Supervisor"
+  },
+  {
+   "fieldname": "warning_issued",
+   "fieldtype": "Data",
+   "label": "Warning Issued"
+  },
+  {
+   "default": "0",
+   "fieldname": "formal_discipline",
+   "fieldtype": "Check",
+   "label": "Formal Discipline"
+  },
+  {
+   "fieldname": "follow_up_date",
+   "fieldtype": "Date",
+   "label": "Follow Up Date"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-04-25 10:21:30.310888",
+ "modified_by": "Administrator",
+ "module": "Industrial Relations",
+ "name": "Counseling Work Performance",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

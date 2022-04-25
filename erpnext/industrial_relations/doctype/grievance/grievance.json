@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2022-03-10 14:18:03.544197",
+ "creation": "2022-04-21 17:31:32.503082",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -22,7 +22,7 @@
   },
   {
    "fieldname": "grievance",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Grievance"
   },
@@ -34,7 +34,7 @@
   },
   {
    "fieldname": "sub_category",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "label": "Sub Category"
   },
   {
@@ -51,7 +51,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-04-19 14:58:46.133436",
+ "modified": "2022-04-22 14:20:04.551659",
  "modified_by": "Administrator",
  "module": "Industrial Relations",
  "name": "Grievance",
