@@ -4,7 +4,7 @@
  "allow_import": 1,
  "allow_rename": 1,
  "autoname": "naming_series:",
- "creation": "2022-04-21 17:31:28.353122",
+ "creation": "2022-04-25 20:44:52.315839",
  "default_import_order": "0",
  "doctype": "DocType",
  "document_type": "Setup",
@@ -89,7 +89,7 @@
   "column_break_19",
   "emergency_phone_number",
   "section_break_78",
-  "license",
+  "identification_documents",
   "special_considerations",
   "medical",
   "disability",
@@ -1311,13 +1311,7 @@
    "collapsible": 1,
    "fieldname": "section_break_78",
    "fieldtype": "Section Break",
-   "label": "License"
-  },
-  {
-   "fieldname": "license",
-   "fieldtype": "Table",
-   "label": "License",
-   "options": "License Table"
+   "label": "Identification Document"
   },
   {
    "collapsible": 1,
@@ -1384,13 +1378,19 @@
    "fieldtype": "Link",
    "label": "Skill Category",
    "options": "Skill Category"
+  },
+  {
+   "fieldname": "identification_documents",
+   "fieldtype": "Table",
+   "label": "Identification Documents",
+   "options": "Employee Identification Document"
   }
  ],
  "icon": "fa fa-user",
  "idx": 24,
  "image_field": "image",
  "links": [],
- "modified": "2022-04-25 15:29:12.976880",
+ "modified": "2022-05-16 19:45:25.829686",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee",

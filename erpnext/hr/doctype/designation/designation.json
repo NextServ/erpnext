@@ -3,7 +3,7 @@
  "allow_import": 1,
  "allow_rename": 1,
  "autoname": "field:designation_name",
- "creation": "2013-01-10 16:34:13",
+ "creation": "2022-04-05 01:54:34.043577",
  "default_import_order": "0",
  "doctype": "DocType",
  "document_type": "Setup",
@@ -33,7 +33,6 @@
   "report_to",
   "attributes",
   "general_work",
-  "appointment_type",
   "employment_type",
   "shift_type",
   "number_of_hours",
@@ -208,13 +207,6 @@
    "label": "General & Work"
   },
   {
-   "fieldname": "appointment_type",
-   "fieldtype": "Select",
-   "label": "Appointment Type",
-   "options": "Consultant\nExpat\nNon Permanent\nPerm Sched\nPermanent\nProbationary\nRegular\nReturnee",
-   "translatable": 1
-  },
-  {
    "fieldname": "employment_type",
    "fieldtype": "Link",
    "label": "Employment Type",
@@ -287,22 +279,21 @@
   },
   {
    "fieldname": "job_grade",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "label": "Job Grade",
-   "translatable": 1
+   "options": "Job Grade"
   },
   {
    "fieldname": "job_function",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "label": "Job Function",
-   "translatable": 1
+   "options": "Job Function"
   },
   {
    "fieldname": "occupational_level",
-   "fieldtype": "Select",
+   "fieldtype": "Link",
    "label": "Occupational Level",
-   "options": "\nTop\nSenior\nProfessional\nSkilled\nSemi-skilled\nUnskilled",
-   "translatable": 1
+   "options": "Occupational Level"
   },
   {
    "fieldname": "grade_band",
@@ -312,10 +303,9 @@
   },
   {
    "fieldname": "occupational_category",
-   "fieldtype": "Select",
+   "fieldtype": "Link",
    "label": "Occupational Category",
-   "options": "\nExecutive\nJunior Management\nProfessional\nTechnician\nClerical / Admin\nSales & Service\nOperator\nCraft / Trade\nGeneral Worker",
-   "translatable": 1
+   "options": "Occupational Category"
   },
   {
    "fieldname": "skill_category",
@@ -357,7 +347,7 @@
  "icon": "fa fa-bookmark",
  "idx": 1,
  "links": [],
- "modified": "2022-03-22 03:58:55.474224",
+ "modified": "2022-05-13 16:20:04.969419",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Designation",

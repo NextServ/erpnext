@@ -3,7 +3,7 @@
  "allow_import": 1,
  "allow_rename": 1,
  "autoname": "field:company_name",
- "creation": "2013-04-10 08:35:39",
+ "creation": "2022-04-05 01:54:32.825718",
  "default_import_order": "0",
  "description": "Legal Entity / Subsidiary with a separate Chart of Accounts belonging to the Organization.",
  "doctype": "DocType",
@@ -290,7 +290,7 @@
   {
    "depends_on": "eval:doc.create_chart_of_accounts_based_on===\"Standard Template\"",
    "fieldname": "chart_of_accounts",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "label": "Chart Of Accounts Template",
    "no_copy": 1
   },
@@ -801,13 +801,13 @@
   },
   {
    "fieldname": "suburb",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "label": "Suburb",
    "translatable": 1
   },
   {
    "fieldname": "city",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "label": "City",
    "translatable": 1
   },
@@ -819,13 +819,13 @@
   },
   {
    "fieldname": "country_code",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "label": "Country Code",
    "translatable": 1
   },
   {
    "fieldname": "timezone",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "label": "TimeZone",
    "translatable": 1
   },
@@ -842,7 +842,7 @@
   },
   {
    "fieldname": "sub_division",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "label": "Sub-Division",
    "translatable": 1
   },
@@ -852,7 +852,7 @@
   },
   {
    "fieldname": "company_type",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "label": "Company Type",
    "translatable": 1
   },
@@ -932,7 +932,7 @@
  "image_field": "company_logo",
  "is_tree": 1,
  "links": [],
- "modified": "2022-03-22 03:57:09.136516",
+ "modified": "2022-05-13 16:24:33.102668",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Company",
