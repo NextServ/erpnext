@@ -3,6 +3,7 @@
 
 import frappe
 from frappe import _
+from frappe import utils
 from frappe.desk.form import assign_to
 from frappe.model.document import Document
 from frappe.utils import add_days, flt, unique
@@ -159,10 +160,16 @@ def update_employee_boarding_status(project):
 	status = 'Pending'
 	if flt(project.percent_complete) > 0.0 and flt(project.percent_complete) < 100.0:
 		status = 'In Process'
-	elif flt(project.percent_complete) == 100.0:
+	elif flt(project.percent_complete) == 100.0 or project.status == 'Completed':
 		status = 'Completed'
 
 	if employee_onboarding:
 		frappe.db.set_value('Employee Onboarding', employee_onboarding, 'boarding_status', status)
 	elif employee_separation:
 		frappe.db.set_value('Employee Separation', employee_separation, 'boarding_status', status)
+
+		if status == 'Completed':
+			employee = frappe.get_doc('Employee', frappe.db.get_value('Employee Separation', { 'name': employee_separation }, fieldname='employee'))
+			employee.status = 'Left'
+			employee.relieving_date = utils.nowdate()
+			employee.save()
