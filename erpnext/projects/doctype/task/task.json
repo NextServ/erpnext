@@ -8,7 +8,6 @@
  "document_type": "Setup",
  "engine": "InnoDB",
  "field_order": [
-  "github_sync_id",
   "subject",
   "project",
   "issue",
@@ -396,15 +395,6 @@
    "fieldtype": "Date",
    "label": "Completed On",
    "mandatory_depends_on": "eval: doc.status == \"Completed\""
-  },
-  {
-   "fieldname": "github_sync_id",
-   "fieldtype": "Data",
-   "hidden": 1,
-   "label": "GitHub Sync ID",
-   "no_copy": 1,
-   "read_only": 1,
-   "unique": 1
   },
   {
    "fieldname": "email_notification",
