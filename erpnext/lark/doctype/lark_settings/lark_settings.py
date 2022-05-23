@@ -26,6 +26,9 @@ class LarkSettings(Document):
 
 		return r['tenant_access_token']
 
+	def ready(self):
+		return not not (self.app_id and self.app_secret)
+
 	def handle_response_error(self, response):
 		if response.get('code') != 0:
 			print(response)

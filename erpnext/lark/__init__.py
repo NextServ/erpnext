@@ -45,7 +45,12 @@ def login_callback():
   return r
 
 def get_lark_settings():
-  return frappe.get_doc('Lark Settings')
+  settings = frappe.get_doc('Lark Settings')
+
+  if settings and not settings.ready():
+    return None
+
+  return settings
 
 def create_lark_user(user, method):
   lark_settings = get_lark_settings()
