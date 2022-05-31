@@ -57,18 +57,46 @@ def create_lark_user(user, method):
 
   if lark_settings:
     tenant_access_token = lark_settings.get_tenant_access_token()
-    r = requests.post('https://open.larksuite.com/open-apis/contact/v3/users', headers={
+    emails = []
+    mobiles = []
+
+    if user.email:
+      emails.append(user.email)
+
+    if user.mobile_no:
+      mobiles.append(user.mobile_no)
+
+    # Find user
+    print('Bearer ' + tenant_access_token)
+    r = requests.post('https://open.larksuite.com/open-apis/contact/v3/users/batch_get_id?user_id_type=open_id', headers={
       'Authorization': 'Bearer ' + tenant_access_token
     }, json={
-      'name': user.full_name,
-      'email': user.email,
-      'mobile': user.mobile_no,
-      'employee_type': 1,
-      'department_ids': [0]
+      'emails': emails
     }).json()
-
+    lark_user_id = ''
     lark_settings.handle_response_error(r)
-    lark_user_id = r.get('data').get('user').get('open_id')
+
+    if r.get('data') and r.get('data').get('user_list') and len(r.get('data').get('user_list')):
+      for lark_user in r.get('data').get('user_list'):
+        if lark_user.get('user_id'):
+          lark_user_id = lark_user.get('user_id')
+          break
+    
+    if not lark_user_id:
+      # Fall back to creating the user
+      r = requests.post('https://open.larksuite.com/open-apis/contact/v3/users', headers={
+        'Authorization': 'Bearer ' + tenant_access_token
+      }, json={
+        'name': user.full_name,
+        'email': user.email,
+        'mobile': user.mobile_no,
+        'employee_type': 1,
+        'department_ids': [0]
+      }).json()
+
+      lark_settings.handle_response_error(r)
+      lark_user_id = r.get('data').get('user').get('open_id')
+
     user.append('social_logins', {
       'provider': 'lark',
       'userid': lark_user_id,
