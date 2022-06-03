@@ -67,7 +67,6 @@ def create_lark_user(user, method):
       mobiles.append(user.mobile_no)
 
     # Find user
-    print('Bearer ' + tenant_access_token)
     r = requests.post('https://open.larksuite.com/open-apis/contact/v3/users/batch_get_id?user_id_type=open_id', headers={
       'Authorization': 'Bearer ' + tenant_access_token
     }, json={
@@ -81,7 +80,7 @@ def create_lark_user(user, method):
         if lark_user.get('user_id'):
           lark_user_id = lark_user.get('user_id')
           break
-    
+
     if not lark_user_id:
       # Fall back to creating the user
       r = requests.post('https://open.larksuite.com/open-apis/contact/v3/users', headers={
@@ -102,6 +101,8 @@ def create_lark_user(user, method):
       'userid': lark_user_id,
     })
     user.save(ignore_permissions=True)
+
+  frappe.db.commit()
 
 def update_lark_user_from_employee(employee, method):
   lark_settings = get_lark_settings()
