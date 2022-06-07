@@ -225,11 +225,10 @@ doc_events = {
 		"on_cancel": "erpnext.stock.doctype.material_request.material_request.update_completed_and_requested_qty"
 	},
 	"User": {
-		"after_insert": ["frappe.contacts.doctype.contact.contact.update_contact", "erpnext.lark.create_lark_user"],
+		"after_insert": ["frappe.contacts.doctype.contact.contact.update_contact"],
 		"validate": "erpnext.hr.doctype.employee.employee.validate_employee_role",
 		"on_update": ["erpnext.hr.doctype.employee.employee.update_user_permissions",
-			"erpnext.portal.utils.set_default_role"],
-		"on_trash": "erpnext.lark.delete_lark_user"
+			"erpnext.portal.utils.set_default_role"]
 	},
 	"Department": {
 		"after_insert": "erpnext.lark.create_lark_department",
