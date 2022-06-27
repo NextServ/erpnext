@@ -458,7 +458,7 @@ class SalarySlip(TransactionBase):
 
 	def get_attendance_days(self):
 		return frappe.db.sql('''
-			SELECT attendance_date, status AS `attendance_status`, leave_type AS `attendance_leave_type`, `working_hours`, `leave`, `overtime`, `undertime`, `night_differential`, `night_differential_overtime`
+			SELECT attendance_date, status AS `attendance_status`, leave_type AS `attendance_leave_type`, `working_hours`, `leave`, `overtime`, `undertime`, `night_differential`, `night_differential_overtime`, `rest_day`, `special_holiday`, `legal_holiday`
 			FROM `tabAttendance`
 			WHERE 1
 				AND employee = %s
