@@ -3,6 +3,7 @@
  "allow_import": 1,
  "autoname": "EMP-CKIN-.MM.-.YYYY.-.######",
  "creation": "2019-06-10 11:56:34.536413",
+ "default_import_order": "0",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
@@ -107,10 +108,11 @@
   }
  ],
  "links": [],
- "modified": "2020-07-08 11:02:32.660986",
+ "modified": "2022-06-02 19:07:25.473125",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Checkin",
+ "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
   {
@@ -199,10 +201,23 @@
    "permlevel": 1,
    "read": 1,
    "role": "Employee"
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Employee Self Service",
+   "share": 1,
+   "write": 1
   }
  ],
  "sort_field": "modified",
  "sort_order": "ASC",
+ "states": [],
  "title_field": "employee_name",
  "track_changes": 1
 }

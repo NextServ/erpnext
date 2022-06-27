@@ -4,5 +4,5 @@
 # import frappe
 import unittest
 
-class TestDisciplineCategory(unittest.TestCase):
+class TestOffenceCategory(unittest.TestCase):
 	pass

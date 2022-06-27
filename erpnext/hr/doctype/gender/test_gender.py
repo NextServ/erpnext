@@ -4,5 +4,5 @@
 # import frappe
 import unittest
 
-class TestDeduction(unittest.TestCase):
+class TestGender(unittest.TestCase):
 	pass

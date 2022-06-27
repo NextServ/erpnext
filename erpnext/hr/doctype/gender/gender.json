@@ -1,28 +1,27 @@
 {
  "actions": [],
- "allow_rename": 1,
- "autoname": "field:category",
- "creation": "2022-04-19 14:57:16.839420",
+ "autoname": "field:gender",
+ "creation": "2017-04-10 12:11:36.526508",
+ "default_import_order": "0",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "category"
+  "gender"
  ],
  "fields": [
   {
-   "fieldname": "category",
+   "fieldname": "gender",
    "fieldtype": "Data",
-   "label": "Category",
+   "label": "Gender",
    "unique": 1
   }
  ],
- "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-04-21 13:29:40.838467",
+ "modified": "2022-05-18 17:30:14.918694",
  "modified_by": "Administrator",
- "module": "Industrial Relations",
- "name": "Discipline Category",
+ "module": "HR",
+ "name": "Gender",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
@@ -37,9 +36,14 @@
    "role": "System Manager",
    "share": 1,
    "write": 1
+  },
+  {
+   "read": 1,
+   "role": "All"
   }
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_changes": 1
 }

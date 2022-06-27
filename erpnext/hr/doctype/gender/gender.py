@@ -4,5 +4,5 @@
 # import frappe
 from frappe.model.document import Document
 
-class DisciplineCategory(Document):
+class Gender(Document):
 	pass

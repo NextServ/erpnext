@@ -57,16 +57,20 @@
   {
    "chart": "Department Wise Openings",
    "width": "Half"
+  },
+  {
+   "chart": "Monthly Attendance Sheet",
+   "width": "Half"
   }
  ],
- "creation": "2022-02-17 13:04:38.738891",
+ "creation": "2022-04-19 01:56:54.366875",
  "dashboard_name": "Human Resource",
  "docstatus": 0,
  "doctype": "Dashboard",
  "idx": 0,
  "is_default": 0,
  "is_standard": 1,
- "modified": "2022-04-19 01:33:54.316657",
+ "modified": "2022-06-06 00:09:51.257798",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Human Resource",

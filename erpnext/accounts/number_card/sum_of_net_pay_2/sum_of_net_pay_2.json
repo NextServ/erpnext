@@ -1,0 +1,23 @@
+{
+ "creation": "2022-05-18 18:06:39.209031",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "dynamic_filters_json": "{}",
+ "filters_json": "{\"company\":\"SERVIO Test\",\"from_date\":\"2022-04-01\",\"to_date\":\"2022-05-18\"}",
+ "function": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "label": "Sum of Net_pay",
+ "modified": "2022-05-18 18:09:02.821911",
+ "modified_by": "admin@serviotech.com",
+ "module": "Accounts",
+ "name": "Sum of Net_pay-2",
+ "owner": "admin@serviotech.com",
+ "report_field": "net_pay",
+ "report_function": "Sum",
+ "report_name": "Bank Remittance",
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Daily",
+ "type": "Report"
+}

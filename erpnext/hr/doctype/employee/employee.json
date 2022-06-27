@@ -4,7 +4,7 @@
  "allow_import": 1,
  "allow_rename": 1,
  "autoname": "naming_series:",
- "creation": "2022-04-25 20:44:52.315839",
+ "creation": "2022-06-08 05:37:05.811540",
  "default_import_order": "0",
  "doctype": "DocType",
  "document_type": "Setup",
@@ -156,11 +156,14 @@
   "salary_information",
   "salary_mode",
   "payroll_cost_center",
+  "basic_pay",
+  "pay_basis",
   "column_break_52",
   "bank_name",
   "bank_ac_no",
   "lft",
   "rgt",
+  "days_of_work_per_year",
   "professional_membership",
   "professional_mem",
   "tab_break_165",
@@ -195,7 +198,8 @@
   "exit_interview_details",
   "held_on",
   "new_workplace",
-  "feedback"
+  "feedback",
+  "data_188"
  ],
  "fields": [
   {
@@ -1384,13 +1388,34 @@
    "fieldtype": "Table",
    "label": "Identification Documents",
    "options": "Employee Identification Document"
+  },
+  {
+   "fieldname": "basic_pay",
+   "fieldtype": "Currency",
+   "label": "Wage"
+  },
+  {
+   "fieldname": "pay_basis",
+   "fieldtype": "Select",
+   "label": "Pay Basis",
+   "options": "\nMonthly\nWeekly\nFortnightly\nQuarterly\nAnnually\nDaily\nSemi-monthly\nSemi-annual\nFourweekly"
+  },
+  {
+   "fieldname": "data_188",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "days_of_work_per_year",
+   "fieldtype": "Select",
+   "label": "Days of Work per Year",
+   "options": "\n261\n287\n313\n365"
   }
  ],
  "icon": "fa fa-user",
  "idx": 24,
  "image_field": "image",
  "links": [],
- "modified": "2022-05-16 19:45:25.829686",
+ "modified": "2022-06-13 13:07:24.144366",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee",
