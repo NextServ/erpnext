@@ -308,6 +308,7 @@ frappe.ui.form.on('Salary Detail', {
 						var result = data.message;
 						frappe.model.set_value(cdt, cdn, 'condition', result.condition);
 						frappe.model.set_value(cdt, cdn, 'amount_based_on_formula', result.amount_based_on_formula);
+						frappe.model.set_value(cdt, cdn, 'formula_based_on_attendance', result.formula_based_on_attendance);
 						if(result.amount_based_on_formula == 1){
 							frappe.model.set_value(cdt, cdn, 'formula', result.formula);
 						}

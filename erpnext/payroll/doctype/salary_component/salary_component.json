@@ -3,7 +3,8 @@
  "allow_import": 1,
  "allow_rename": 1,
  "autoname": "field:salary_component",
- "creation": "2016-06-30 15:42:43.631931",
+ "creation": "2022-06-27 14:32:49.499416",
+ "default_import_order": "0",
  "doctype": "DocType",
  "document_type": "Setup",
  "editable_grid": 1,
@@ -24,6 +25,8 @@
   "statistical_component",
   "do_not_include_in_total",
   "disabled",
+  "is_standard",
+  "module",
   "flexible_benefits",
   "is_flexible_benefit",
   "max_benefit_amount",
@@ -38,6 +41,7 @@
   "amount",
   "amount_based_on_formula",
   "formula",
+  "formula_based_on_attendance",
   "column_break_28",
   "help"
  ],
@@ -217,7 +221,7 @@
    "fieldname": "help",
    "fieldtype": "HTML",
    "label": "Help",
-   "options": "<h3>Help</h3>\n\n<p>Notes:</p>\n\n<ol>\n<li>Use field <code>base</code> for using base salary of the Employee</li>\n<li>Use Salary Component abbreviations in conditions and formulas. <code>BS = Basic Salary</code></li>\n<li>Use field name for employee details in conditions and formulas. <code>Employment Type = employment_type</code><code>Branch = branch</code></li>\n<li>Use field name from Salary Slip in conditions and formulas. <code>Payment Days = payment_days</code><code>Leave without pay = leave_without_pay</code></li>\n<li>Direct Amount can also be entered based on Condition. See example 3</li></ol>\n\n<h4>Examples</h4>\n<ol>\n<li>Calculating Basic Salary based on <code>base</code>\n<pre><code>Condition: base &lt; 10000</code></pre>\n<pre><code>Formula: base * .2</code></pre></li>\n<li>Calculating HRA based on Basic Salary<code>BS</code> \n<pre><code>Condition: BS &gt; 2000</code></pre>\n<pre><code>Formula: BS * .1</code></pre></li>\n<li>Calculating TDS based on Employment Type<code>employment_type</code> \n<pre><code>Condition: employment_type==\"Intern\"</code></pre>\n<pre><code>Amount: 1000</code></pre></li>\n</ol>"
+   "options": "<h3>Help</h3>\n\n<p>Notes:</p>\n\n<ol>\n\t<li>Use field <code>base</code> for using base salary of the Employee</li>\n\t<li>Use Salary Component abbreviations in conditions and formulas. <code>BS = Basic Salary</code></li>\n\t<li>Use field name for employee details in conditions and formulas. <code>Employment Type = employment_type</code><code>Branch = branch</code></li>\n\t<li>Use field name from Salary Slip in conditions and formulas. <code>Payment Days = payment_days</code><code>Leave without pay = leave_without_pay</code></li>\n\t<li>Direct Amount can also be entered based on Condition. See example 3</li>\n</ol>\n\n<h4>Examples</h4>\n\n<ol>\n\t<li>Calculating Basic Salary based on <code>base</code>\n\n\t<pre><code>Condition: base &lt; 10000</code></pre>\n\n\t<pre><code>Formula: base * .2</code></pre>\n\t</li>\n\t<li>Calculating based on attendance days/hours\n\t<pre><code>Formula: overtime * base</code></pre>\n\t</li>\n\t<li>Calculating based on rates\n\t<pre><code>Formula: overtime * daily_rate</code></pre>\n\n\t<pre><code>Formula: overtime * monthly_rate</code></pre>\n\n\t<pre><code>Formula: overtime * hourly_rate</code></pre>\n\t</li>\n\t<li>Calculating HRA based on Basic Salary<code>BS</code>\n\t<pre><code>Condition: BS &gt; 2000</code></pre>\n\n\t<pre><code>Formula: BS * .1</code></pre>\n\t</li>\n\t<li>Calculating TDS based on Employment Type <code>employment_type</code>\n\t<pre><code>Condition: employment_type==\"Intern\"</code></pre>\n\n\t<pre><code>Amount: 1000</code></pre>\n\t</li>\n</ol>\n"
   },
   {
    "default": "0",
@@ -239,15 +243,39 @@
    "fieldname": "is_income_tax_component",
    "fieldtype": "Check",
    "label": "Is Income Tax Component"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_standard",
+   "fieldtype": "Check",
+   "label": "Is Standard",
+   "mandatory_depends_on": "doc.is_standard"
+  },
+  {
+   "depends_on": "is_standard",
+   "fieldname": "module",
+   "fieldtype": "Link",
+   "label": "Module",
+   "mandatory_depends_on": "is_standard",
+   "options": "Module Def"
+  },
+  {
+   "default": "0",
+   "depends_on": "amount_based_on_formula",
+   "description": "This will execute the formula for every attendance day.",
+   "fieldname": "formula_based_on_attendance",
+   "fieldtype": "Check",
+   "label": "Formula based on attendance"
   }
  ],
  "icon": "fa fa-flag",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2020-10-07 20:38:33.795853",
+ "modified": "2022-06-27 15:10:50.051536",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Component",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {
@@ -268,5 +296,6 @@
   }
  ],
  "sort_field": "modified",
- "sort_order": "DESC"
+ "sort_order": "DESC",
+ "states": []
 }

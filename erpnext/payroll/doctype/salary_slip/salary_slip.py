@@ -456,6 +456,16 @@ class SalarySlip(TransactionBase):
 				absent += 1
 		return lwp, absent
 
+	def get_attendance_days(self):
+		return frappe.db.sql('''
+			SELECT attendance_date, status AS `attendance_status`, leave_type AS `attendance_leave_type`, `working_hours`, `leave`, `overtime`, `undertime`, `night_differential`, `night_differential_overtime`
+			FROM `tabAttendance`
+			WHERE 1
+				AND employee = %s
+				AND docstatus = 1
+				AND attendance_date between %s and %s
+		''', values=(self.employee, self.start_date, self.end_date), as_dict=1)
+
 	def add_earning_for_hourly_wages(self, doc, salary_component, amount):
 		row_exists = False
 		for row in doc.earnings:
@@ -513,10 +523,50 @@ class SalarySlip(TransactionBase):
 
 	def add_structure_components(self, component_type):
 		data = self.get_data_for_eval()
+		attendance_days = self.get_attendance_days()
+
 		for struct_row in self._salary_structure_doc.get(component_type):
-			amount = self.eval_condition_and_formula(struct_row, data)
+			if cint(struct_row.formula_based_on_attendance):
+				amount = 0
+
+				for day in attendance_days:
+					day_data = { }
+					day_data.update(data)
+					day_data.update(day)
+					amount += self.eval_condition_and_formula(struct_row, day_data)
+			else:
+				amount = self.eval_condition_and_formula(struct_row, data)
+
 			if amount and struct_row.statistical_component == 0:
 				self.update_component_row(struct_row, amount, component_type)
+
+	def calculate_salary_structure_rates(self, salary_structure_assignment):
+		if salary_structure_assignment.rate_type == 'Daily':
+			return {
+				'hourly_rate': salary_structure_assignment.base / (salary_structure_assignment.daily_hours or 8),
+				'daily_rate': salary_structure_assignment.base,
+				'monthly_rate': salary_structure_assignment.base * cint(salary_structure_assignment.days_of_work_per_year) / 12
+			}
+
+		if salary_structure_assignment.rate_type == 'Monthly':
+			return {
+				'hourly_rate': salary_structure_assignment.base * 12 / cint(salary_structure_assignment.days_of_work_per_year) / (salary_structure_assignment.daily_hours or 8),
+				'daily_rate': salary_structure_assignment.base * 12 / cint(salary_structure_assignment.days_of_work_per_year),
+				'monthly_rate': salary_structure_assignment.base
+			}
+
+		if salary_structure_assignment.rate_type == 'Yearly':
+			return {
+				'hourly_rate': salary_structure_assignment.base / cint(salary_structure_assignment.days_of_work_per_year) / (salary_structure_assignment.daily_hours or 8),
+				'daily_rate': salary_structure_assignment.base / cint(salary_structure_assignment.days_of_work_per_year),
+				'monthly_rate': salary_structure_assignment.base / 12
+			}
+
+		return {
+			'hourly_rate': 0,
+			'daily_rate': 0,
+			'monthly_rate': 0
+		}
 
 	def get_data_for_eval(self):
 		'''Returns data for evaluating formula'''
@@ -553,6 +603,7 @@ class SalarySlip(TransactionBase):
 			)
 
 		data.update(salary_structure_assignment)
+		data.update(self.calculate_salary_structure_rates(salary_structure_assignment))
 		data.update(employee)
 		data.update(self.as_dict())
 

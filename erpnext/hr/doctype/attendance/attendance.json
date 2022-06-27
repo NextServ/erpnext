@@ -2,7 +2,8 @@
  "actions": [],
  "allow_import": 1,
  "autoname": "naming_series:",
- "creation": "2013-01-10 16:34:13",
+ "creation": "2022-02-17 10:29:17.183934",
+ "default_import_order": "0",
  "doctype": "DocType",
  "document_type": "Setup",
  "engine": "InnoDB",
@@ -11,7 +12,6 @@
   "naming_series",
   "employee",
   "employee_name",
-  "working_hours",
   "status",
   "leave_type",
   "leave_application",
@@ -27,7 +27,18 @@
   "column_break_18",
   "late_entry",
   "early_exit",
-  "amended_from"
+  "amended_from",
+  "attendance_calculation_section",
+  "rest_day",
+  "special_holiday",
+  "legal_holiday",
+  "column_break_25",
+  "working_hours",
+  "leave",
+  "overtime",
+  "undertime",
+  "night_differential",
+  "night_differential_overtime"
  ],
  "fields": [
   {
@@ -70,12 +81,10 @@
    "read_only": 1
   },
   {
-   "depends_on": "working_hours",
    "fieldname": "working_hours",
    "fieldtype": "Float",
    "label": "Working Hours",
-   "precision": "1",
-   "read_only": 1
+   "precision": "1"
   },
   {
    "default": "Present",
@@ -199,16 +208,69 @@
   {
    "fieldname": "column_break_18",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "attendance_calculation_section",
+   "fieldtype": "Section Break",
+   "label": "Attendance Calculation"
+  },
+  {
+   "default": "0",
+   "fieldname": "rest_day",
+   "fieldtype": "Check",
+   "label": "Rest Day"
+  },
+  {
+   "default": "0",
+   "fieldname": "special_holiday",
+   "fieldtype": "Check",
+   "label": "Special Holiday"
+  },
+  {
+   "default": "0",
+   "fieldname": "legal_holiday",
+   "fieldtype": "Check",
+   "label": "Legal Holiday"
+  },
+  {
+   "fieldname": "column_break_25",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "leave",
+   "fieldtype": "Float",
+   "label": "Leave"
+  },
+  {
+   "fieldname": "overtime",
+   "fieldtype": "Float",
+   "label": "Overtime"
+  },
+  {
+   "fieldname": "undertime",
+   "fieldtype": "Float",
+   "label": "Undertime"
+  },
+  {
+   "fieldname": "night_differential",
+   "fieldtype": "Float",
+   "label": "Night Differential"
+  },
+  {
+   "fieldname": "night_differential_overtime",
+   "fieldtype": "Float",
+   "label": "Night Differential Overtime"
   }
  ],
  "icon": "fa fa-ok",
  "idx": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2020-09-18 17:26:09.703215",
+ "modified": "2022-06-23 16:55:33.200264",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Attendance",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
@@ -256,5 +318,6 @@
  "search_fields": "employee,employee_name,attendance_date,status",
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "title_field": "employee_name"
 }

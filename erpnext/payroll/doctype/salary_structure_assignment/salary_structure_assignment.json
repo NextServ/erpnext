@@ -2,7 +2,8 @@
  "actions": [],
  "allow_import": 1,
  "autoname": "HR-SSA-.YY.-.MM.-.#####",
- "creation": "2018-04-13 16:38:41.769237",
+ "creation": "2022-06-27 14:32:49.684508",
+ "default_import_order": "0",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -18,8 +19,11 @@
   "from_date",
   "income_tax_slab",
   "currency",
+  "days_of_work_per_year",
+  "daily_hours",
   "section_break_7",
   "base",
+  "rate_type",
   "column_break_9",
   "variable",
   "amended_from",
@@ -93,13 +97,14 @@
   {
    "fieldname": "section_break_7",
    "fieldtype": "Section Break",
-   "label": "Base & Variable"
+   "label": "Wage"
   },
   {
    "fieldname": "base",
    "fieldtype": "Currency",
-   "label": "Base",
-   "options": "currency"
+   "label": "Base Wage",
+   "options": "currency",
+   "reqd": 1
   },
   {
    "fieldname": "column_break_9",
@@ -158,11 +163,31 @@
    "fieldtype": "Table",
    "label": "Cost Centers",
    "options": "Employee Cost Center"
+  },
+  {
+   "fieldname": "days_of_work_per_year",
+   "fieldtype": "Select",
+   "label": "Days of Work per Year",
+   "options": "\n261\n287\n313\n365",
+   "reqd": 1
+  },
+  {
+   "fieldname": "rate_type",
+   "fieldtype": "Select",
+   "label": "Rate Type",
+   "options": "\nDaily\nMonthly\nYearly",
+   "reqd": 1
+  },
+  {
+   "default": "8",
+   "fieldname": "daily_hours",
+   "fieldtype": "Int",
+   "label": "Daily Hours"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-01-19 12:43:54.439073",
+ "modified": "2022-06-27 15:02:36.121295",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure Assignment",

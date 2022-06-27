@@ -1230,7 +1230,7 @@
  "name": "Accounting",
  "owner": "Administrator",
  "parent_page": "",
- "public": 1,
+ "public": 0,
  "restrict_to_domain": "",
  "roles": [],
  "sequence_id": 2.0,
