@@ -533,7 +533,7 @@ class SalarySlip(TransactionBase):
 					day_data = { }
 					day_data.update(data)
 					day_data.update(day)
-					amount += self.eval_condition_and_formula(struct_row, day_data)
+					amount += self.eval_condition_and_formula(struct_row, day_data) or 0
 			else:
 				amount = self.eval_condition_and_formula(struct_row, data)
 
