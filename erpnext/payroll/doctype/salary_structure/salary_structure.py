@@ -84,9 +84,6 @@ class SalaryStructure(Document):
 
 						for val in value:
 							values.append(val['value'])
-
-						print(conditions)
-						print(values)
 				else:
 					conditions.append("{0}=%s".format(field))
 					values.append(value)
