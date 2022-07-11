@@ -78,8 +78,18 @@ class SalaryStructure(Document):
 		conditions, values = [], []
 		for field, value in kwargs.items():
 			if value:
-				conditions.append("{0}=%s".format(field))
-				values.append(value)
+				if isinstance(value, list):
+					if len(value):
+						conditions.append(("{0} IN (" + ', '.join(map(lambda x: '%s', value)) + ")").format(field))
+
+						for val in value:
+							values.append(val['value'])
+
+						print(conditions)
+						print(values)
+				else:
+					conditions.append("{0}=%s".format(field))
+					values.append(value)
 
 		condition_str = " and " + " and ".join(conditions) if conditions else ""
 
@@ -90,7 +100,8 @@ class SalaryStructure(Document):
 
 	@frappe.whitelist()
 	def assign_salary_structure(self, grade=None, department=None, designation=None, employee=None,
-			payroll_payable_account=None, from_date=None, base=None, variable=None, income_tax_slab=None):
+			payroll_payable_account=None, from_date=None, base=None, variable=None, income_tax_slab=None,
+			days_of_work_per_year=None, daily_hours=None, rate_type=None):
 		employees = self.get_employees(company= self.company, grade= grade,department= department,designation= designation,name=employee)
 
 		if employees:
@@ -98,17 +109,20 @@ class SalaryStructure(Document):
 				frappe.enqueue(assign_salary_structure_for_employees, timeout=600,
 					employees=employees, salary_structure=self,
 					payroll_payable_account=payroll_payable_account,
-					from_date=from_date, base=base, variable=variable, income_tax_slab=income_tax_slab)
+					from_date=from_date, base=base, variable=variable, income_tax_slab=income_tax_slab,
+					days_of_work_per_year=days_of_work_per_year, daily_hours=daily_hours, rate_type=rate_type)
 			else:
 				assign_salary_structure_for_employees(employees, self,
 					payroll_payable_account=payroll_payable_account,
-					from_date=from_date, base=base, variable=variable, income_tax_slab=income_tax_slab)
+					from_date=from_date, base=base, variable=variable, income_tax_slab=income_tax_slab,
+					days_of_work_per_year=days_of_work_per_year, daily_hours=daily_hours, rate_type=rate_type)
 		else:
 			frappe.msgprint(_("No Employee Found"))
 
 
 
-def assign_salary_structure_for_employees(employees, salary_structure, payroll_payable_account=None, from_date=None, base=None, variable=None, income_tax_slab=None):
+def assign_salary_structure_for_employees(employees, salary_structure, payroll_payable_account=None, from_date=None, base=None, variable=None, income_tax_slab=None,
+		days_of_work_per_year=None, daily_hours=None, rate_type=None):
 	salary_structures_assignments = []
 	existing_assignments_for = get_existing_assignments(employees, salary_structure, from_date)
 	count=0
@@ -118,7 +132,8 @@ def assign_salary_structure_for_employees(employees, salary_structure, payroll_p
 		count +=1
 
 		salary_structures_assignment = create_salary_structures_assignment(employee,
-			salary_structure, payroll_payable_account, from_date, base, variable, income_tax_slab)
+			salary_structure, payroll_payable_account, from_date, base, variable, income_tax_slab,
+			days_of_work_per_year, daily_hours, rate_type)
 		salary_structures_assignments.append(salary_structures_assignment)
 		frappe.publish_progress(count*100/len(set(employees) - set(existing_assignments_for)), title = _("Assigning Structures..."))
 
@@ -126,7 +141,8 @@ def assign_salary_structure_for_employees(employees, salary_structure, payroll_p
 		frappe.msgprint(_("Structures have been assigned successfully"))
 
 
-def create_salary_structures_assignment(employee, salary_structure, payroll_payable_account, from_date, base, variable, income_tax_slab=None):
+def create_salary_structures_assignment(employee, salary_structure, payroll_payable_account, from_date, base, variable, income_tax_slab=None,
+		days_of_work_per_year=None, daily_hours=None, rate_type=None):
 	if not payroll_payable_account:
 		payroll_payable_account = frappe.db.get_value('Company', salary_structure.company, 'default_payroll_payable_account')
 		if not payroll_payable_account:
@@ -146,6 +162,9 @@ def create_salary_structures_assignment(employee, salary_structure, payroll_paya
 	assignment.base = base
 	assignment.variable = variable
 	assignment.income_tax_slab = income_tax_slab
+	assignment.days_of_work_per_year = days_of_work_per_year
+	assignment.daily_hours = daily_hours
+	assignment.rate_type = rate_type
 	assignment.save(ignore_permissions = True)
 	assignment.submit()
 	return assignment.name

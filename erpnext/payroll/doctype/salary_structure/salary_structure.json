@@ -3,7 +3,8 @@
  "allow_import": 1,
  "allow_rename": 1,
  "autoname": "Prompt",
- "creation": "2013-03-07 18:50:29",
+ "creation": "2022-02-17 10:30:07.185756",
+ "default_import_order": "0",
  "doctype": "DocType",
  "document_type": "Document",
  "engine": "InnoDB",
@@ -35,7 +36,12 @@
   "mode_of_payment",
   "column_break_28",
   "payment_account",
-  "amended_from"
+  "amended_from",
+  "table_multiselect_29",
+  "table_multiselect_30",
+  "table_multiselect_31",
+  "table_multiselect_32",
+  "table_multiselect_33"
  ],
  "fields": [
   {
@@ -226,16 +232,47 @@
    "label": "Currency",
    "options": "Currency",
    "reqd": 1
+  },
+  {
+   "fieldname": "table_multiselect_29",
+   "fieldtype": "Table MultiSelect",
+   "hidden": 1,
+   "options": "Salary Structure Assignment Employee Grade"
+  },
+  {
+   "fieldname": "table_multiselect_30",
+   "fieldtype": "Table MultiSelect",
+   "hidden": 1,
+   "options": "Salary Structure Assignment Department"
+  },
+  {
+   "fieldname": "table_multiselect_31",
+   "fieldtype": "Table MultiSelect",
+   "hidden": 1,
+   "options": "Salary Structure Assignment Designation"
+  },
+  {
+   "fieldname": "table_multiselect_32",
+   "fieldtype": "Table MultiSelect",
+   "hidden": 1,
+   "options": "Salary Structure Assignment Employee"
+  },
+  {
+   "fieldname": "table_multiselect_33",
+   "fieldtype": "Table MultiSelect",
+   "hidden": 1,
+   "options": "Salary Structure Assignment Account"
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-03-31 15:41:12.342380",
+ "modified": "2022-07-11 16:06:47.292381",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure",
+ "naming_rule": "Set by user",
  "owner": "Administrator",
  "permissions": [
   {
@@ -271,5 +308,6 @@
  ],
  "show_name_in_global_search": 1,
  "sort_field": "modified",
- "sort_order": "DESC"
+ "sort_order": "DESC",
+ "states": []
 }

@@ -133,17 +133,20 @@ frappe.ui.form.on('Salary Structure', {
 			title: __("Assign to Employees"),
 			fields: [
 				{fieldname: "sec_break", fieldtype: "Section Break", label: __("Filter Employees By (Optional)")},
-				{fieldname: "grade", fieldtype: "Link", options: "Employee Grade", label: __("Employee Grade")},
-				{fieldname:'department', fieldtype:'Link', options: 'Department', label: __('Department')},
-				{fieldname:'designation', fieldtype:'Link', options: 'Designation', label: __('Designation')},
-				{fieldname:"employee", fieldtype: "Link", options: "Employee", label: __("Employee")},
-				{fieldname:"payroll_payable_account", fieldtype: "Link", options: "Account", filters: {"company": frm.doc.company, "root_type": "Liability", "is_group": 0, "account_currency": frm.doc.currency}, label: __("Payroll Payable Account")},
+				{fieldname: "grade", fieldtype: "Table MultiSelect", options: "Salary Structure Assignment Employee Grade", label: __("Employee Grade")},
+				{fieldname:'department', fieldtype:'Table MultiSelect', options: 'Salary Structure Assignment Department', label: __('Department')},
+				{fieldname:'designation', fieldtype:'Table MultiSelect', options: 'Salary Structure Assignment Designation', label: __('Designation')},
+				{fieldname:"employee", fieldtype: "Table MultiSelect", options: "Salary Structure Assignment Employee", label: __("Employee")},
+				{fieldname:"payroll_payable_account", fieldtype: "Table MultiSelect", options: "Salary Structure Assignment Account", filters: {"company": frm.doc.company, "root_type": "Liability", "is_group": 0, "account_currency": frm.doc.currency}, label: __("Payroll Payable Account")},
 				{fieldname:'base_variable', fieldtype:'Section Break'},
 				{fieldname:'from_date', fieldtype:'Date', label: __('From Date'), "reqd": 1},
 				{fieldname:'income_tax_slab', fieldtype:'Link', label: __('Income Tax Slab'), options: 'Income Tax Slab'},
 				{fieldname:'base_col_br', fieldtype:'Column Break'},
-				{fieldname:'base', fieldtype:'Currency', label: __('Base')},
-				{fieldname:'variable', fieldtype:'Currency', label: __('Variable')}
+				{fieldname:'base', fieldtype:'Currency', label: __('Base Wage')},
+				{fieldname:'variable', fieldtype:'Currency', label: __('Variable')},
+				{fieldname:'days_of_work_per_year', fieldtype:'Select', label: __('Days of Work per Year'), options: ['', '261', '287', '313', '365'], reqd: true},
+				{fieldname:'daily_hours', fieldtype:'Int', label: __('Daily Hours'), default: '8'},
+				{fieldname:'rate_type', fieldtype: 'Select', label: __('Rate Type'), options: ['', 'Daily', 'Monthly', 'Yearly'], reqd: true},
 			],
 			primary_action: function() {
 				var data = d.get_values();
