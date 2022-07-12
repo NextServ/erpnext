@@ -4,6 +4,7 @@
 
 import datetime
 import math
+from erpnext.hr.report.employee_leave_balance.employee_leave_balance import get_data as get_leave_balance_data
 
 import frappe
 from frappe import _, msgprint
@@ -188,6 +189,7 @@ class SalarySlip(TransactionBase):
 		if self.employee:
 			self.set("earnings", [])
 			self.set("deductions", [])
+			self.set("leave_balance", [])
 
 			if not self.salary_slip_based_on_timesheet:
 				self.get_date_details()
@@ -203,6 +205,15 @@ class SalarySlip(TransactionBase):
 			#getin leave details
 			self.get_working_days_details(joining_date, relieving_date)
 			struct = self.check_sal_struct(joining_date, relieving_date)
+			leave_balance_data = get_leave_balance_data(frappe._dict({
+				'employee': self.employee,
+				'from_date': self.start_date,
+				'to_date': self.end_date,
+			}))
+
+			for row in leave_balance_data:
+				self.append('leave_balance', row)
+				print(row)
 
 			if struct:
 				self._salary_structure_doc = frappe.get_doc('Salary Structure', struct)

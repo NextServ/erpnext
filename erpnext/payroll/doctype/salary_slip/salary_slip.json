@@ -1,7 +1,8 @@
 {
  "actions": [],
  "allow_import": 1,
- "creation": "2013-01-10 16:34:15",
+ "creation": "2022-02-17 10:30:07.317867",
+ "default_import_order": "0",
  "doctype": "DocType",
  "document_type": "Setup",
  "engine": "InnoDB",
@@ -34,6 +35,8 @@
   "column_break_24",
   "absent_days",
   "payment_days",
+  "section_break_29",
+  "leave_balance",
   "hourly_wages",
   "timesheets",
   "column_break_20",
@@ -631,13 +634,23 @@
    "label": "Gross Year To Date(Company Currency)",
    "options": "Company:company:default_currency",
    "read_only": 1
+  },
+  {
+   "fieldname": "section_break_29",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "leave_balance",
+   "fieldtype": "Table",
+   "label": "Leave Balance",
+   "options": "Salary Slip Leave Balance"
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 9,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-01-19 12:45:54.999345",
+ "modified": "2022-07-12 23:54:35.667420",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Slip",
