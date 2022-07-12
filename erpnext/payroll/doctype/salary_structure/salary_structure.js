@@ -58,12 +58,12 @@ frappe.ui.form.on('Salary Structure', {
 		if(!frm.doc.company) return;
 		frm.set_query("salary_component", "earnings", function() {
 			return {
-				filters: {type: "earning", company: frm.doc.company}
+				filters: {type: "earning"}
 			};
 		});
 		frm.set_query("salary_component", "deductions", function() {
 			return {
-				filters: {type: "deduction", company: frm.doc.company}
+				filters: {type: "deduction"}
 			};
 		});
 	},
