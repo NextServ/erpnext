@@ -175,7 +175,7 @@
    "fieldname": "rate_type",
    "fieldtype": "Select",
    "label": "Rate Type",
-   "options": "\nDaily\nMonthly\nYearly",
+   "options": "\nHourly\nDaily\nMonthly\nYearly",
    "reqd": 1
   },
   {
@@ -187,7 +187,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-06-27 15:02:36.121295",
+ "modified": "2022-07-14 16:27:32.919248",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure Assignment",

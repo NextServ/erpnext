@@ -552,6 +552,13 @@ class SalarySlip(TransactionBase):
 				self.update_component_row(struct_row, amount, component_type)
 
 	def calculate_salary_structure_rates(self, salary_structure_assignment):
+		if salary_structure_assignment.rate_type == 'Hourly':
+			return {
+				'hourly_rate': salary_structure_assignment.base,
+				'daily_rate': salary_structure_assignment.base * 8,
+				'monthly_rate': salary_structure_assignment.base * 8 * cint(salary_structure_assignment.days_of_work_per_year) / 12
+			}
+
 		if salary_structure_assignment.rate_type == 'Daily':
 			return {
 				'hourly_rate': salary_structure_assignment.base / (salary_structure_assignment.daily_hours or 8),
