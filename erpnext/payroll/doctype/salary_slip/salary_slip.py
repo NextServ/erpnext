@@ -8,6 +8,7 @@ from erpnext.hr.report.employee_leave_balance.employee_leave_balance import get_
 
 import frappe
 from frappe import _, msgprint
+from frappe import utils
 from frappe.model.naming import make_autoname
 from frappe.utils import (
 	add_days,
@@ -624,6 +625,9 @@ class SalarySlip(TransactionBase):
 		data.update(self.calculate_salary_structure_rates(salary_structure_assignment))
 		data.update(employee)
 		data.update(self.as_dict())
+		data.update({
+			'ph_sss': calculate_employee_sss_contribution,
+		})
 
 		# set values for components
 		salary_components = frappe.get_all("Salary Component", fields=["salary_component_abbr"])
@@ -1463,3 +1467,21 @@ def get_payroll_payable_account(company, payroll_entry):
 		payroll_payable_account = frappe.db.get_value('Company', company, 'default_payroll_payable_account')
 
 	return payroll_payable_account
+
+def calculate_employee_sss_contribution(pay):
+	contribution_table = frappe.db.get_list('SSS Contribution',
+		filters=[
+			['effective_date', '<=', utils.nowdate()],
+		],
+		order_by='effective_date desc',
+		pluck='name'
+	)
+
+	if len(contribution_table):
+		contribution_table = frappe.get_doc('SSS Contribution', contribution_table[0])
+		
+		for row in contribution_table.contribution_table:
+			if pay >= row.from_amount and pay <= row.to_amount:
+				return row.employee_contribution
+
+	return 0
