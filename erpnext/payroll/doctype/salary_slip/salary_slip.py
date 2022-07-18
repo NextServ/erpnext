@@ -626,7 +626,7 @@ class SalarySlip(TransactionBase):
 		data.update(employee)
 		data.update(self.as_dict())
 		data.update({
-			'ph_sss': calculate_employee_sss_contribution,
+			'ph_sss': lambda pay: calculate_employee_sss_contribution(pay, self.end_date),
 		})
 
 		# set values for components
@@ -1468,10 +1468,10 @@ def get_payroll_payable_account(company, payroll_entry):
 
 	return payroll_payable_account
 
-def calculate_employee_sss_contribution(pay):
+def calculate_employee_sss_contribution(pay, date):
 	contribution_table = frappe.db.get_list('SSS Contribution',
 		filters=[
-			['effective_date', '<=', utils.nowdate()],
+			['effective_date', '<=', date],
 		],
 		order_by='effective_date desc',
 		pluck='name'
