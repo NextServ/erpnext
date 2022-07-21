@@ -1,6 +1,6 @@
 {
  "actions": [],
- "creation": "2022-02-17 10:30:08.827689",
+ "creation": "2022-07-14 16:29:15.143949",
  "default_import_order": "0",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -29,6 +29,7 @@
   "amount_based_on_formula",
   "formula",
   "formula_based_on_attendance",
+  "formula_effectivity",
   "section_break_19",
   "default_amount",
   "additional_amount",
@@ -252,11 +253,18 @@
    "fieldname": "formula_based_on_attendance",
    "fieldtype": "Check",
    "label": "Formula based on attendance"
+  },
+  {
+   "default": "Period",
+   "fieldname": "formula_effectivity",
+   "fieldtype": "Select",
+   "label": "Formula Effectivity",
+   "options": "Period\nMonthly"
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2022-06-27 15:09:39.147587",
+ "modified": "2022-07-21 21:37:37.515532",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Detail",
