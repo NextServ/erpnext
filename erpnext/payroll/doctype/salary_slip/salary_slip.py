@@ -593,8 +593,11 @@ class SalarySlip(TransactionBase):
 						amount -= flt(previous_component_sum[0][0]) if previous_component_sum else 0.0
 						#amount = self.eval_condition_and_formula(struct_row, data)
 
-			if amount and struct_row.statistical_component == 0:
-				self.update_component_row(struct_row, amount, component_type)
+			if amount:
+				if struct_row.statistical_component == 0:
+					self.update_component_row(struct_row, amount, component_type)
+				else:
+					self.update_component_row(struct_row, amount, 'statistical_' + component_type)
 
 	def calculate_salary_structure_rates(self, salary_structure_assignment):
 		if salary_structure_assignment.rate_type == 'Hourly':
@@ -670,7 +673,9 @@ class SalarySlip(TransactionBase):
 		data.update(employee)
 		data.update(self.as_dict())
 		data.update({
-			'ph_sss': lambda pay: calculate_employee_sss_contribution(pay, self.end_date),
+			'ph_sss': lambda pay: calculate_sss_contribution(pay, self.end_date, 'employee_contribution'),
+			'ph_sss_er': lambda pay: calculate_sss_contribution(pay, self.end_date, 'employer_contribution'),
+			'ph_sss_ec': lambda pay: calculate_sss_contribution(pay, self.end_date, 'employee_compensation'),
 		})
 
 		# set values for components
@@ -1512,7 +1517,7 @@ def get_payroll_payable_account(company, payroll_entry):
 
 	return payroll_payable_account
 
-def calculate_employee_sss_contribution(pay, date):
+def calculate_sss_contribution(pay, date, field='employee_contribution'):
 	contribution_table = frappe.db.get_list('SSS Contribution',
 		filters=[
 			['effective_date', '<=', date],
@@ -1526,6 +1531,6 @@ def calculate_employee_sss_contribution(pay, date):
 		
 		for row in contribution_table.contribution_table:
 			if pay >= row.from_amount and (pay <= row.to_amount or not row.to_amount):
-				return row.employee_contribution
+				return row.get(field)
 
 	return 0
