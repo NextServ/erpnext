@@ -672,11 +672,10 @@ class SalarySlip(TransactionBase):
 		data.update(self.calculate_salary_structure_rates(salary_structure_assignment))
 		data.update(employee)
 		data.update(self.as_dict())
-		data.update({
-			'ph_sss': lambda pay: calculate_sss_contribution(pay, self.end_date, 'employee_contribution'),
-			'ph_sss_er': lambda pay: calculate_sss_contribution(pay, self.end_date, 'employer_contribution'),
-			'ph_sss_ec': lambda pay: calculate_sss_contribution(pay, self.end_date, 'employee_compensation'),
-		})
+		data_hooks = frappe.get_hooks('salary_data_extensions')
+
+		for hook in data_hooks:
+			data.update(hook(self))
 
 		# set values for components
 		salary_components = frappe.get_all("Salary Component", fields=["salary_component_abbr"])
@@ -1516,21 +1515,3 @@ def get_payroll_payable_account(company, payroll_entry):
 		payroll_payable_account = frappe.db.get_value('Company', company, 'default_payroll_payable_account')
 
 	return payroll_payable_account
-
-def calculate_sss_contribution(pay, date, field='employee_contribution'):
-	contribution_table = frappe.db.get_list('SSS Contribution',
-		filters=[
-			['effective_date', '<=', date],
-		],
-		order_by='effective_date desc',
-		pluck='name'
-	)
-
-	if len(contribution_table):
-		contribution_table = frappe.get_doc('SSS Contribution', contribution_table[0])
-		
-		for row in contribution_table.contribution_table:
-			if pay >= row.from_amount and (pay <= row.to_amount or not row.to_amount):
-				return row.get(field)
-
-	return 0

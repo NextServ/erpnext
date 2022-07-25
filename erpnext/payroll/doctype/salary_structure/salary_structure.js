@@ -312,6 +312,7 @@ frappe.ui.form.on('Salary Detail', {
 						frappe.model.set_value(cdt, cdn, 'condition', result.condition);
 						frappe.model.set_value(cdt, cdn, 'amount_based_on_formula', result.amount_based_on_formula);
 						frappe.model.set_value(cdt, cdn, 'formula_based_on_attendance', result.formula_based_on_attendance);
+						frappe.model.set_value(cdt, cdn, 'is_13th_month_pay_applicable', result.is_13th_month_pay_applicable);
 						frappe.model.set_value(cdt, cdn, 'formula_effectivity', result.formula_effectivity);
 						if(result.amount_based_on_formula == 1){
 							frappe.model.set_value(cdt, cdn, 'formula', result.formula);

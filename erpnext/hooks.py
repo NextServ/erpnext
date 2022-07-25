@@ -1,4 +1,6 @@
-from frappe import _
+from datetime import datetime
+from frappe import _, get_doc, db
+from frappe.utils.data import getdate
 
 app_name = "erpnext"
 app_title = "ERPNext"
@@ -19,6 +21,59 @@ app_include_css = "erpnext.bundle.css"
 web_include_js = "erpnext-web.bundle.js"
 web_include_css = "erpnext-web.bundle.css"
 email_css = "email_erpnext.bundle.css"
+
+salary_data_extensions = [
+	lambda salary_slip: {
+		'ph_sss': lambda pay: calculate_sss_contribution(pay, salary_slip.end_date, 'employee_contribution'),
+		'ph_sss_er': lambda pay: calculate_sss_contribution(pay, salary_slip.end_date, 'employer_contribution'),
+		'ph_sss_ec': lambda pay: calculate_sss_contribution(pay, salary_slip.end_date, 'employee_compensation'),
+		'ph_13th_month_pay': lambda: calculate_13th_month_pay(salary_slip)
+	}
+]
+
+def calculate_sss_contribution(pay, date, field='employee_contribution'):
+	contribution_table = db.get_list('SSS Contribution',
+		filters=[
+			['effective_date', '<=', date],
+		],
+		order_by='effective_date desc',
+		pluck='name'
+	)
+
+	if len(contribution_table):
+		contribution_table = get_doc('SSS Contribution', contribution_table[0])
+
+		for row in contribution_table.contribution_table:
+			if pay >= row.from_amount and (pay <= row.to_amount or not row.to_amount):
+				return row.get(field)
+
+	return 0
+
+def calculate_13th_month_pay(salary_slip):
+	effective_year = getdate(salary_slip.posting_date).year
+
+	if getdate(salary_slip.posting_date).month <= 4:
+		# Last year
+		effective_year -= 1
+
+	gross_pay = db.sql("""
+		SELECT sum(detail.amount) as sum
+		FROM `tabSalary Detail` as detail
+		INNER JOIN `tabSalary Slip` as salary_slip
+		ON detail.parent = salary_slip.name
+		WHERE
+			salary_slip.employee = %(employee)s
+			AND detail.parentfield = 'earnings'
+			AND YEAR(salary_slip.posting_date) >= %(effective_year)s
+			AND YEAR(salary_slip.posting_date) <= %(effective_year)s
+			AND salary_slip.name != %(docname)s
+			AND detail.is_13th_month_pay_applicable = 1
+			AND salary_slip.docstatus = 1""",
+			{'employee': salary_slip.employee, 'effective_year': effective_year, 'docname': salary_slip.name}
+	)
+
+	print(gross_pay)
+	return (gross_pay[0][0] if gross_pay else 0) / 12
 
 doctype_js = {
 	"Address": "public/js/address.js",

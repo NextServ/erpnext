@@ -3,7 +3,7 @@
  "allow_import": 1,
  "allow_rename": 1,
  "autoname": "field:salary_component",
- "creation": "2022-07-14 16:29:14.593500",
+ "creation": "2022-07-22 19:10:38.967755",
  "default_import_order": "0",
  "doctype": "DocType",
  "document_type": "Setup",
@@ -43,6 +43,7 @@
   "formula",
   "formula_based_on_attendance",
   "formula_effectivity",
+  "is_13th_month_pay_applicable",
   "column_break_28",
   "help"
  ],
@@ -274,12 +275,18 @@
    "fieldtype": "Select",
    "label": "Formula Effectivity",
    "options": "Period\nMonthly"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_13th_month_pay_applicable",
+   "fieldtype": "Check",
+   "label": "Is 13th Month Pay Applicable"
   }
  ],
  "icon": "fa fa-flag",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-07-21 21:37:51.431584",
+ "modified": "2022-07-25 19:29:43.588073",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Component",
