@@ -81,7 +81,7 @@ def execute(filters=None):
 		get_emp_bank_ifsc_code(salary_slips)
 
 	for salary in salary_slips:
-		if salary.bank_name and salary.bank_account_no and salary.debit_acc_no and salary.status in ["Submitted", "Paid"]:
+		if salary.status in ["Submitted", "Paid"]:
 			row = {
 				"payroll_no": salary.payroll_entry,
 				"debit_account": salary.debit_acc_no,
