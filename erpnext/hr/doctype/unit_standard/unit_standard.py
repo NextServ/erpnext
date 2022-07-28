@@ -4,5 +4,5 @@
 # import frappe
 from frappe.model.document import Document
 
-class Unit_Standard(Document):
+class UnitStandard(Document):
 	pass
