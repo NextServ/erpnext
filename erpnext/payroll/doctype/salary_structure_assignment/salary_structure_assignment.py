@@ -27,15 +27,15 @@ class SalaryStructureAssignment(Document):
 
 		if self.from_date:
 			if frappe.db.exists("Salary Structure Assignment", {"employee": self.employee, "from_date": self.from_date, "docstatus": 1}):
-				frappe.throw(_("Salary Structure Assignment for Employee already exists"), DuplicateAssignment)
+				frappe.throw(_("Salary Structure Assignment for Employee already exists") + ' (' + self.employee + ')', DuplicateAssignment)
 
 			if joining_date and getdate(self.from_date) < joining_date:
 				frappe.throw(_("From Date {0} cannot be before employee's joining Date {1}")
-					.format(self.from_date, joining_date))
+					.format(self.from_date, joining_date) + ' (' + self.employee + ')')
 
 			# flag - old_employee is for migrating the old employees data via patch
 			if relieving_date and getdate(self.from_date) > relieving_date and not self.flags.old_employee:
-				frappe.throw(_("From Date {0} cannot be after employee's relieving Date {1}")
+				frappe.throw(_("From Date {0} cannot be after employee's relieving Date {1}" + ' (' + self.employee + ')')
 					.format(self.from_date, relieving_date))
 
 	def validate_income_tax_slab(self):
