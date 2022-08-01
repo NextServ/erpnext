@@ -44,7 +44,7 @@ def calculate_sss_contribution(pay, date, field='employee_contribution'):
 		contribution_table = get_doc('SSS Contribution', contribution_table[0])
 
 		for row in contribution_table.contribution_table:
-			if pay >= row.from_amount and (pay <= row.to_amount or not row.to_amount):
+			if pay >= row.from_amount and (pay <= row.to_amount or not row.to_amount or row.to_amount <= 0):
 				return row.get(field)
 
 	return 0
