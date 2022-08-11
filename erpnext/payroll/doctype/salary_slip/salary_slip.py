@@ -215,7 +215,6 @@ class SalarySlip(TransactionBase):
 			for row in leave_balance_data:
 				if row.get('opening_balance') > 0 or row.get('closing_balance') > 0:
 					self.append('leave_balance', row)
-					print(row)
 
 			if struct:
 				self._salary_structure_doc = frappe.get_doc('Salary Structure', struct)
