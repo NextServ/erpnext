@@ -22,6 +22,10 @@ web_include_js = "erpnext-web.bundle.js"
 web_include_css = "erpnext-web.bundle.css"
 email_css = "email_erpnext.bundle.css"
 
+fixtures = [
+	{"dt": "Role", "filters": [["role_name", "like", "HR Manager"]]},
+]
+
 salary_data_extensions = [
 	lambda salary_slip: {
 		'ph_sss': lambda pay: calculate_sss_contribution(pay, salary_slip.end_date, 'employee_contribution'),
