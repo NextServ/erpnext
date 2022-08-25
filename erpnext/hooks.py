@@ -38,6 +38,8 @@ override_doctype_class = {
 	'Address': 'erpnext.accounts.custom.address.ERPNextAddress'
 }
 
+website_display_name = "Lemonade"
+
 welcome_email = "erpnext.setup.utils.welcome_email"
 
 # setup wizard

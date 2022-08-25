@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_import": 1,
- "creation": "2022-07-14 16:29:13.766259",
+ "creation": "2022-07-22 19:10:38.602143",
  "default_import_order": "0",
  "doctype": "DocType",
  "document_type": "Setup",
@@ -62,6 +62,7 @@
   "base_gross_pay",
   "gross_year_to_date",
   "base_gross_year_to_date",
+  "basic_pay",
   "column_break_25",
   "total_deduction",
   "base_total_deduction",
@@ -662,13 +663,18 @@
    "options": "Salary Detail",
    "print_hide": 1,
    "report_hide": 1
+  },
+  {
+   "fieldname": "basic_pay",
+   "fieldtype": "Currency",
+   "label": "Basic Pay"
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 9,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-07-22 13:51:25.481710",
+ "modified": "2022-08-26 00:11:43.353810",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Slip",

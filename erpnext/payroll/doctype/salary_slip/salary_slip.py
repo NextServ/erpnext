@@ -501,6 +501,7 @@ class SalarySlip(TransactionBase):
 			self.calculate_component_amounts("earnings")
 		self.gross_pay = self.get_component_totals("earnings", depends_on_payment_days=1)
 		self.base_gross_pay = flt(flt(self.gross_pay) * flt(self.exchange_rate), self.precision('base_gross_pay'))
+		self.basic_pay = self.get_component_totals("earnings", depends_on_payment_days=1, only_basic_pay=1)
 
 		if self.salary_structure:
 			self.calculate_component_amounts("deductions")
@@ -805,7 +806,7 @@ class SalarySlip(TransactionBase):
 				'depends_on_payment_days', 'salary_component', 'abbr',
 				'do_not_include_in_total', 'is_tax_applicable',
 				'is_flexible_benefit', 'variable_based_on_taxable_salary',
-				'exempted_from_income_tax'
+				'exempted_from_income_tax', 'is_basic_pay'
 			):
 				component_row.set(attr, component_data.get(attr))
 
@@ -1192,13 +1193,13 @@ class SalarySlip(TransactionBase):
 			frappe.throw(_("Error in formula or condition: {0}").format(e))
 			raise
 
-	def get_component_totals(self, component_type, depends_on_payment_days=0):
+	def get_component_totals(self, component_type, depends_on_payment_days=0, only_basic_pay=0):
 		joining_date, relieving_date = frappe.get_cached_value("Employee", self.employee,
 			["date_of_joining", "relieving_date"])
 
 		total = 0.0
 		for d in self.get(component_type):
-			if not d.do_not_include_in_total:
+			if not d.do_not_include_in_total and (not only_basic_pay or d.is_basic_pay):
 				if depends_on_payment_days:
 					amount = self.get_amount_based_on_payment_days(d, joining_date, relieving_date)[0]
 				else:
