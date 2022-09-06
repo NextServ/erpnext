@@ -539,59 +539,44 @@ class SalarySlip(TransactionBase):
 		attendance_days = self.get_attendance_days()
 
 		for struct_row in self._salary_structure_doc.get(component_type):
-			if cint(struct_row.formula_based_on_attendance):
-				amount = 0
+			amount = 0
 
+			# SERVIO: Attendance-based formula
+			if cint(struct_row.formula_based_on_attendance):
 				for day in attendance_days:
 					day_data = { }
 					day_data.update(data)
 					day_data.update(day)
 					amount += self.eval_condition_and_formula(struct_row, day_data) or 0
 			else:
+				# SERVIO: Formula effectivity
 				if not struct_row.formula_effectivity or struct_row.formula_effectivity == 'Period':
+					# This line is the built in frappe one
 					amount = self.eval_condition_and_formula(struct_row, data)
 				else:
 					# Check start and end dates
 					date_details = get_start_end_dates(struct_row.formula_effectivity, self.start_date or self.posting_date)
+					is_end = getdate(self.start_date) <= getdate(date_details.end_date) and getdate(self.end_date) >= getdate(date_details.end_date)
 
-					if date_details.start_date == self.start_date and getdate(self.end_date) == min([getdate(self.end_date), date_details.end_date]):
-						amount = self.eval_condition_and_formula(struct_row, data)
-					else:
-						# Generate a different salary slip
-						effectivity_salary_slip = frappe.new_doc('Salary Slip')
-						effectivity_salary_slip.payroll_frequency = self.payroll_frequency
-						effectivity_salary_slip.employee = self.employee
-						effectivity_salary_slip.start_date = date_details.start_date
-						effectivity_salary_slip.end_date = min([getdate(self.end_date), date_details.end_date])
-						effectivity_salary_slip.exchange_rate = self.exchange_rate
-						effectivity_salary_slip.get_emp_and_working_day_details()
-						amount_owed = 0
+					if is_end:
+						if getdate(date_details.start_date) == getdate(self.start_date) and getdate(date_details.end_date) == getdate(self.end_date):
+							amount = self.eval_condition_and_formula(struct_row, data)
+						else:
+							# Generate a different salary slip
+							effectivity_salary_slip = frappe.new_doc('Salary Slip')
+							effectivity_salary_slip.payroll_frequency = self.payroll_frequency
+							effectivity_salary_slip.employee = self.employee
+							effectivity_salary_slip.start_date = date_details.start_date
+							effectivity_salary_slip.end_date = min([getdate(self.end_date), date_details.end_date])
+							effectivity_salary_slip.exchange_rate = self.exchange_rate
+							effectivity_salary_slip.get_emp_and_working_day_details()
+							amount_owed = 0
 
-						for component in effectivity_salary_slip.get(component_type):
-							if component.salary_component == struct_row.salary_component:
-								amount_owed = component.amount
+							for component in effectivity_salary_slip.get(component_type):
+								if component.salary_component == struct_row.salary_component:
+									amount_owed = component.amount
 
-						amount = amount_owed
-
-						# Find previous salary details with this component within the same period
-						previous_component_sum = frappe.db.sql("""
-							SELECT sum(detail.amount) as sum
-							FROM `tabSalary Detail` as detail
-							INNER JOIN `tabSalary Slip` as salary_slip
-							ON detail.parent = salary_slip.name
-							WHERE
-								salary_slip.employee = %(employee)s
-								AND detail.salary_component = %(component)s
-								AND salary_slip.start_date >= %(period_start_date)s
-								AND salary_slip.start_date <= %(period_end_date)s
-								AND salary_slip.name != %(docname)s
-								AND salary_slip.docstatus = 1""",
-								{'employee': self.employee, 'component': struct_row.salary_component, 'period_start_date': date_details.start_date,
-									'period_end_date': date_details.end_date, 'docname': self.name}
-						)
-
-						amount -= flt(previous_component_sum[0][0]) if previous_component_sum else 0.0
-						#amount = self.eval_condition_and_formula(struct_row, data)
+							amount = amount_owed
 
 			if amount:
 				if struct_row.statistical_component == 0:
