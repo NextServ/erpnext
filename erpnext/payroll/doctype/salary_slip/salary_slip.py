@@ -190,6 +190,8 @@ class SalarySlip(TransactionBase):
 		if self.employee:
 			self.set("earnings", [])
 			self.set("deductions", [])
+			self.set("statistical_earnings", [])
+			self.set("statistical_deductions", [])
 			self.set("leave_balance", [])
 
 			if not self.salary_slip_based_on_timesheet:
@@ -539,7 +541,7 @@ class SalarySlip(TransactionBase):
 		attendance_days = self.get_attendance_days()
 
 		for struct_row in self._salary_structure_doc.get(component_type):
-			amount = 0
+			amount = 1
 
 			# SERVIO: Attendance-based formula
 			if cint(struct_row.formula_based_on_attendance):
@@ -561,18 +563,24 @@ class SalarySlip(TransactionBase):
 					if is_end:
 						if getdate(date_details.start_date) == getdate(self.start_date) and getdate(date_details.end_date) == getdate(self.end_date):
 							amount = self.eval_condition_and_formula(struct_row, data)
+
+							if struct_row.salary_component == 'PH - HDMF Employer Contribution':
+								print('sup')
+								print(amount)
+								print(struct_row.formula)
+								print(self.gross_pay)
 						else:
 							# Generate a different salary slip
 							effectivity_salary_slip = frappe.new_doc('Salary Slip')
 							effectivity_salary_slip.payroll_frequency = self.payroll_frequency
 							effectivity_salary_slip.employee = self.employee
 							effectivity_salary_slip.start_date = date_details.start_date
-							effectivity_salary_slip.end_date = min([getdate(self.end_date), date_details.end_date])
+							effectivity_salary_slip.end_date = date_details.end_date
 							effectivity_salary_slip.exchange_rate = self.exchange_rate
 							effectivity_salary_slip.get_emp_and_working_day_details()
 							amount_owed = 0
 
-							for component in effectivity_salary_slip.get(component_type):
+							for component in effectivity_salary_slip.get(('' if struct_row.statistical_component == 0 else 'statistical_') + component_type):
 								if component.salary_component == struct_row.salary_component:
 									amount_owed = component.amount
 
