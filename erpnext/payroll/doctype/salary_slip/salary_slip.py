@@ -541,7 +541,7 @@ class SalarySlip(TransactionBase):
 		attendance_days = self.get_attendance_days()
 
 		for struct_row in self._salary_structure_doc.get(component_type):
-			amount = 1
+			amount = 0
 
 			# SERVIO: Attendance-based formula
 			if cint(struct_row.formula_based_on_attendance):
