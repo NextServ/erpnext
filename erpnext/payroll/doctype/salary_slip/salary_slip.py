@@ -563,12 +563,6 @@ class SalarySlip(TransactionBase):
 					if is_end:
 						if getdate(date_details.start_date) == getdate(self.start_date) and getdate(date_details.end_date) == getdate(self.end_date):
 							amount = self.eval_condition_and_formula(struct_row, data)
-
-							if struct_row.salary_component == 'PH - HDMF Employer Contribution':
-								print('sup')
-								print(amount)
-								print(struct_row.formula)
-								print(self.gross_pay)
 						else:
 							# Generate a different salary slip
 							effectivity_salary_slip = frappe.new_doc('Salary Slip')
