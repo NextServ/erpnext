@@ -5,7 +5,7 @@ import requests
 def create_lark_department(department, method):
   lark_settings = get_lark_settings()
 
-  if lark_settings:
+  if not department.get('sync_id') and lark_settings:
     tenant_access_token = lark_settings.get_tenant_access_token()
     parent_sync_id = '0'
 
@@ -18,6 +18,15 @@ def create_lark_department(department, method):
       'name': department.get('department_name'),
       'parent_department_id': parent_sync_id or '0',
     }).json()
+
+    if r.get('code') == 43022:
+      # Duplicate department name, use suffixed version instead
+      r = requests.post('https://open.larksuite.com/open-apis/contact/v3/departments?department_id_type=open_department_id', headers={
+        'Authorization': 'Bearer ' + tenant_access_token
+      }, json={
+        'name': department.get('name'),
+        'parent_department_id': parent_sync_id or '0',
+      }).json()
 
     lark_settings.handle_response_error(r)
     department.sync_id = r.get('data').get('department').get('open_department_id')
@@ -39,6 +48,15 @@ def update_lark_department(department, method):
       'name': department.get('department_name'),
       'parent_department_id': parent_sync_id,
     }).json()
+
+    if r.get('code') == 43022:
+      # Duplicate department name, use suffixed version instead
+      r = requests.patch('https://open.larksuite.com/open-apis/contact/v3/departments/' + department.get('sync_id') + '?department_id_type=open_department_id', headers={
+        'Authorization': 'Bearer ' + tenant_access_token
+      }, json={
+        'name': department.get('name'),
+        'parent_department_id': parent_sync_id,
+      }).json()
 
     lark_settings.handle_response_error(r)
 
