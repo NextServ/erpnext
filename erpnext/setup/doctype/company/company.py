@@ -115,9 +115,9 @@ class Company(NestedSet):
 			install_country_fixtures(self.name, self.country)
 			self.create_default_tax_template()
 
-		if not frappe.db.get_value("Department", {"company": self.name}):
-			from erpnext.setup.setup_wizard.operations.install_fixtures import install_post_company_fixtures
-			install_post_company_fixtures(frappe._dict({'company_name': self.name}))
+#		if not frappe.db.get_value("Department", {"company": self.name}):
+#			from erpnext.setup.setup_wizard.operations.install_fixtures import install_post_company_fixtures
+#			install_post_company_fixtures(frappe._dict({'company_name': self.name}))
 
 		if not frappe.local.flags.ignore_chart_of_accounts:
 			self.set_default_accounts()
