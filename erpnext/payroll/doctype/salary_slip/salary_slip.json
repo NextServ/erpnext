@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_import": 1,
- "creation": "2022-07-22 19:10:38.602143",
+ "creation": "2022-09-06 22:16:17.885676",
  "default_import_order": "0",
  "doctype": "DocType",
  "document_type": "Setup",
@@ -50,6 +50,7 @@
   "section_break_32",
   "deduct_tax_for_unclaimed_employee_benefits",
   "deduct_tax_for_unsubmitted_tax_exemption_proof",
+  "validate_attendance",
   "earning_deduction",
   "earning",
   "earnings",
@@ -668,13 +669,19 @@
    "fieldname": "basic_pay",
    "fieldtype": "Currency",
    "label": "Basic Pay"
+  },
+  {
+   "default": "0",
+   "fieldname": "validate_attendance",
+   "fieldtype": "Check",
+   "label": "Validate Attendance"
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 9,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-08-26 00:11:43.353810",
+ "modified": "2022-10-12 03:24:23.110296",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Slip",

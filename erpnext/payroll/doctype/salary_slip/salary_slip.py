@@ -39,7 +39,7 @@ from erpnext.payroll.doctype.employee_benefit_claim.employee_benefit_claim impor
 	get_benefit_claim_amount,
 	get_last_payroll_period_benefits,
 )
-from erpnext.payroll.doctype.payroll_entry.payroll_entry import get_start_end_dates
+from erpnext.payroll.doctype.payroll_entry.payroll_entry import get_start_end_dates, validate_attendance_for_employee
 from erpnext.payroll.doctype.payroll_period.payroll_period import (
 	get_payroll_period,
 	get_period_factor,
@@ -1466,6 +1466,10 @@ class SalarySlip(TransactionBase):
 					'pending_leaves': flt(leave_values.get('pending_leaves')),
 					'available_leaves': flt(leave_values.get('remaining_leaves'))
 				})
+
+	def before_submit(self):
+		if self.validate_attendance and validate_attendance_for_employee(self.employee, self.start_date, self.end_date):
+			frappe.throw(_("Cannot Submit, Employees left to mark attendance"))
 
 def unlink_ref_doc_from_salary_slip(ref_no):
 	linked_ss = frappe.db.sql_list("""select name from `tabSalary Slip`
