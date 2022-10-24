@@ -2,7 +2,7 @@
  "actions": [],
  "allow_import": 1,
  "autoname": "HR-SSA-.YY.-.MM.-.#####",
- "creation": "2022-06-27 14:32:49.684508",
+ "creation": "2022-07-14 16:29:14.932895",
  "default_import_order": "0",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -91,7 +91,6 @@
    "fieldtype": "Link",
    "label": "Company",
    "options": "Company",
-   "read_only": 1,
    "reqd": 1
   },
   {
@@ -187,7 +186,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-07-14 16:27:32.919248",
+ "modified": "2022-10-24 23:12:42.300522",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure Assignment",
