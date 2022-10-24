@@ -3,7 +3,7 @@
  "allow_import": 1,
  "allow_rename": 1,
  "autoname": "Prompt",
- "creation": "2022-02-17 10:30:07.185756",
+ "creation": "2022-07-14 16:29:13.582470",
  "default_import_order": "0",
  "doctype": "DocType",
  "document_type": "Document",
@@ -49,8 +49,7 @@
    "fieldtype": "Link",
    "label": "Company",
    "options": "Company",
-   "remember_last_selected_value": 1,
-   "reqd": 1
+   "remember_last_selected_value": 1
   },
   {
    "fieldname": "letter_head",
@@ -268,7 +267,7 @@
  "idx": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-07-11 16:06:47.292381",
+ "modified": "2022-10-24 22:09:14.192285",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure",

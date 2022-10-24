@@ -11,10 +11,13 @@ frappe.ui.form.on('Salary Structure Assignment', {
 		frm.set_query("salary_structure", function() {
 			return {
 				filters: {
-					company: frm.doc.company,
 					docstatus: 1,
 					is_active: "Yes"
-				}
+				},
+				or_filters: [
+					["company", "is", "not set"],
+					["company", "=", frm.doc.company],
+				],
 			}
 		});
 
@@ -59,6 +62,9 @@ frappe.ui.form.on('Salary Structure Assignment', {
 				callback: function(data) {
 					refresh_field("payroll_cost_centers");
 				}
+			});
+			frappe.db.get_value("Employee", frm.doc.employee, "company", (r) => {
+				frm.set_value("company", r.company);
 			});
 		}
 		else {
