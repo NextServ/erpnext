@@ -797,6 +797,9 @@ class SalarySlip(TransactionBase):
 			):
 				component_row.set(attr, component_data.get(attr))
 
+			for attr in frappe.get_hooks('salary_component_fields'):
+				component_row.set(attr, component_data.get(attr))
+
 		if additional_salary:
 			if additional_salary.overwrite:
 				component_row.additional_amount = flt(flt(amount) - flt(component_row.get("default_amount", 0)),
