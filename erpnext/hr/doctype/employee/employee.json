@@ -4,7 +4,7 @@
  "allow_import": 1,
  "allow_rename": 1,
  "autoname": "naming_series:",
- "creation": "2022-06-27 14:32:48.044013",
+ "creation": "2022-07-14 16:29:09.064303",
  "default_import_order": "0",
  "doctype": "DocType",
  "document_type": "Setup",
@@ -121,6 +121,7 @@
   "organisational_tab",
   "erpnext_user",
   "user_id",
+  "tenant",
   "create_user",
   "create_user_permission",
   "employment_details",
@@ -1389,13 +1390,20 @@
   {
    "fieldname": "data_188",
    "fieldtype": "Data"
+  },
+  {
+   "fieldname": "tenant",
+   "fieldtype": "Link",
+   "label": "Tenant",
+   "options": "Additional Lark Tenant",
+   "read_only_depends_on": "!!user_id"
   }
  ],
  "icon": "fa fa-user",
  "idx": 24,
  "image_field": "image",
  "links": [],
- "modified": "2022-06-27 14:35:01.636062",
+ "modified": "2023-01-06 19:02:33.322369",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee",

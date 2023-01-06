@@ -39,6 +39,22 @@ class Department(NestedSet):
 		super(Department, self).on_trash()
 		delete_events(self.doctype, self.name)
 
+	def get_parent_lark_tenant(self):
+		if self.get('parent_department'):
+			parent = frappe.get_doc('Department', self.get('parent_department'))
+			parent_tenant = parent.get_lark_tenant()
+
+			if parent_tenant:
+				return parent_tenant
+
+		return frappe.get_value('Company', self.company, 'tenant')
+
+	def get_lark_tenant(self):
+		if self.get('tenant'):
+			return self.get('tenant')
+		
+		return self.get_parent_lark_tenant()
+
 def on_doctype_update():
 	frappe.db.add_index("Department", ["lft", "rgt"])
 
