@@ -3,8 +3,8 @@
  "allow_import": 1,
  "allow_rename": 1,
  "autoname": "field:company_name",
- "creation": "2022-12-19 21:28:27.388716",
- "default_import_order": "0",
+ "creation": "2022-06-08 05:37:03.387498",
+  "default_import_order": "0",
  "description": "Legal Entity / Subsidiary with a separate Chart of Accounts belonging to the Organization.",
  "doctype": "DocType",
  "document_type": "Setup",
@@ -17,6 +17,7 @@
   "country",
   "is_group",
   "tenant",
+  "pres_rdo",
   "cb0",
   "default_letter_head",
   "tax_id",
@@ -926,6 +927,11 @@
    "fieldtype": "Data",
    "label": "PAN Number",
    "translatable": 1
+  },
+  {
+   "fieldname": "pres_rdo",
+   "fieldtype": "Data",
+   "label": "RDO Code"
   },
   {
    "fieldname": "tenant",

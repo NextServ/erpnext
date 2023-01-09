@@ -1,8 +1,9 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "HR-APP-.YYYY.-.#####",
- "creation": "2022-02-18 13:44:11.943586",
+ "creation": "2022-03-10 14:16:20.435239",
  "default_import_order": "0",
  "description": "Applicant for a Job",
  "doctype": "DocType",
@@ -376,7 +377,7 @@
  "idx": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-03-10 12:16:17.608329",
+ "modified": "2022-11-16 15:41:07.050647",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Job Applicant",
@@ -391,6 +392,18 @@
    "read": 1,
    "report": 1,
    "role": "HR User",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Employee Self Service",
+   "set_user_permissions": 1,
    "share": 1,
    "write": 1
   }

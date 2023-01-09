@@ -3,6 +3,7 @@
  "allow_import": 1,
  "autoname": "HR-SHR-.YY.-.MM.-.#####",
  "creation": "2018-04-13 16:32:27.974273",
+ "default_import_order": "0",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -103,10 +104,11 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-08-10 17:59:31.550558",
+ "modified": "2022-11-16 16:14:20.065470",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Shift Request",
+ "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
   {
@@ -146,10 +148,22 @@
    "share": 1,
    "submit": 1,
    "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Employee Self Service",
+   "share": 1,
+   "write": 1
   }
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "title_field": "employee_name",
  "track_changes": 1
 }
