@@ -261,6 +261,24 @@ class Employee(NestedSet):
 			frappe.cache().hdel('employees_with_number', cell_number)
 			frappe.cache().hdel('employees_with_number', prev_number)
 
+	def get_lark_tenant(self):
+		if self.get('tenant'):
+			return self.get('tenant')
+
+		if self.get('department'):
+			department_tenant = frappe.get_doc('Department', self.get('department')).get_lark_tenant()
+
+			if department_tenant:
+				return department_tenant
+
+		if self.get('company'):
+			company_tenant = frappe.get_doc('Company', self.get('company')).get('tenant')
+
+			if company_tenant:
+				return company_tenant
+
+		return None
+
 def get_timeline_data(doctype, name):
 	'''Return timeline for attendance'''
 	return dict(frappe.db.sql('''select unix_timestamp(attendance_date), count(*)
@@ -386,8 +404,9 @@ def create_user(employee, user = None, email=None):
 		"gender": emp.gender,
 		"birth_date": emp.date_of_birth,
 		"phone": emp.cell_number,
-		"bio": emp.bio
+		"bio": emp.bio,
 	})
+	user.flags.tenantid = emp.get_lark_tenant()
 	user.insert()
 	return user.name
 
