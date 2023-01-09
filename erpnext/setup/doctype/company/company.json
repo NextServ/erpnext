@@ -3,7 +3,7 @@
  "allow_import": 1,
  "allow_rename": 1,
  "autoname": "field:company_name",
- "creation": "2022-04-05 01:54:32.825718",
+ "creation": "2022-06-08 05:37:03.387498",
  "default_import_order": "0",
  "description": "Legal Entity / Subsidiary with a separate Chart of Accounts belonging to the Organization.",
  "doctype": "DocType",
@@ -16,6 +16,7 @@
   "default_currency",
   "country",
   "is_group",
+  "pres_rdo",
   "cb0",
   "default_letter_head",
   "tax_id",
@@ -925,6 +926,11 @@
    "fieldtype": "Data",
    "label": "PAN Number",
    "translatable": 1
+  },
+  {
+   "fieldname": "pres_rdo",
+   "fieldtype": "Data",
+   "label": "RDO Code"
   }
  ],
  "icon": "fa fa-building",
@@ -932,7 +938,7 @@
  "image_field": "company_logo",
  "is_tree": 1,
  "links": [],
- "modified": "2022-05-13 16:24:33.102668",
+ "modified": "2022-12-02 10:18:39.918497",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Company",

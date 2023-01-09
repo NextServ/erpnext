@@ -1,0 +1,38 @@
+{
+ "attach_print": 0,
+ "channel": "Email",
+ "condition": "doc.status == 'Open'",
+ "creation": "2022-10-24 16:44:28.759381",
+ "date_changed": "exp_end_date",
+ "days_in_advance": 1,
+ "docstatus": 0,
+ "doctype": "Notification",
+ "document_type": "Task",
+ "enabled": 1,
+ "event": "Days Before",
+ "idx": 0,
+ "is_standard": 1,
+ "message": "Add your message here",
+ "modified": "2022-10-24 16:58:32.141395",
+ "modified_by": "Administrator",
+ "module": "Projects",
+ "name": "Lemonade 30-days Trial",
+ "owner": "Administrator",
+ "recipients": [
+  {
+   "receiver_by_document_field": "completed_by",
+   "receiver_by_role": "HR User"
+  },
+  {
+   "receiver_by_document_field": "completed_by",
+   "receiver_by_role": "Administrator"
+  },
+  {
+   "receiver_by_document_field": "completed_by",
+   "receiver_by_role": "HR Manager"
+  }
+ ],
+ "send_system_notification": 1,
+ "send_to_all_assignees": 1,
+ "subject": "Task: {{ doc.name }}"
+}

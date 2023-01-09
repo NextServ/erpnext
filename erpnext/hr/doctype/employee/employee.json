@@ -4,7 +4,7 @@
  "allow_import": 1,
  "allow_rename": 1,
  "autoname": "naming_series:",
- "creation": "2022-06-27 14:32:48.044013",
+ "creation": "2022-11-23 01:23:48.960165",
  "default_import_order": "0",
  "doctype": "DocType",
  "document_type": "Setup",
@@ -146,6 +146,7 @@
   "approvers_section",
   "expense_approver",
   "leave_approver",
+  "approval_option",
   "column_break_45",
   "shift_request_approver",
   "attendance_and_leave_details",
@@ -157,6 +158,8 @@
   "salary_mode",
   "payroll_cost_center",
   "column_break_52",
+  "e_wallet",
+  "account_number",
   "bank_name",
   "bank_ac_no",
   "lft",
@@ -196,7 +199,31 @@
   "held_on",
   "new_workplace",
   "feedback",
-  "data_188"
+  "data_188",
+  "tax_information_tab",
+  "employer_details_section",
+  "employers_name",
+  "employers_tin_id",
+  "employers_id",
+  "previous_employer_details_section",
+  "registered_name",
+  "registered_address",
+  "tax_id_number",
+  "rdo_code",
+  "income",
+  "tax_withheld",
+  "basic_salary",
+  "holiday_pay",
+  "overtime_pay",
+  "column_break_205",
+  "night_differential",
+  "hazard_pay",
+  "13th_month_pay",
+  "de_minimis_benefits",
+  "contribution_and_dues",
+  "salary_and_compensation",
+  "taxable_salaries_and_compensation",
+  "tax_year"
  ],
  "fields": [
   {
@@ -215,7 +242,7 @@
   },
   {
    "fieldname": "naming_series",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "label": "Series",
    "no_copy": 1,
    "oldfieldname": "naming_series",
@@ -520,7 +547,7 @@
    "label": "Salary Mode",
    "oldfieldname": "salary_mode",
    "oldfieldtype": "Select",
-   "options": "\nBank\nCash\nCheque"
+   "options": "\nBank\nCash\nCheque\nE-Wallet"
   },
   {
    "depends_on": "eval:doc.salary_mode == 'Bank'",
@@ -855,9 +882,9 @@
   },
   {
    "fieldname": "leave_approver",
-   "fieldtype": "Link",
+   "fieldtype": "Table",
    "label": "Leave Approver",
-   "options": "User"
+   "options": "Multiple Leave Approver"
   },
   {
    "fieldname": "column_break_19",
@@ -1389,13 +1416,151 @@
   {
    "fieldname": "data_188",
    "fieldtype": "Data"
+  },
+  {
+   "fieldname": "approval_option",
+   "fieldtype": "Select",
+   "label": "Approval Option",
+   "options": "\nEveryone Assigned (All Approver need to agree)\nAnyone Assigned (Any of the Approver can agree)\nSequential type of Approval"
+  },
+  {
+   "depends_on": "eval:doc.salary_mode == 'E-Wallet'",
+   "fieldname": "e_wallet",
+   "fieldtype": "Link",
+   "label": "E-wallet",
+   "options": "Digital Wallet"
+  },
+  {
+   "depends_on": "eval:doc.salary_mode == 'E-Wallet'",
+   "fieldname": "account_number",
+   "fieldtype": "Data",
+   "label": "Account Number"
+  },
+  {
+   "fieldname": "tax_information_tab",
+   "fieldtype": "Tab Break",
+   "label": "Tax Information"
+  },
+  {
+   "fieldname": "employer_details_section",
+   "fieldtype": "Section Break",
+   "label": "Employer Details"
+  },
+  {
+   "fieldname": "employers_name",
+   "fieldtype": "Data",
+   "label": "Employer's Name"
+  },
+  {
+   "fieldname": "employers_tin_id",
+   "fieldtype": "Data",
+   "label": "Employer's TIN ID"
+  },
+  {
+   "fieldname": "employers_id",
+   "fieldtype": "Data",
+   "label": "Employer's ID"
+  },
+  {
+   "fieldname": "previous_employer_details_section",
+   "fieldtype": "Section Break",
+   "label": "Previous Employer Details"
+  },
+  {
+   "fieldname": "registered_name",
+   "fieldtype": "Data",
+   "label": "Registered Name"
+  },
+  {
+   "fieldname": "registered_address",
+   "fieldtype": "Data",
+   "label": "Registered Address"
+  },
+  {
+   "fieldname": "tax_id_number",
+   "fieldtype": "Data",
+   "label": "TAX ID Number"
+  },
+  {
+   "fieldname": "rdo_code",
+   "fieldtype": "Data",
+   "label": "RDO Code"
+  },
+  {
+   "fieldname": "income",
+   "fieldtype": "Data",
+   "label": "Income"
+  },
+  {
+   "fieldname": "tax_withheld",
+   "fieldtype": "Float",
+   "label": "Tax Withheld"
+  },
+  {
+   "fieldname": "basic_salary",
+   "fieldtype": "Float",
+   "label": "Basic Salary"
+  },
+  {
+   "fieldname": "holiday_pay",
+   "fieldtype": "Float",
+   "label": "Holiday Pay"
+  },
+  {
+   "fieldname": "overtime_pay",
+   "fieldtype": "Float",
+   "label": "Overtime Pay"
+  },
+  {
+   "fieldname": "column_break_205",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "night_differential",
+   "fieldtype": "Float",
+   "label": "Night Differential"
+  },
+  {
+   "fieldname": "hazard_pay",
+   "fieldtype": "Float",
+   "label": "Hazard Pay"
+  },
+  {
+   "fieldname": "13th_month_pay",
+   "fieldtype": "Float",
+   "label": "13th Month Pay"
+  },
+  {
+   "fieldname": "de_minimis_benefits",
+   "fieldtype": "Float",
+   "label": "De Minimis Benefits"
+  },
+  {
+   "fieldname": "contribution_and_dues",
+   "fieldtype": "Float",
+   "label": "Contribution and Dues"
+  },
+  {
+   "fieldname": "salary_and_compensation",
+   "fieldtype": "Float",
+   "label": "Salary and Compensation"
+  },
+  {
+   "fieldname": "taxable_salaries_and_compensation",
+   "fieldtype": "Float",
+   "label": "Taxable Salaries and Compensation"
+  },
+  {
+   "fieldname": "tax_year",
+   "fieldtype": "Data",
+   "label": "Tax Year"
   }
  ],
  "icon": "fa fa-user",
  "idx": 24,
  "image_field": "image",
  "links": [],
- "modified": "2022-06-27 14:35:01.636062",
+ "modified": "2022-12-01 10:31:09.404853",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee",

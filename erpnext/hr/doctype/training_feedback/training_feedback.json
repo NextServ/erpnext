@@ -1,7 +1,8 @@
 {
  "actions": [],
  "autoname": "HR-TRF-.YYYY.-.#####",
- "creation": "2016-08-08 06:35:34.158568",
+ "creation": "2022-02-18 13:44:09.958309",
+ "default_import_order": "0",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -101,7 +102,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-01-18 19:32:20.805277",
+ "modified": "2022-11-16 16:21:18.734135",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Training Feedback",
@@ -133,6 +134,17 @@
    "role": "Employee",
    "share": 1,
    "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Employee Self Service",
+   "share": 1,
    "write": 1
   }
  ],

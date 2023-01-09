@@ -2,6 +2,7 @@
  "actions": [],
  "autoname": "format:HR-REF-{####}",
  "creation": "2021-03-23 14:54:45.047051",
+ "default_import_order": "0",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -205,10 +206,11 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-05-04 17:03:26.134560",
+ "modified": "2022-11-16 16:11:28.050852",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Referral",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {
@@ -297,9 +299,21 @@
    "report": 1,
    "role": "Employee",
    "share": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Employee Self Service",
+   "share": 1,
+   "write": 1
   }
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "title_field": "full_name"
 }

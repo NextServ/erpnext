@@ -3,6 +3,7 @@
  "allow_import": 1,
  "autoname": "naming_series:",
  "creation": "2017-10-09 14:26:29.612365",
+ "default_import_order": "0",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -200,7 +201,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2021-09-11 18:38:38.617478",
+ "modified": "2022-11-16 16:16:47.316595",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance",
@@ -232,10 +233,22 @@
    "share": 1,
    "submit": 1,
    "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Employee Self Service",
+   "share": 1,
+   "write": 1
   }
  ],
  "search_fields": "employee,employee_name",
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "track_changes": 1
 }
