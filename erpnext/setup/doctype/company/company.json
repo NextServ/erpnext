@@ -16,6 +16,7 @@
   "default_currency",
   "country",
   "is_group",
+  "tenant",
   "cb0",
   "default_letter_head",
   "tax_id",
@@ -131,8 +132,7 @@
   "company_80g_number",
   "with_effect_from",
   "non_profit_column_break",
-  "pan_details",
-  "tenant"
+  "pan_details"
  ],
  "fields": [
   {
@@ -940,7 +940,7 @@
  "image_field": "company_logo",
  "is_tree": 1,
  "links": [],
- "modified": "2023-01-06 18:56:02.242062",
+ "modified": "2023-01-09 11:45:31.048008",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Company",
