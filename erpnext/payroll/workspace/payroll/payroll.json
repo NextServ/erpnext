@@ -314,8 +314,26 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "TAX Reports",
+   "link_count": 1,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Income Tax",
+   "link_count": 0,
+   "link_to": "Income Tax Deductions",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "PH Specific",
-   "link_count": 2,
+   "link_count": 3,
    "onboard": 0,
    "type": "Card Break"
   },
@@ -342,23 +360,15 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "TAX Reports",
-   "link_count": 1,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Income Tax",
+   "label": "BIR Form 2316",
    "link_count": 0,
-   "link_to": "Income Tax Deductions",
-   "link_type": "Report",
+   "link_to": "BIR Form 2316",
+   "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
   }
  ],
- "modified": "2023-01-12 00:49:28.514951",
+ "modified": "2023-01-12 00:51:11.808846",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Payroll",
