@@ -4,7 +4,7 @@
  "allow_import": 1,
  "allow_rename": 1,
  "autoname": "naming_series:",
- "creation": "2023-01-11 00:58:34.762069",
+ "creation": "2023-01-20 05:49:18.151209",
  "default_import_order": "0",
  "doctype": "DocType",
  "document_type": "Setup",
@@ -199,32 +199,7 @@
   "exit_interview_details",
   "held_on",
   "new_workplace",
-  "feedback",
-  "data_188",
-  "tax_information_tab",
-  "employer_details_section",
-  "employers_name",
-  "employers_tin_id",
-  "employers_id",
-  "previous_employer_details_section",
-  "registered_name",
-  "registered_address",
-  "tax_id_number",
-  "rdo_code",
-  "income",
-  "tax_withheld",
-  "basic_salary",
-  "holiday_pay",
-  "overtime_pay",
-  "column_break_205",
-  "night_differential",
-  "hazard_pay",
-  "13th_month_pay",
-  "de_minimis_benefits",
-  "contribution_and_dues",
-  "salary_and_compensation",
-  "taxable_salaries_and_compensation",
-  "tax_year"
+  "feedback"
  ],
  "fields": [
   {
@@ -1415,10 +1390,6 @@
    "options": "Employee Identification Document"
   },
   {
-   "fieldname": "data_188",
-   "fieldtype": "Data"
-  },
-  {
    "fieldname": "approval_option",
    "fieldtype": "Select",
    "label": "Approval Option",
@@ -1438,125 +1409,6 @@
    "label": "Account Number"
   },
   {
-   "fieldname": "tax_information_tab",
-   "fieldtype": "Tab Break",
-   "label": "Tax Information"
-  },
-  {
-   "fieldname": "employer_details_section",
-   "fieldtype": "Section Break",
-   "label": "Employer Details"
-  },
-  {
-   "fieldname": "employers_name",
-   "fieldtype": "Data",
-   "label": "Employer's Name"
-  },
-  {
-   "fieldname": "employers_tin_id",
-   "fieldtype": "Data",
-   "label": "Employer's TIN ID"
-  },
-  {
-   "fieldname": "employers_id",
-   "fieldtype": "Data",
-   "label": "Employer's ID"
-  },
-  {
-   "fieldname": "previous_employer_details_section",
-   "fieldtype": "Section Break",
-   "label": "Previous Employer Details"
-  },
-  {
-   "fieldname": "registered_name",
-   "fieldtype": "Data",
-   "label": "Registered Name"
-  },
-  {
-   "fieldname": "registered_address",
-   "fieldtype": "Data",
-   "label": "Registered Address"
-  },
-  {
-   "fieldname": "tax_id_number",
-   "fieldtype": "Data",
-   "label": "TAX ID Number"
-  },
-  {
-   "fieldname": "rdo_code",
-   "fieldtype": "Data",
-   "label": "RDO Code"
-  },
-  {
-   "fieldname": "income",
-   "fieldtype": "Data",
-   "label": "Income"
-  },
-  {
-   "fieldname": "tax_withheld",
-   "fieldtype": "Float",
-   "label": "Tax Withheld"
-  },
-  {
-   "fieldname": "basic_salary",
-   "fieldtype": "Float",
-   "label": "Basic Salary"
-  },
-  {
-   "fieldname": "holiday_pay",
-   "fieldtype": "Float",
-   "label": "Holiday Pay"
-  },
-  {
-   "fieldname": "overtime_pay",
-   "fieldtype": "Float",
-   "label": "Overtime Pay"
-  },
-  {
-   "fieldname": "column_break_205",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "night_differential",
-   "fieldtype": "Float",
-   "label": "Night Differential"
-  },
-  {
-   "fieldname": "hazard_pay",
-   "fieldtype": "Float",
-   "label": "Hazard Pay"
-  },
-  {
-   "fieldname": "13th_month_pay",
-   "fieldtype": "Float",
-   "label": "13th Month Pay"
-  },
-  {
-   "fieldname": "de_minimis_benefits",
-   "fieldtype": "Float",
-   "label": "De Minimis Benefits"
-  },
-  {
-   "fieldname": "contribution_and_dues",
-   "fieldtype": "Float",
-   "label": "Contribution and Dues"
-  },
-  {
-   "fieldname": "salary_and_compensation",
-   "fieldtype": "Float",
-   "label": "Salary and Compensation"
-  },
-  {
-   "fieldname": "taxable_salaries_and_compensation",
-   "fieldtype": "Float",
-   "label": "Taxable Salaries and Compensation"
-  },
-  {
-   "fieldname": "tax_year",
-   "fieldtype": "Data",
-   "label": "Tax Year"
-  },
-  {
    "fieldname": "tenant",
    "fieldtype": "Link",
    "label": "Tenant",
@@ -1568,7 +1420,7 @@
  "idx": 24,
  "image_field": "image",
  "links": [],
- "modified": "2023-01-19 21:04:36.999783",
+ "modified": "2023-01-20 06:01:02.911750",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee",
