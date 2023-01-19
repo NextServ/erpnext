@@ -2,14 +2,15 @@
  "actions": [],
  "allow_import": 1,
  "autoname": "field:identification_document_type",
- "creation": "2022-02-28 01:22:59.297582",
+ "creation": "2023-01-11 00:58:36.263134",
  "default_import_order": "0",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "identification_document_type",
-  "description"
+  "description",
+  "region"
  ],
  "fields": [
   {
@@ -24,10 +25,15 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Description"
+  },
+  {
+   "fieldname": "region",
+   "fieldtype": "Data",
+   "label": "Region"
   }
  ],
  "links": [],
- "modified": "2022-08-26 14:12:16.065255",
+ "modified": "2023-01-19 20:46:44.364123",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Identification Document Type",

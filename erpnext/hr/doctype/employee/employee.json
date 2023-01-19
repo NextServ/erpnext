@@ -4,7 +4,7 @@
  "allow_import": 1,
  "allow_rename": 1,
  "autoname": "naming_series:",
- "creation": "2022-07-14 16:29:09.064303",
+ "creation": "2023-01-11 00:58:34.762069",
  "default_import_order": "0",
  "doctype": "DocType",
  "document_type": "Setup",
@@ -1067,7 +1067,7 @@
   },
   {
    "fieldname": "zip",
-   "fieldtype": "Int",
+   "fieldtype": "Data",
    "label": "ZIP"
   },
   {
@@ -1568,7 +1568,7 @@
  "idx": 24,
  "image_field": "image",
  "links": [],
- "modified": "2023-01-06 19:02:33.322369",
+ "modified": "2023-01-19 21:04:36.999783",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee",
