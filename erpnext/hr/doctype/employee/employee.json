@@ -858,9 +858,9 @@
   },
   {
    "fieldname": "leave_approver",
-   "fieldtype": "Table",
+   "fieldtype": "Link",
    "label": "Leave Approver",
-   "options": "Multiple Leave Approver"
+   "options": "User"
   },
   {
    "fieldname": "column_break_19",
