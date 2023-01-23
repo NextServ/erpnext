@@ -662,7 +662,7 @@ class SalarySlip(TransactionBase):
 		data_hooks = frappe.get_hooks('salary_data_extensions')
 
 		for hook in data_hooks:
-			data.update(hook(self))
+			data.update(frappe.get_attr(hook)(self))
 
 		# set values for components
 		salary_components = frappe.get_all("Salary Component", fields=["salary_component_abbr"])
