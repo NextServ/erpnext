@@ -1,15 +1,20 @@
 {
+ "actions": [],
  "autoname": "prompt",
- "creation": "2018-04-13 16:22:52.954783",
+ "creation": "2022-02-17 10:29:16.211579",
+ "default_import_order": "0",
  "doctype": "DocType",
+ "documentation": "`",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "start_time",
   "end_time",
   "column_break_3",
+  "lark_id",
   "holiday_list",
   "enable_auto_attendance",
+  "enable_attendance_calculation",
   "auto_attendance_settings_section",
   "determine_check_in_and_check_out",
   "working_hours_calculation_based_on",
@@ -25,7 +30,21 @@
   "late_entry_grace_period",
   "column_break_18",
   "enable_exit_grace_period",
-  "early_exit_grace_period"
+  "early_exit_grace_period",
+  "attendance_calculation_settings_section",
+  "computation_method",
+  "break_time_start",
+  "break_time_end",
+  "column_break_27",
+  "grace_period",
+  "absent_grace_period",
+  "maximum_early_clockin",
+  "column_break_31",
+  "early_out_grace_period",
+  "early_out_absent_grace_period",
+  "maximum_late_clockout",
+  "section_break_35",
+  "additional_clock_times"
  ],
  "fields": [
   {
@@ -143,7 +162,8 @@
    "description": "Mark attendance based on 'Employee Checkin' for Employees assigned to this shift.",
    "fieldname": "enable_auto_attendance",
    "fieldtype": "Check",
-   "label": "Enable Auto Attendance"
+   "label": "Enable Auto Attendance",
+   "read_only_depends_on": "enable_attendance_calculation"
   },
   {
    "description": "Attendance will be marked automatically only after this date.",
@@ -156,12 +176,114 @@
    "fieldname": "last_sync_of_checkin",
    "fieldtype": "Datetime",
    "label": "Last Sync of Checkin"
+  },
+  {
+   "default": "0",
+   "description": "Will perform calculations on working hours for payroll computation.",
+   "fieldname": "enable_attendance_calculation",
+   "fieldtype": "Check",
+   "label": "Enable Attendance Calculation",
+   "read_only_depends_on": "enable_auto_attendance"
+  },
+  {
+   "fieldname": "attendance_calculation_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Attendance Calculation Settings"
+  },
+  {
+   "depends_on": "enable_attendance_calculation",
+   "fieldname": "computation_method",
+   "fieldtype": "Select",
+   "label": "Computation Method",
+   "mandatory_depends_on": "enable_attendance_calculation",
+   "options": "\nFixed\nFlexible"
+  },
+  {
+   "depends_on": "enable_attendance_calculation",
+   "description": "The amount of minutes the employee may be late before being recorded as late.",
+   "fieldname": "grace_period",
+   "fieldtype": "Int",
+   "label": "Grace Period (mins)"
+  },
+  {
+   "depends_on": "enable_attendance_calculation",
+   "description": "The amount of minutes the employee may be late without being considered absent.",
+   "fieldname": "absent_grace_period",
+   "fieldtype": "Int",
+   "label": "Absent Grace Period (mins)"
+  },
+  {
+   "depends_on": "enable_attendance_calculation",
+   "description": "The maximum amount of minutes the employee may clock in before their shift start.",
+   "fieldname": "maximum_early_clockin",
+   "fieldtype": "Int",
+   "label": "Maximum Early Clock-in (mins)"
+  },
+  {
+   "depends_on": "enable_attendance_calculation",
+   "fieldname": "break_time_start",
+   "fieldtype": "Time",
+   "label": "Break Time Start"
+  },
+  {
+   "depends_on": "enable_attendance_calculation",
+   "fieldname": "break_time_end",
+   "fieldtype": "Time",
+   "label": "Break Time End",
+   "mandatory_depends_on": "break_time_start"
+  },
+  {
+   "fieldname": "column_break_27",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_31",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "enable_attendance_calculation",
+   "description": "The amount of minutes the employee may leave early without being recorded as an early out.",
+   "fieldname": "early_out_grace_period",
+   "fieldtype": "Int",
+   "label": "Early Out Grace Period (mins)"
+  },
+  {
+   "depends_on": "enable_attendance_calculation",
+   "description": "The amount of minutes the employee may leave early without being considered absent.",
+   "fieldname": "early_out_absent_grace_period",
+   "fieldtype": "Int",
+   "label": "Early Out Absent Grace Period (mins)"
+  },
+  {
+   "depends_on": "enable_attendance_calculation",
+   "description": "The maximum amount of minutes the employee may clock out after their shift end.",
+   "fieldname": "maximum_late_clockout",
+   "fieldtype": "Int",
+   "label": "Maximum Late Clock-out (mins)"
+  },
+  {
+   "fieldname": "section_break_35",
+   "fieldtype": "Section Break"
+  },
+  {
+   "depends_on": "enable_attendance_calculation",
+   "fieldname": "additional_clock_times",
+   "fieldtype": "Table",
+   "label": "Additional Clock Times",
+   "options": "Shift Type Child"
+  },
+  {
+   "fieldname": "lark_id",
+   "fieldtype": "Data",
+   "label": "Lark ID"
   }
  ],
- "modified": "2019-07-30 01:05:24.660666",
+ "links": [],
+ "modified": "2023-01-27 03:03:08.570073",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Shift Type",
+ "naming_rule": "Set by user",
  "owner": "Administrator",
  "permissions": [
   {
@@ -200,5 +322,6 @@
  "quick_entry": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "track_changes": 1
 }

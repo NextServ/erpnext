@@ -1,0 +1,102 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-01-27 02:27:00.704472",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "start_time",
+  "end_time",
+  "attendance_calculation_settings_section",
+  "grace_period",
+  "absent_grace_period",
+  "maximum_early_clockin",
+  "column_break_31",
+  "early_out_grace_period",
+  "early_out_absent_grace_period",
+  "maximum_late_clockout"
+ ],
+ "fields": [
+  {
+   "columns": 2,
+   "fieldname": "start_time",
+   "fieldtype": "Time",
+   "in_list_view": 1,
+   "label": "Start Time",
+   "reqd": 1
+  },
+  {
+   "columns": 2,
+   "fieldname": "end_time",
+   "fieldtype": "Time",
+   "in_list_view": 1,
+   "label": "End Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "attendance_calculation_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Attendance Calculation Settings"
+  },
+  {
+   "columns": 1,
+   "description": "The amount of minutes the employee may be late before being recorded as late.",
+   "fieldname": "grace_period",
+   "fieldtype": "Int",
+   "label": "Grace Period (mins)"
+  },
+  {
+   "columns": 1,
+   "description": "The amount of minutes the employee may be late without being considered absent.",
+   "fieldname": "absent_grace_period",
+   "fieldtype": "Int",
+   "label": "Absent Grace Period (mins)"
+  },
+  {
+   "columns": 1,
+   "description": "The maximum amount of minutes the employee may clock in before their shift start.",
+   "fieldname": "maximum_early_clockin",
+   "fieldtype": "Int",
+   "label": "Maximum Early Clock-in (mins)"
+  },
+  {
+   "fieldname": "column_break_31",
+   "fieldtype": "Column Break"
+  },
+  {
+   "columns": 1,
+   "description": "The amount of minutes the employee may leave early without being recorded as an early out.",
+   "fieldname": "early_out_grace_period",
+   "fieldtype": "Int",
+   "label": "Early Out Grace Period (mins)"
+  },
+  {
+   "columns": 1,
+   "description": "The amount of minutes the employee may leave early without being considered absent.",
+   "fieldname": "early_out_absent_grace_period",
+   "fieldtype": "Int",
+   "label": "Early Out Absent Grace Period (mins)"
+  },
+  {
+   "columns": 1,
+   "description": "The maximum amount of minutes the employee may clock out after their shift end.",
+   "fieldname": "maximum_late_clockout",
+   "fieldtype": "Int",
+   "label": "Maximum Late Clock-out (mins)"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2023-01-27 02:35:09.533965",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Shift Type Child",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

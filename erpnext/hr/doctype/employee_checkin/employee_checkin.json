@@ -2,7 +2,7 @@
  "actions": [],
  "allow_import": 1,
  "autoname": "EMP-CKIN-.MM.-.YYYY.-.######",
- "creation": "2019-06-10 11:56:34.536413",
+ "creation": "2022-06-27 14:32:48.529891",
  "default_import_order": "0",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -19,7 +19,8 @@
   "shift_start",
   "shift_end",
   "shift_actual_start",
-  "shift_actual_end"
+  "shift_actual_end",
+  "lark_result_id"
  ],
  "fields": [
   {
@@ -105,10 +106,15 @@
    "fieldtype": "Datetime",
    "hidden": 1,
    "label": "Shift Actual End"
+  },
+  {
+   "fieldname": "lark_result_id",
+   "fieldtype": "Data",
+   "label": "Lark Result ID"
   }
  ],
  "links": [],
- "modified": "2022-06-02 19:07:25.473125",
+ "modified": "2023-01-27 01:28:26.626444",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Checkin",

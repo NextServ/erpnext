@@ -2,7 +2,8 @@
  "actions": [],
  "allow_import": 1,
  "autoname": "HR-SHA-.YY.-.MM.-.#####",
- "creation": "2018-04-13 16:25:04.562730",
+ "creation": "2022-02-17 10:29:14.676401",
+ "default_import_order": "0",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -17,6 +18,7 @@
   "end_date",
   "shift_request",
   "department",
+  "synced_from_lark",
   "amended_from"
  ],
  "fields": [
@@ -88,9 +90,7 @@
    "allow_on_submit": 1,
    "fieldname": "end_date",
    "fieldtype": "Date",
-   "label": "End Date",
-   "show_days": 1,
-   "show_seconds": 1
+   "label": "End Date"
   },
   {
    "allow_on_submit": 1,
@@ -98,17 +98,22 @@
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "Active\nInactive",
-   "show_days": 1,
-   "show_seconds": 1
+   "options": "Active\nInactive"
+  },
+  {
+   "default": "0",
+   "fieldname": "synced_from_lark",
+   "fieldtype": "Check",
+   "label": "Synced from Lark"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-06-15 14:27:54.310773",
+ "modified": "2023-01-27 04:30:05.431913",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Shift Assignment",
+ "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
   {
@@ -150,6 +155,7 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "title_field": "employee_name",
  "track_changes": 1
 }
