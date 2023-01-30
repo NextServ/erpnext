@@ -233,42 +233,45 @@ def import_lark_checkin(date_from, date_to, employees=[]):
 
 				lark_user_id = r.get('data').get('user').get('user_id')
 
-				r = requests.post('https://open.larksuite.com/open-apis/attendance/v1/user_tasks/query?employee_type=employee_id', headers={
-					'Authorization': 'Bearer ' + tenant_access_token,
-				}, json={
-					'user_ids': [lark_user_id],
-					'check_date_from': frappe.utils.getdate(date_from).strftime('%Y%m%d'),
-					'check_date_to': frappe.utils.getdate(date_to).strftime('%Y%m%d')
-				}).json()
-				lark_settings.handle_response_error(r)
+				try:
+					r = requests.post('https://open.larksuite.com/open-apis/attendance/v1/user_tasks/query?employee_type=employee_id', headers={
+						'Authorization': 'Bearer ' + tenant_access_token,
+					}, json={
+						'user_ids': [lark_user_id],
+						'check_date_from': frappe.utils.getdate(date_from).strftime('%Y%m%d'),
+						'check_date_to': frappe.utils.getdate(date_to).strftime('%Y%m%d')
+					}).json()
+					lark_settings.handle_response_error(r)
 
-				for day in r.get('data').get('user_task_results'):
-					# Delete all attendance for this result day
-					frappe.db.delete('Employee Checkin', {
-						'lark_result_id': day.get('result_id'),
-					})
+					for day in r.get('data').get('user_task_results'):
+						# Delete all attendance for this result day
+						frappe.db.delete('Employee Checkin', {
+							'lark_result_id': day.get('result_id'),
+						})
 
-					# Create records for the days
-					for record in day.get('records'):
-						if record.get('check_in_record_id'):
-							checkin_record = frappe.new_doc('Employee Checkin')
-							checkin_record.employee = employee_name
-							checkin_record.log_type = 'IN'
-							checkin_record.lark_result_id = day.get('result_id')
-							checkin_record.time = frappe.utils.convert_utc_to_user_timezone(
-								datetime.utcfromtimestamp(int(record.get('check_in_record').get('check_time')))
-							).strftime('%Y-%m-%d %H:%M:%S')
-							checkin_record.save()
+						# Create records for the days
+						for record in day.get('records'):
+							if record.get('check_in_record_id'):
+								checkin_record = frappe.new_doc('Employee Checkin')
+								checkin_record.employee = employee_name
+								checkin_record.log_type = 'IN'
+								checkin_record.lark_result_id = day.get('result_id')
+								checkin_record.time = frappe.utils.convert_utc_to_user_timezone(
+									datetime.utcfromtimestamp(int(record.get('check_in_record').get('check_time')))
+								).strftime('%Y-%m-%d %H:%M:%S')
+								checkin_record.save()
 
-						if record.get('check_out_record_id'):
-							checkin_record = frappe.new_doc('Employee Checkin')
-							checkin_record.employee = employee_name
-							checkin_record.log_type = 'OUT'
-							checkin_record.lark_result_id = day.get('result_id')
-							checkin_record.time = frappe.utils.convert_utc_to_user_timezone(
-								datetime.utcfromtimestamp(int(record.get('check_out_record').get('check_time')))
-							).strftime('%Y-%m-%d %H:%M:%S')
-							checkin_record.save()
+							if record.get('check_out_record_id'):
+								checkin_record = frappe.new_doc('Employee Checkin')
+								checkin_record.employee = employee_name
+								checkin_record.log_type = 'OUT'
+								checkin_record.lark_result_id = day.get('result_id')
+								checkin_record.time = frappe.utils.convert_utc_to_user_timezone(
+									datetime.utcfromtimestamp(int(record.get('check_out_record').get('check_time')))
+								).strftime('%Y-%m-%d %H:%M:%S')
+								checkin_record.save()
+				except Exception as e:
+					frappe.logger('import').error('Failed to import attendance for ' + employee_name, exc_info=e)
 
 				# Import shifts
 				r = requests.post('https://open.larksuite.com/open-apis/attendance/v1/user_daily_shifts/query?employee_type=employee_id', headers={
@@ -281,74 +284,77 @@ def import_lark_checkin(date_from, date_to, employees=[]):
 				lark_settings.handle_response_error(r)
 
 				for date in r.get('data').get('user_daily_shifts'):
-					assignment_date = datetime(int(str(date.get('month'))[0:4]), int(str(date.get('month'))[5:7]), int(date.get('day_no')))
+					try:
+						assignment_date = datetime(int(str(date.get('month'))[0:4]), int(str(date.get('month'))[5:7]), int(date.get('day_no')))
 
-					# Sync in the Shift Type first
-					if int(date.get('shift_id')) and not date.get('shift_id') in synced_shift_ids:
-						# Retrieve shift information
-						sr = requests.get('https://open.larksuite.com/open-apis/attendance/v1/shifts/' + date.get('shift_id'), headers={
-							'Authorization': 'Bearer ' + tenant_access_token,
-						}).json()
-						lark_settings.handle_response_error(sr)
-						lark_shift = sr.get('data')
-						shift_type = None
+						# Sync in the Shift Type first
+						if int(date.get('shift_id')) and not date.get('shift_id') in synced_shift_ids:
+							# Retrieve shift information
+							sr = requests.get('https://open.larksuite.com/open-apis/attendance/v1/shifts/' + date.get('shift_id'), headers={
+								'Authorization': 'Bearer ' + tenant_access_token,
+							}).json()
+							lark_settings.handle_response_error(sr)
+							lark_shift = sr.get('data')
+							shift_type = None
 
-						if frappe.db.exists('Shift Type', { 'lark_id': lark_shift.get('shift_id') }):
-							shift_type = frappe.get_doc('Shift Type', frappe.db.get_value('Shift Type', { 'lark_id': lark_shift.get('shift_id') }, 'name'))
-						else:
-							shift_type = frappe.new_doc('Shift Type')
-							shift_type.name = lark_shift.get('shift_name')
-							shift_type.enable_attendance_calculation = True
-							shift_type.lark_id = lark_shift.get('shift_id')
+							if frappe.db.exists('Shift Type', { 'lark_id': lark_shift.get('shift_id') }):
+								shift_type = frappe.get_doc('Shift Type', frappe.db.get_value('Shift Type', { 'lark_id': lark_shift.get('shift_id') }, 'name'))
+							else:
+								shift_type = frappe.new_doc('Shift Type')
+								shift_type.name = lark_shift.get('shift_name')
+								shift_type.enable_attendance_calculation = True
+								shift_type.lark_id = lark_shift.get('shift_id')
 
-						shift_type.update(convert_lark_punch_time_rules(lark_shift.get('punch_time_rule')[0]))
+							shift_type.update(convert_lark_punch_time_rules(lark_shift.get('punch_time_rule')[0]))
 
-						if lark_shift.get('is_flexible'):
-							shift_type.computation_method = 'Flexible'
-						else:
-							shift_type.computation_method = 'Fixed'
+							if lark_shift.get('is_flexible'):
+								shift_type.computation_method = 'Flexible'
+							else:
+								shift_type.computation_method = 'Fixed'
 
-						shift_type.additional_clock_times = []
+							shift_type.additional_clock_times = []
 
-						for punch_rule in lark_shift.get('punch_time_rule')[1:]:
-							shift_type.append('additional_clock_times', convert_lark_punch_time_rules(punch_rule))
+							for punch_rule in lark_shift.get('punch_time_rule')[1:]:
+								shift_type.append('additional_clock_times', convert_lark_punch_time_rules(punch_rule))
 
-						if lark_shift.get('rest_time_rule'):
-							shift_type.break_time_start = lark_shift.get('rest_time_rule')[0].get('rest_begin_time')
-							shift_type.break_time_end = lark_shift.get('rest_time_rule')[0].get('rest_end_time')
-						else:
-							shift_type.break_time_start = None
-							shift_type.break_time_end = None
+							if lark_shift.get('rest_time_rule'):
+								shift_type.break_time_start = lark_shift.get('rest_time_rule')[0].get('rest_begin_time')
+								shift_type.break_time_end = lark_shift.get('rest_time_rule')[0].get('rest_end_time')
+							else:
+								shift_type.break_time_start = None
+								shift_type.break_time_end = None
 
-						shift_type.save()
-						synced_shift_ids.append(date.get('shift_id'))
+							shift_type.save()
+							synced_shift_ids.append(date.get('shift_id'))
 
-					if int(date.get('shift_id')):
-						# Find existing shift assignment for this date
-						if frappe.db.exists('Shift Assignment', [['employee', '=', employee_name], ['end_date', '>=', assignment_date], ['start_date', '<=', assignment_date], ['synced_from_lark', '=', False], ['docstatus', '=', 1]]):
-							frappe.logger('import').error('Failed to create shift assignment for ' + employee_name + ' on ' + str(assignment_date) + ' (collision)')
-						else:
-							shift_type = frappe.db.get_value('Shift Type', { 'lark_id': date.get('shift_id') }, 'name')
+						if int(date.get('shift_id')):
+							# Find existing shift assignment for this date
+							if frappe.db.exists('Shift Assignment', [['employee', '=', employee_name], ['end_date', '>=', assignment_date], ['start_date', '<=', assignment_date], ['synced_from_lark', '=', False], ['docstatus', '=', 1]]):
+								frappe.logger('import').error('Failed to create shift assignment for ' + employee_name + ' on ' + str(assignment_date) + ' (collision)')
+							else:
+								shift_type = frappe.db.get_value('Shift Type', { 'lark_id': date.get('shift_id') }, 'name')
 
-							# Check if there is already an assignment for this date
-							existing_assignment_name = frappe.db.get_value('Shift Assignment', [['employee', '=', employee_name], ['end_date', '>=', assignment_date], ['start_date', '<=', assignment_date], ['synced_from_lark', '=', True]], 'name')
+								# Check if there is already an assignment for this date
+								existing_assignment_name = frappe.db.get_value('Shift Assignment', [['employee', '=', employee_name], ['end_date', '>=', assignment_date], ['start_date', '<=', assignment_date], ['synced_from_lark', '=', True]], 'name')
 
-							# And if that assignment is correct
-							if existing_assignment_name and frappe.db.get_value('Shift Assignment', existing_assignment_name, 'shift_type') != shift_type:
-								existing_assignment = frappe.get_doc('Shift Assignment', existing_assignment_name)
-								existing_assignment.cancel()
+								# And if that assignment is correct
+								if existing_assignment_name and frappe.db.get_value('Shift Assignment', existing_assignment_name, 'shift_type') != shift_type:
+									existing_assignment = frappe.get_doc('Shift Assignment', existing_assignment_name)
+									existing_assignment.cancel()
 
-							new_assignment = frappe.new_doc('Shift Assignment')
-							new_assignment.employee = employee_name
-							new_assignment.shift_type = shift_type
-							new_assignment.status = 'Active'
-							new_assignment.company = frappe.db.get_value('Employee', employee_name, 'company')
-							new_assignment.start_date = assignment_date
-							new_assignment.end_date = assignment_date
-							new_assignment.amended_from = existing_assignment_name
-							new_assignment.synced_from_lark = True
-							new_assignment.save()
-							new_assignment.submit()
+								new_assignment = frappe.new_doc('Shift Assignment')
+								new_assignment.employee = employee_name
+								new_assignment.shift_type = shift_type
+								new_assignment.status = 'Active'
+								new_assignment.company = frappe.db.get_value('Employee', employee_name, 'company')
+								new_assignment.start_date = assignment_date
+								new_assignment.end_date = assignment_date
+								new_assignment.amended_from = existing_assignment_name
+								new_assignment.synced_from_lark = True
+								new_assignment.save()
+								new_assignment.submit()
+					except Exception as e:
+						frappe.logger('import').error('Failed to import shift assignments for ' + employee_name + ' on ' + str(date), exc_info=e)
 			except Exception as e:
 				frappe.logger('import').error('Failed to import ' + employee_name, exc_info=e)
 

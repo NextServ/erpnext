@@ -149,13 +149,13 @@ def get_employee_shift(employee, for_date=None, consider_default_shift=False, ne
 		for_date = nowdate()
 	default_shift = frappe.db.get_value('Employee', employee, 'default_shift')
 	shift_type_name = None
-	shift_assignment_details = frappe.db.get_value('Shift Assignment', {'employee':employee, 'start_date':('<=', for_date), 'docstatus': '1', 'status': "Active"}, ['shift_type', 'end_date'])
+	shift_assignment_details = frappe.db.get_value('Shift Assignment', {'employee':employee, 'start_date':('<=', for_date), 'docstatus': '1', 'status': "Active"}, ['shift_type', 'end_date', 'name'])
 
 	if shift_assignment_details:
 		shift_type_name = shift_assignment_details[0]
 
 		# if end_date present means that shift is over after end_date else it is a ongoing shift.
-		if shift_assignment_details[1] and for_date >= shift_assignment_details[1] :
+		if shift_assignment_details[1] and for_date > shift_assignment_details[1] :
 			shift_type_name = None
 
 	if not shift_type_name and consider_default_shift:
@@ -197,7 +197,7 @@ def get_employee_shift(employee, for_date=None, consider_default_shift=False, ne
 						for_date = date[0]
 						break
 
-	return get_shift_details(shift_type_name, for_date)
+	return get_shift_details(shift_type_name, for_date, shift_assignment_details[2] if shift_assignment_details else None)
 
 
 def get_employee_shift_timings(employee, for_timestamp=None, consider_default_shift=False):
@@ -222,7 +222,7 @@ def get_employee_shift_timings(employee, for_timestamp=None, consider_default_sh
 	return prev_shift, curr_shift, next_shift
 
 
-def get_shift_details(shift_type_name, for_date=None):
+def get_shift_details(shift_type_name, for_date=None, assignment=None):
 	"""Returns Shift Details which contain some additional information as described below.
 	'shift_details' contains the following keys:
 		'shift_type' - Object of DocType Shift Type,
@@ -250,7 +250,8 @@ def get_shift_details(shift_type_name, for_date=None):
 		'start_datetime': start_datetime,
 		'end_datetime': end_datetime,
 		'actual_start': actual_start,
-		'actual_end': actual_end
+		'actual_end': actual_end,
+		'assignment': assignment,
 	})
 
 
