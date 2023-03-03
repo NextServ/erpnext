@@ -3,7 +3,7 @@
  "allow_import": 1,
  "allow_rename": 1,
  "autoname": "field:salary_component",
- "creation": "2022-08-25 22:46:59.780550",
+ "creation": "2022-12-19 21:28:29.662508",
  "default_import_order": "0",
  "doctype": "DocType",
  "document_type": "Setup",
@@ -43,6 +43,7 @@
   "formula",
   "formula_based_on_attendance",
   "formula_effectivity",
+  "formula_prorated",
   "is_basic_pay",
   "column_break_28",
   "help"
@@ -281,12 +282,18 @@
    "fieldname": "is_basic_pay",
    "fieldtype": "Check",
    "label": "Is Basic Pay"
+  },
+  {
+   "default": "0",
+   "fieldname": "formula_prorated",
+   "fieldtype": "Check",
+   "label": "Formula Prorated"
   }
  ],
  "icon": "fa fa-flag",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-12-07 02:07:48.688218",
+ "modified": "2023-03-03 00:42:09.748592",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Component",

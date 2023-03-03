@@ -556,35 +556,53 @@ class SalarySlip(TransactionBase):
 					# This line is the built in frappe one
 					amount = self.eval_condition_and_formula(struct_row, data)
 				else:
-					# Check start and end dates
-					date_details = get_start_end_dates(struct_row.formula_effectivity, self.start_date or self.posting_date)
-					is_end = getdate(self.start_date) <= getdate(date_details.end_date) and getdate(self.end_date) >= getdate(date_details.end_date)
-
-					if is_end:
-						if getdate(date_details.start_date) == getdate(self.start_date) and getdate(date_details.end_date) == getdate(self.end_date):
+					if cint(struct_row.formula_prorated):
+						date_details = get_start_end_dates(struct_row.formula_effectivity, self.start_date or self.posting_date)
+						start_date = date_details.start_date
+						
+						# If the start date is the start of the effectivity period (or this is a simulated salary slip), do a regular calculation.
+						if getdate(self.start_date) <= getdate(date_details.start_date):
 							amount = self.eval_condition_and_formula(struct_row, data)
 						else:
-							# Generate a different salary slip
-							effectivity_salary_slip = frappe.new_doc('Salary Slip')
-							effectivity_salary_slip.payroll_frequency = self.payroll_frequency
-							effectivity_salary_slip.employee = self.employee
-							effectivity_salary_slip.start_date = date_details.start_date
-							effectivity_salary_slip.end_date = date_details.end_date
-							effectivity_salary_slip.exchange_rate = self.exchange_rate
-							effectivity_salary_slip.get_emp_and_working_day_details()
-							amount_owed = 0
+							# Simulate all the time before the current period
+							previously_paid = self.simulate_component(start_date, getdate(self.start_date) - datetime.timedelta(days=1), component_type, struct_row.salary_component, struct_row.statistical_component != 0)
+							all_owed = self.simulate_component(start_date, self.end_date, component_type, struct_row.salary_component, struct_row.statistical_component != 0)
+							amount = all_owed - previously_paid
+					else:
+						# Check start and end dates
+						date_details = get_start_end_dates(struct_row.formula_effectivity, self.start_date or self.posting_date)
+						simulated_start_date = date_details.start_date
+						simulated_end_date = date_details.end_date
+						is_end = getdate(self.start_date) <= getdate(date_details.end_date) and getdate(self.end_date) >= getdate(date_details.end_date)
 
-							for component in effectivity_salary_slip.get(('' if struct_row.statistical_component == 0 else 'statistical_') + component_type):
-								if component.salary_component == struct_row.salary_component:
-									amount_owed = component.amount
-
-							amount = amount_owed
+						if is_end:
+							if getdate(date_details.start_date) == getdate(self.start_date) and getdate(date_details.end_date) == getdate(self.end_date):
+								amount = self.eval_condition_and_formula(struct_row, data)
+							else:
+								amount = self.simulate_component(simulated_start_date, simulated_end_date, component_type, struct_row.salary_component, struct_row.statistical_component != 0)
 
 			if amount:
 				if struct_row.statistical_component == 0:
 					self.update_component_row(struct_row, amount, component_type)
 				else:
 					self.update_component_row(struct_row, amount, 'statistical_' + component_type)
+
+	def simulate_component(self, simulated_start_date, simulated_end_date, component_type, salary_component, statistical_component = False):
+		effectivity_salary_slip = frappe.new_doc('Salary Slip')
+		effectivity_salary_slip.payroll_frequency = self.payroll_frequency
+		effectivity_salary_slip.employee = self.employee
+		effectivity_salary_slip.start_date = simulated_start_date
+		effectivity_salary_slip.end_date = simulated_end_date
+		effectivity_salary_slip.exchange_rate = self.exchange_rate
+		effectivity_salary_slip.flags._is_simulation = True
+		effectivity_salary_slip.get_emp_and_working_day_details()
+		amount_owed = 0
+
+		for component in effectivity_salary_slip.get(('statistical_' if statistical_component else '') + component_type):
+			if component.salary_component == salary_component:
+				amount_owed = component.amount
+
+		return amount_owed
 
 	def calculate_salary_structure_rates(self, salary_structure_assignment):
 		if salary_structure_assignment.rate_type == 'Hourly':
