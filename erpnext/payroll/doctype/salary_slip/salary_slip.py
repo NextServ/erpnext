@@ -677,6 +677,10 @@ class SalarySlip(TransactionBase):
 		data.update(self.calculate_salary_structure_rates(salary_structure_assignment))
 		data.update(employee)
 		data.update(self.as_dict())
+		data.update({
+			'min': lambda x, y: min(x, y),
+			'max': lambda x, y: max(x, y),
+		})
 		data_hooks = frappe.get_hooks('salary_data_extensions')
 
 		for hook in data_hooks:
