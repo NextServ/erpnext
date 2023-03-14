@@ -188,6 +188,7 @@ def start_import_lark_checkin(date_from, date_to, filters):
 	employees = get_employees(grade=filters_obj.get('grade'), department=filters_obj.get('department'), designation=filters_obj.get('designation'), name=filters_obj.get('employee'))
 
 	if employees:
+		#import_lark_checkin(date_from, date_to, employees)
 		frappe.enqueue(import_lark_checkin, date_from=date_from, date_to=date_to, employees=employees, timeout=600)
 		frappe.msgprint('Import started.')
 	else:
@@ -214,7 +215,7 @@ def import_lark_checkin(date_from, date_to, employees=[]):
 
 		# Get lark user info
 		lark_user_info = frappe.db.get_value('User Social Login', { 'parent': employee.get('user_id'), 'provider': 'lark' }, ['userid', 'tenantid'])
-		synced_shift_ids = []
+		synced_shift_tenants = []
 
 		if lark_user_info:
 			lark_settings = frappe.get_doc('Lark Settings')
@@ -288,51 +289,62 @@ def import_lark_checkin(date_from, date_to, employees=[]):
 						assignment_date = datetime(int(str(date.get('month'))[0:4]), int(str(date.get('month'))[5:7]), int(date.get('day_no')))
 
 						# Sync in the Shift Type first
-						if int(date.get('shift_id')) and not date.get('shift_id') in synced_shift_ids:
-							# Retrieve shift information
-							sr = requests.get('https://open.larksuite.com/open-apis/attendance/v1/shifts/' + date.get('shift_id'), headers={
-								'Authorization': 'Bearer ' + tenant_access_token,
-							}).json()
-							lark_settings.handle_response_error(sr)
-							lark_shift = sr.get('data')
-							shift_type = None
+						if not len(synced_shift_tenants) or not lark_user_info[1] in synced_shift_tenants:
+							shifts = []
+							page_token = None
 
-							if frappe.db.exists('Shift Type', { 'lark_id': lark_shift.get('shift_id') }):
-								shift_type = frappe.get_doc('Shift Type', frappe.db.get_value('Shift Type', { 'lark_id': lark_shift.get('shift_id') }, 'name'))
-							else:
-								shift_type = frappe.new_doc('Shift Type')
-								shift_type.name = lark_shift.get('shift_name')
-								shift_type.enable_attendance_calculation = True
-								shift_type.lark_id = lark_shift.get('shift_id')
+							# Retrieve all shifts for the tenant
+							while page_token or page_token == None:
+								sr = requests.get('https://open.larksuite.com/open-apis/attendance/v1/shifts/' + (('?page_token=' + page_token) if page_token else ''), headers={
+									'Authorization': 'Bearer ' + tenant_access_token,
+								}).json()
+								lark_settings.handle_response_error(sr)
 
-							shift_type.update(convert_lark_punch_time_rules(lark_shift.get('punch_time_rule')[0]))
+								for shift in sr.get('data').get('shift_list'):
+									shifts.append(shift)
 
-							if lark_shift.get('is_flexible'):
-								shift_type.computation_method = 'Flexible'
-							else:
-								shift_type.computation_method = 'Fixed'
+								page_token = sr.get('data').get('page_token')
 
-							shift_type.additional_clock_times = []
+							for lark_shift in shifts:
+								shift_type = None
 
-							for punch_rule in lark_shift.get('punch_time_rule')[1:]:
-								shift_type.append('additional_clock_times', convert_lark_punch_time_rules(punch_rule))
+								if frappe.db.exists('Shift Type', { 'lark_id': ((lark_user_info[1] + '-') if lark_user_info[1] else '') + lark_shift.get('shift_id') }):
+									shift_type = frappe.get_doc('Shift Type', frappe.db.get_value('Shift Type', { 'lark_id': lark_shift.get('shift_id') }, 'name'))
+								else:
+									shift_type = frappe.new_doc('Shift Type')
+									shift_type.name = 'Lark-Shift - ' + ((lark_user_info[1] + ' - ') if lark_user_info[1] else '') + lark_shift.get('shift_name')
+									shift_type.enable_attendance_calculation = True
+									shift_type.lark_id = ((lark_user_info[1] + '-') if lark_user_info[1] else '') + lark_shift.get('shift_id')
 
-							if lark_shift.get('rest_time_rule'):
-								shift_type.break_time_start = lark_shift.get('rest_time_rule')[0].get('rest_begin_time')
-								shift_type.break_time_end = lark_shift.get('rest_time_rule')[0].get('rest_end_time')
-							else:
-								shift_type.break_time_start = None
-								shift_type.break_time_end = None
+								shift_type.update(convert_lark_punch_time_rules(lark_shift.get('punch_time_rule')[0]))
 
-							shift_type.save()
-							synced_shift_ids.append(date.get('shift_id'))
+								if lark_shift.get('is_flexible'):
+									shift_type.computation_method = 'Flexible'
+								else:
+									shift_type.computation_method = 'Fixed'
+
+								shift_type.additional_clock_times = []
+
+								for punch_rule in lark_shift.get('punch_time_rule')[1:]:
+									shift_type.append('additional_clock_times', convert_lark_punch_time_rules(punch_rule))
+
+								if lark_shift.get('rest_time_rule'):
+									shift_type.break_time_start = lark_shift.get('rest_time_rule')[0].get('rest_begin_time')
+									shift_type.break_time_end = lark_shift.get('rest_time_rule')[0].get('rest_end_time')
+								else:
+									shift_type.break_time_start = None
+									shift_type.break_time_end = None
+
+								shift_type.save()
+
+							synced_shift_tenants.append(lark_user_info[1])
 
 						if int(date.get('shift_id')):
 							# Find existing shift assignment for this date
 							if frappe.db.exists('Shift Assignment', [['employee', '=', employee_name], ['end_date', '>=', assignment_date], ['start_date', '<=', assignment_date], ['synced_from_lark', '=', False], ['docstatus', '=', 1]]):
 								frappe.logger('import').error('Failed to create shift assignment for ' + employee_name + ' on ' + str(assignment_date) + ' (collision)')
 							else:
-								shift_type = frappe.db.get_value('Shift Type', { 'lark_id': date.get('shift_id') }, 'name')
+								shift_type = frappe.db.get_value('Shift Type', { 'lark_id': ((lark_user_info[1] + '-') if lark_user_info[1] else '') + date.get('shift_id') }, 'name')
 
 								# Check if there is already an assignment for this date
 								existing_assignment_name = frappe.db.get_value('Shift Assignment', [['employee', '=', employee_name], ['end_date', '>=', assignment_date], ['start_date', '<=', assignment_date], ['synced_from_lark', '=', True]], 'name')
