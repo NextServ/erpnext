@@ -5,7 +5,7 @@
 import frappe
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import cint, get_datetime
+from frappe.utils import cint, get_datetime, flt
 from datetime import datetime
 import json
 import requests
@@ -271,6 +271,55 @@ def import_lark_checkin(date_from, date_to, employees=[]):
 									datetime.utcfromtimestamp(int(record.get('check_out_record').get('check_time')))
 								).strftime('%Y-%m-%d %H:%M:%S')
 								checkin_record.save()
+
+					r = requests.post('https://open.larksuite.com/open-apis/attendance/v1/user_stats_datas/query?employee_type=employee_id', headers={
+						'Authorization': 'Bearer ' + tenant_access_token,
+					}, json={
+						'user_ids': [lark_user_id],
+						'start_date': frappe.utils.getdate(date_from).strftime('%Y%m%d'),
+						'end_date': frappe.utils.getdate(date_to).strftime('%Y%m%d'),
+						'stats_type': 'daily',
+						'locale': 'en'
+					}).json()
+					lark_settings.handle_response_error(r)
+
+					for day in r.get('data').get('user_datas'):
+						date = None
+						leave_type = None
+						leave_time = None
+						expected_time = None
+						sync_id = None
+
+						for data in day.get('datas'):
+							if data.get('code') == '51201':
+								date = data.get('value')
+
+							if data.get('code') == '51402':
+								leave_type = data.get('value')
+
+							if data.get('code') == '51503-1-1':
+								for feature in data.get('features'):
+									if feature.get('key') == 'TaskId':
+										sync_id = feature.get('value')
+
+							if data.get('code') == '51401':
+								leave_time = flt(data.get('value').split(' ')[0])
+
+							if data.get('code') == '51302':
+								expected_time = flt(data.get('value').split(' ')[0])
+
+						frappe.db.delete('Lark Leave Record', {
+							'name': sync_id,
+						})
+
+						if date and leave_type and leave_time:
+							leave_record = frappe.new_doc('Lark Leave Record')
+							leave_record.name = sync_id
+							leave_record.employee = employee_name
+							leave_record.type = leave_type
+							leave_record.date = date[0:4] + '-' + date[4:6] + '-' + date[6:8]
+							leave_record.hours = leave_time
+							leave_record.save()
 				except Exception as e:
 					frappe.logger('import').error('Failed to import attendance for ' + employee_name, exc_info=e)
 

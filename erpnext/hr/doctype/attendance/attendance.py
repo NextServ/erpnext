@@ -70,13 +70,13 @@ class Attendance(Document):
 					frappe.msgprint(_("Employee {0} is on Leave on {1}")
 						.format(self.employee, formatdate(self.attendance_date)))
 
-		if self.status in ("On Leave", "Half Day"):
-			if not leave_record:
-				frappe.msgprint(_("No leave record found for employee {0} on {1}")
-					.format(self.employee, formatdate(self.attendance_date)), alert=1)
-		elif self.leave_type:
-			self.leave_type = None
-			self.leave_application = None
+#		if self.status in ("On Leave", "Half Day"):
+#			if not leave_record:
+#				frappe.msgprint(_("No leave record found for employee {0} on {1}")
+#					.format(self.employee, formatdate(self.attendance_date)), alert=1)
+#		elif self.leave_type:
+#			self.leave_type = None
+#			self.leave_application = None
 
 	def validate_employee(self):
 		emp = frappe.db.sql("select name from `tabEmployee` where name = %s and status = 'Active'",
@@ -356,8 +356,19 @@ def compute_attendance(date_from, date_to, employees=[]):
 					attendance.night_differential_overtime = 0
 					attendance.shift = shift_type.get('name')
 
+					# Find any Lark leave records
+					leave_record = frappe.db.get_value('Lark Leave Record', { 'date': current_date, 'employee': attendance.employee }, 'name')
+
+					if leave_record:
+						attendance.leave += frappe.db.get_value('Lark Leave Record', leave_record, 'hours')
+
+					attendance.undertime = max(0, attendance.undertime - attendance.leave)
+
 					if len(checkin_time_pairs) == 0:
-						attendance.status = 'Absent'
+						if attendance.leave:
+							attendance.status = 'On Leave'
+						else:
+							attendance.status = 'Absent'
 					else:
 						attendance.status = 'Present'
 
@@ -419,7 +430,6 @@ def compute_attendance(date_from, date_to, employees=[]):
 						attendance.night_differential = night_differential_time.seconds / 3600
 						attendance.night_differential_overtime = night_differential_overtime.seconds / 3600
 
-					print(checkin_time_pairs)
 					attendance.save()
 
 			current_date += timedelta(days=1)

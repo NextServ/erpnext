@@ -2,7 +2,7 @@
  "actions": [],
  "allow_import": 1,
  "autoname": "naming_series:",
- "creation": "2013-02-20 11:18:11",
+ "creation": "2022-04-05 01:54:39.953879",
  "default_import_order": "0",
  "description": "Apply / Approve Leaves",
  "doctype": "DocType",
@@ -45,7 +45,8 @@
   "doctor",
   "section_break_35",
   "details",
-  "leave_linked_documents"
+  "leave_linked_documents",
+  "lark_sync_id"
  ],
  "fields": [
   {
@@ -299,6 +300,11 @@
    "fieldtype": "Table",
    "label": "Leave Linked Documents",
    "options": "Linked Document"
+  },
+  {
+   "fieldname": "lark_sync_id",
+   "fieldtype": "Data",
+   "label": "Lark Sync ID"
   }
  ],
  "icon": "fa fa-calendar",
@@ -306,7 +312,7 @@
  "is_submittable": 1,
  "links": [],
  "max_attachments": 3,
- "modified": "2022-03-22 03:55:27.387665",
+ "modified": "2023-03-15 20:47:12.339712",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Application",
