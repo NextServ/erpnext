@@ -289,6 +289,7 @@ def import_lark_checkin(date_from, date_to, employees=[]):
 						leave_time = None
 						expected_time = None
 						sync_id = None
+						approved_ot = None
 
 						for data in day.get('datas'):
 							if data.get('code') == '51201':
@@ -303,16 +304,27 @@ def import_lark_checkin(date_from, date_to, employees=[]):
 										sync_id = feature.get('value')
 
 							if data.get('code') == '51401':
-								leave_time = flt(data.get('value').split(' ')[0])
-
+								leave_time = data.get('value')
 							if data.get('code') == '51302':
 								expected_time = flt(data.get('value').split(' ')[0])
+							if data.get('code') == '51307' and data.get('value') != '-':
+								approved_ot = flt(data.get('value').split(' ')[0])
 
 						frappe.db.delete('Lark Leave Record', {
 							'name': sync_id,
 						})
+						frappe.db.delete('Lark Approved OT', {
+							'name': sync_id,
+						})
 
 						if date and leave_type and leave_time:
+							leave_time_data = leave_time.split(' ')
+
+							if leave_time_data[1] == 'days':
+								leave_time = flt(leave_time_data[0]) * expected_time
+							else:
+								leave_time = flt(leave_time_data[0])
+
 							leave_record = frappe.new_doc('Lark Leave Record')
 							leave_record.name = sync_id
 							leave_record.employee = employee_name
@@ -320,6 +332,13 @@ def import_lark_checkin(date_from, date_to, employees=[]):
 							leave_record.date = date[0:4] + '-' + date[4:6] + '-' + date[6:8]
 							leave_record.hours = leave_time
 							leave_record.save()
+
+						if date and approved_ot:
+							approved_ot_record = frappe.new_doc('Lark Approved OT')
+							approved_ot_record.name = sync_id
+							approved_ot_record.date = date[0:4] + '-' + date[4:6] + '-' + date[6:8]
+							approved_ot_record.hours = approved_ot
+							approved_ot_record.save()
 				except Exception as e:
 					frappe.logger('import').error('Failed to import attendance for ' + employee_name, exc_info=e)
 
