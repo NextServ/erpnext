@@ -217,8 +217,8 @@ def start_compute_attendance(date_from, date_to, filters):
 	employees = get_employees(grade=filters_obj.get('grade'), department=filters_obj.get('department'), designation=filters_obj.get('designation'), name=filters_obj.get('employee'))
 
 	if employees:
-		compute_attendance(date_from=date_from, date_to=date_to, employees=employees)
-		#frappe.enqueue(compute_attendance, date_from=date_from, date_to=date_to, employees=employees, timeout=600)
+		#compute_attendance(date_from=date_from, date_to=date_to, employees=employees)
+		frappe.enqueue(compute_attendance, date_from=date_from, date_to=date_to, employees=employees, timeout=600)
 		frappe.msgprint('Computation started.')
 	else:
 		frappe.msgprint('No employees found.')
