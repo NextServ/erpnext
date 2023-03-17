@@ -5,5 +5,5 @@
 from frappe.tests.utils import FrappeTestCase
 
 
-class TestLarkApprovedOT(FrappeTestCase):
+class TestAttendanceCalculationLog(FrappeTestCase):
 	pass

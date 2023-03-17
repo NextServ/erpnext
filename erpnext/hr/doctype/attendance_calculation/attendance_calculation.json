@@ -1,0 +1,151 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:Attendance Calculation for {date_from} to {date_to} ({creation})",
+ "creation": "2023-03-17 16:09:34.178887",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "date_from",
+  "date_to",
+  "import_from_lark",
+  "processed_employees",
+  "total_employees",
+  "message",
+  "filter_employees_by_optional_section",
+  "company",
+  "branch",
+  "employee_grade",
+  "department",
+  "designation",
+  "employee",
+  "status"
+ ],
+ "fields": [
+  {
+   "fieldname": "date_from",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date From",
+   "reqd": 1,
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "date_to",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date To",
+   "reqd": 1,
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "filter_employees_by_optional_section",
+   "fieldtype": "Section Break",
+   "label": "Filter Employees By (Optional)"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Table MultiSelect",
+   "label": "Company",
+   "options": "Salary Structure Assignment Company",
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Table MultiSelect",
+   "label": "Branch",
+   "options": "Salary Structure Assignment Branch",
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "employee_grade",
+   "fieldtype": "Table MultiSelect",
+   "label": "Employee Grade",
+   "options": "Salary Structure Assignment Employee Grade",
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "department",
+   "fieldtype": "Table MultiSelect",
+   "label": "Department",
+   "options": "Salary Structure Assignment Department",
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "designation",
+   "fieldtype": "Table MultiSelect",
+   "label": "Designation",
+   "options": "Salary Structure Assignment Designation",
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Table MultiSelect",
+   "label": "Employee",
+   "options": "Salary Structure Assignment Employee",
+   "set_only_once": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "import_from_lark",
+   "fieldtype": "Check",
+   "label": "Import from Lark",
+   "set_only_once": 1
+  },
+  {
+   "default": "Pending",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Status",
+   "options": "Pending\nSuccess\nPartial Success\nError",
+   "read_only": 1
+  },
+  {
+   "fieldname": "message",
+   "fieldtype": "Text",
+   "label": "Message",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "processed_employees",
+   "fieldtype": "Int",
+   "label": "Processed Employees",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_employees",
+   "fieldtype": "Int",
+   "label": "Total Employees",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2023-03-17 20:12:50.131251",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Attendance Calculation",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
