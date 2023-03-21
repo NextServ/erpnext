@@ -418,7 +418,7 @@ def get_holidays_for_employee(employee, start_date, end_date, raise_exception=Tr
 
 	holidays = frappe.get_all(
 		'Holiday',
-		fields=['description', 'holiday_date'],
+		fields=['description', 'holiday_date', 'category'],
 		filters=filters
 	)
 

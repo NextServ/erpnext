@@ -5,8 +5,8 @@ frappe.ui.form.on('Attendance Calculation', {
 	setup(frm) {
 		frappe.realtime.on("calculation_progress_update", (data) => {
 			if (data.attendance_calculation === frm.doc.name) {
-				frappe.model.clear_doc("Data Import", frm.doc.name);
-				frappe.model.with_doc("Data Import", frm.doc.name).then(() => {
+				frappe.model.clear_doc("Attendance Calculation", frm.doc.name);
+				frappe.model.with_doc("Attendance Calculation", frm.doc.name).then(() => {
 					frm.refresh();
 				});
 			}
@@ -50,8 +50,8 @@ frappe.ui.form.on('Attendance Calculation', {
 				frappe.msgprint("This calculation is already running.");
 			}
 
-			frappe.model.clear_doc("Data Import", frm.doc.name);
-			frappe.model.with_doc("Data Import", frm.doc.name).then(() => {
+			frappe.model.clear_doc("Attendance Calculation", frm.doc.name);
+			frappe.model.with_doc("Attendance Calculation", frm.doc.name).then(() => {
 				frm.refresh();
 			});
 		});

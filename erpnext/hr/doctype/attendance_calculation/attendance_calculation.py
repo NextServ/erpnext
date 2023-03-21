@@ -4,21 +4,18 @@
 import frappe
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import cint, cstr, flt, formatdate, get_datetime, getdate, nowdate
-from frappe.model.naming import make_autoname
+from frappe.utils import flt
+from dateutil.parser import parse
 
-from erpnext.hr.utils import get_holiday_dates_for_employee, validate_active_employee
-import json
+from erpnext.hr.utils import get_holidays_for_employee
 from datetime import datetime, timedelta
 import traceback
 import requests
 
 from erpnext.hr.doctype.shift_assignment.shift_assignment import (
-	get_actual_start_end_datetime_of_shift,
 	get_employee_shift
 )
 
-from erpnext.hr.utils import validate_active_employee
 class AttendanceCalculation(Document):
 	def dispatch(self):
 		from frappe.core.page.background_jobs.background_jobs import get_info
@@ -138,8 +135,6 @@ class AttendanceCalculation(Document):
 						time_out = None
 
 						try:
-							print(json.dumps(day))
-
 							for data in day.get('datas'):
 								if data.get('code') == '51201':
 									date = data.get('value')
@@ -188,6 +183,7 @@ class AttendanceCalculation(Document):
 							if time_in and time_out and time_out <= time_in:
 								time_out = time_out + timedelta(hours=24)
 
+							no_attendance = False
 							attendance = frappe.new_doc('Attendance')
 							attendance.employee = employee_name
 							attendance.attendance_date = date
@@ -201,6 +197,12 @@ class AttendanceCalculation(Document):
 							attendance.late_in = in_result == 'Late in'
 							attendance.early_out = out_result == 'Early out'
 
+							if in_result == 'Optional' or out_result == 'Optional':
+								attendance.rest_day = True
+
+								if not working_hours and not leave and not overtime:
+									no_attendance = True
+
 							if attendance.leave > 0:
 								if attendance.working_hours > 0 or attendance.overtime > 0:
 									attendance.status = 'Half Day'
@@ -209,11 +211,38 @@ class AttendanceCalculation(Document):
 							else:
 								if in_result == 'No record' or out_result == 'No record' or not in_result or not out_result:
 									attendance.status = 'Absent'
+									attendance.undertime = 0
+									attendance.working_hours = 0
 								else:
+
 									attendance.status = 'Present'
 									attendance.undertime = max((expected_hours or 0) - (working_hours or 0), 0)
 
-							attendance.save()
+							# Assume night differential based on in/out
+							if time_in and time_out:
+								night_differential_clock_times = [
+									[
+										datetime.combine(parse(date), datetime.min.time()) + timedelta(hours=21),
+										datetime.combine(parse(date), datetime.min.time()) + timedelta(hours=30)
+									]
+								]
+
+								overtime_in = time_out - timedelta(hours=(overtime or 0))
+								night_differential_times = overlap_times([[datetime.combine(parse(date), datetime.min.time()) + time_in, datetime.combine(parse(date), datetime.min.time()) + time_out]], night_differential_clock_times)
+								attendance.night_differential = compute_time_total(night_differential_times)
+								night_differential_ot_times = overlap_times([[datetime.combine(parse(date), datetime.min.time()) + overtime_in, datetime.combine(parse(date), datetime.min.time()) + time_out]], night_differential_clock_times)
+								attendance.night_differential = compute_time_total(night_differential_ot_times)
+
+							holidays_for_date = get_holidays_for_employee(employee_name, date, date, False, True)
+
+							for holiday in holidays_for_date:
+								if holiday.category in ['Regular Holiday']:
+									attendance.legal_holiday = True
+								if holiday.category in ['Special Non-working Holiday', 'Special Working Holiday']:
+									attendance.special_holiday = True
+
+							if not no_attendance:
+								attendance.save()
 
 							self.log(employee_name, True, date=date)
 						except Exception as e:
@@ -245,7 +274,6 @@ class AttendanceCalculation(Document):
 								max_time = clockout_time + timedelta(minutes=shift_type.get('maximum_late_clockout', default=0))
 								total_working_hours = clockout_time - clockin_time
 								total_break_time = (shift_type.get('break_time_end') - shift_type.get('break_time_start')) if shift_type.get('break_time_start') else timedelta(0)
-								is_lark = False
 
 								# clock_times stores all time that is considered "regular working hours"
 								clock_times = [
