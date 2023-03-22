@@ -227,11 +227,12 @@ class AttendanceCalculation(Document):
 									]
 								]
 
-								overtime_in = time_out - timedelta(hours=(overtime or 0))
 								night_differential_times = overlap_times([[datetime.combine(parse(date), datetime.min.time()) + time_in, datetime.combine(parse(date), datetime.min.time()) + time_out]], night_differential_clock_times)
-								attendance.night_differential = compute_time_total(night_differential_times)
+								attendance.night_differential = compute_time_total(night_differential_times).seconds / 3600
+
+								overtime_in = time_out - timedelta(hours=(overtime or 0))
 								night_differential_ot_times = overlap_times([[datetime.combine(parse(date), datetime.min.time()) + overtime_in, datetime.combine(parse(date), datetime.min.time()) + time_out]], night_differential_clock_times)
-								attendance.night_differential = compute_time_total(night_differential_ot_times)
+								attendance.night_differential_ot = compute_time_total(night_differential_ot_times).seconds / 3600
 
 							holidays_for_date = get_holidays_for_employee(employee_name, date, date, False, True)
 
