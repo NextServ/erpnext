@@ -540,6 +540,12 @@ class SalarySlip(TransactionBase):
 		data = self.get_data_for_eval()
 		attendance_days = self.get_attendance_days()
 
+		self.present_days = 0
+
+		for day in attendance_days:
+			if day.attendance_status == 'Present':
+				self.present_days += 1
+
 		for struct_row in self._salary_structure_doc.get(component_type):
 			amount = 0
 

@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_import": 1,
- "creation": "2022-09-06 22:16:17.885676",
+ "creation": "2022-10-12 03:37:56.983369",
  "default_import_order": "0",
  "doctype": "DocType",
  "document_type": "Setup",
@@ -35,6 +35,7 @@
   "column_break_24",
   "absent_days",
   "payment_days",
+  "present_days",
   "section_break_29",
   "leave_balance",
   "hourly_wages",
@@ -675,13 +676,18 @@
    "fieldname": "validate_attendance",
    "fieldtype": "Check",
    "label": "Validate Attendance"
+  },
+  {
+   "fieldname": "present_days",
+   "fieldtype": "Float",
+   "label": "Present Days"
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 9,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-10-12 03:24:23.110296",
+ "modified": "2023-03-22 14:48:12.952706",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Slip",
