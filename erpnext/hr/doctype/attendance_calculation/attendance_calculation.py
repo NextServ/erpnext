@@ -66,6 +66,9 @@ class AttendanceCalculation(Document):
 			log.trace = traceback.format_exc()
 			self.has_failure = True
 
+		if success:
+			self.has_success = True
+
 		log.save()
 
 	def start(self):
@@ -76,16 +79,20 @@ class AttendanceCalculation(Document):
 			employees = get_employees(company=self.get('company'), branch=self.get('branch'), grade=self.get('grade'), department=self.get('department'), designation=self.get('designation'), name=self.get('employee'))
 			self.update_progress(processed_employees=0, total_employees=len(employees))
 			self.has_failure = False
+			self.has_success = False
 
 			if self.import_from_lark:
 				self.import_lark_checkin(self.date_from, self.date_to, employees)
 			else:
 				self.compute_attendance(self.date_from, self.date_to, employees)
 
-			if self.has_failure:
-				self.update_progress(status='Partial Success', message='')
+			if self.has_success:
+				if self.has_failure:
+					self.update_progress(status='Partial Success', message='')
+				else:
+					self.update_progress(status='Success', message='')
 			else:
-				self.update_progress(status='Success', message='')
+				self.update_progress(status='Error', message='No attendance calculated')
 		except Exception as e:
 			self.update_progress(status='Error', message=str(e) + '\n' + traceback.format_exc())
 
