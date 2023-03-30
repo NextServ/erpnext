@@ -123,6 +123,7 @@ class AttendanceCalculation(Document):
 						'Authorization': 'Bearer ' + tenant_access_token,
 					}, json={
 						'user_ids': [lark_user_id],
+						'user_id': lark_user_id,
 						'start_date': frappe.utils.getdate(date_from).strftime('%Y%m%d'),
 						'end_date': frappe.utils.getdate(date_to).strftime('%Y%m%d'),
 						'stats_type': 'daily',

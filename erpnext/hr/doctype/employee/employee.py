@@ -51,6 +51,7 @@ class Employee(NestedSet):
 		self.validate_reports_to()
 		self.validate_preferred_email()
 		self.validate_phone_number()
+		self.validate_lark_tenant()
 		if self.job_applicant:
 			self.validate_onboarding_process()
 
@@ -81,6 +82,13 @@ class Employee(NestedSet):
 				self.image = data.get("user_image")
 			self.validate_for_enabled_user_id(data.get("enabled", 0))
 			self.validate_duplicate_user_id()
+
+	def validate_lark_tenant(self):
+		if self.user_id:
+			tenant_id = frappe.db.get_value('User Social Login', { 'provider': 'lark', 'parent': self.user_id }, 'tenantid')
+
+			if tenant_id != self.tenant:
+				throw(_("The selected User ID is in a different tenant."))
 
 	def update_nsm_model(self):
 		frappe.utils.nestedset.update_nsm(self)
@@ -376,8 +384,9 @@ def deactivate_sales_person(status = None, employee = None):
 			frappe.db.set_value("Sales Person", sales_person, "enabled", 0)
 
 @frappe.whitelist()
-def create_user(employee, user = None, email=None):
+def create_user(employee, user = None, email = None, tenant = None):
 	emp = frappe.get_doc("Employee", employee)
+	emp.tenant = tenant
 
 	employee_name = emp.employee_name.split(" ")
 	middle_name = last_name = ""
@@ -395,7 +404,7 @@ def create_user(employee, user = None, email=None):
 
 	user = frappe.new_doc("User")
 	user.update({
-		"name": emp.employee_name,
+		"name": emp.prefered_email,
 		"email": emp.prefered_email,
 		"enabled": 1,
 		"first_name": first_name,

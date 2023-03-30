@@ -106,7 +106,8 @@ frappe.ui.form.on('Employee', {
 			method: "erpnext.hr.doctype.employee.employee.create_user",
 			args: {
 				employee: frm.doc.name,
-				email: frm.doc.prefered_email
+				email: frm.doc.prefered_email,
+				tenant: frm.doc.tenant,
 			},
 			callback: function (r) {
 				frm.set_value("user_id", r.message);
