@@ -1,8 +1,7 @@
 {
  "actions": [],
- "allow_import": 1,
  "autoname": "naming_series:",
- "creation": "2022-07-11 16:13:27.560357",
+ "creation": "2023-04-17 03:42:31.186478",
  "default_import_order": "0",
  "doctype": "DocType",
  "document_type": "Setup",
@@ -34,11 +33,13 @@
   "legal_holiday",
   "column_break_25",
   "working_hours",
+  "expected_working_hours",
   "leave",
   "overtime",
   "undertime",
   "night_differential",
-  "night_differential_overtime"
+  "night_differential_overtime",
+  "late_in"
  ],
  "fields": [
   {
@@ -75,6 +76,7 @@
    "fieldname": "employee_name",
    "fieldtype": "Data",
    "in_global_search": 1,
+   "in_list_view": 1,
    "label": "Employee Name",
    "oldfieldname": "employee_name",
    "oldfieldtype": "Data",
@@ -83,6 +85,7 @@
   {
    "fieldname": "working_hours",
    "fieldtype": "Float",
+   "in_list_view": 1,
    "label": "Working Hours",
    "precision": "1"
   },
@@ -95,7 +98,7 @@
    "no_copy": 1,
    "oldfieldname": "status",
    "oldfieldtype": "Select",
-   "options": "\nPresent\nAbsent\nOn Leave\nHalf Day\nWork From Home",
+   "options": "Present\nAbsent\nOn Leave\nHalf Day\nWork From Home\nRest day",
    "reqd": 1,
    "search_index": 1
   },
@@ -260,61 +263,29 @@
    "fieldname": "night_differential_overtime",
    "fieldtype": "Float",
    "label": "Night Differential Overtime"
+  },
+  {
+   "fieldname": "expected_working_hours",
+   "fieldtype": "Float",
+   "label": "Expected Working Hours"
+  },
+  {
+   "fieldname": "late_in",
+   "fieldtype": "Float",
+   "label": "Late In"
   }
  ],
  "icon": "fa fa-ok",
  "idx": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-17 20:15:36.199824",
+ "modified": "2023-04-17 03:49:04.373376",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Attendance",
  "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
- "permissions": [
-  {
-   "cancel": 1,
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "System Manager",
-   "share": 1,
-   "submit": 1,
-   "write": 1
-  },
-  {
-   "cancel": 1,
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "import": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "HR User",
-   "share": 1,
-   "submit": 1,
-   "write": 1
-  },
-  {
-   "cancel": 1,
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "HR Manager",
-   "share": 1,
-   "submit": 1,
-   "write": 1
-  }
- ],
+ "permissions": [],
  "search_fields": "employee,employee_name,attendance_date,status",
  "sort_field": "modified",
  "sort_order": "DESC",

@@ -141,6 +141,8 @@ class AttendanceCalculation(Document):
 						out_result = None
 						time_in = None
 						time_out = None
+						shift_in = None
+						shift_out = None
 
 						try:
 							for data in day.get('datas'):
@@ -160,10 +162,26 @@ class AttendanceCalculation(Document):
 									leave = data.get('value')
 
 								if data.get('code') == '51503-1-1' and data.get('value') != '-':
-									in_result = data.get('value')
+									for feature in data.get('features'):
+										if feature.get('key') == 'StatusMsg':
+											in_result = feature.get('value')
+
+										if feature.get('key') == 'ShiftTime' and feature.get('value') != '-':
+											shift_in = datetime.strptime(feature.get('value'), "%H:%M")
+
+											if shift_in:
+												shift_in = timedelta(hours=shift_in.hour, minutes=shift_in.minute)
 
 								if data.get('code') == '51503-1-2' and data.get('value') != '-':
-									out_result = data.get('value')
+									for feature in data.get('features'):
+										if feature.get('key') == 'StatusMsg':
+											out_result = feature.get('value')
+
+										if feature.get('key') == 'ShiftTime' and feature.get('value') != '-':
+											shift_out = datetime.strptime(feature.get('value'), "%H:%M")
+
+											if shift_out:
+												shift_out = timedelta(hours=shift_out.hour, minutes=shift_out.minute)
 
 								if data.get('code') == '51502-1-1' and data.get('value') != '-':
 									time_in = datetime.strptime(data.get('value'), "%H:%M")
@@ -191,19 +209,26 @@ class AttendanceCalculation(Document):
 							if time_in and time_out and time_out <= time_in:
 								time_out = time_out + timedelta(hours=24)
 
+							if shift_in and shift_out and shift_out <= shift_in:
+								shift_out = shift_out + timedelta(hours=24)
+
 							no_attendance = False
 							attendance = frappe.new_doc('Attendance')
 							attendance.employee = employee_name
 							attendance.attendance_date = date
 							attendance.working_hours = working_hours or 0
+							attendance.expected_working_hours = expected_hours or 0
 							attendance.leave = leave or 0
 							attendance.overtime = overtime or 0
 							attendance.undertime = 0
 							attendance.night_differential = 0
 							attendance.night_differential_overtime = 0
 
-							attendance.late_in = in_result == 'Late in'
-							attendance.early_out = out_result == 'Early out'
+							attendance.late_entry = in_result == 'Late in'
+							attendance.early_exit = out_result == 'Early out'
+
+							if in_result == 'Late in':
+								attendance.late_in = (time_in - shift_in).seconds / 3600
 
 							if in_result == 'Optional' or out_result == 'Optional':
 								attendance.rest_day = True
@@ -370,9 +395,11 @@ class AttendanceCalculation(Document):
 								attendance.working_hours = 0
 								attendance.leave = 0
 								attendance.overtime = 0
+								attendance.expected_working_hours = total_working_hours.seconds / 3600
 								attendance.undertime = total_working_hours.seconds / 3600
 								attendance.night_differential = 0
 								attendance.night_differential_overtime = 0
+								attendance.late_in = 0
 								attendance.shift = shift_type.get('name')
 								approved_attendance_ot = -1
 
