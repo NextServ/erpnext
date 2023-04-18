@@ -215,6 +215,7 @@ class AttendanceCalculation(Document):
 							no_attendance = False
 							attendance = frappe.new_doc('Attendance')
 							attendance.employee = employee_name
+							attendance.company = frappe.db.get_value('Employee', employee_name, 'company')
 							attendance.attendance_date = date
 							attendance.working_hours = working_hours or 0
 							attendance.expected_working_hours = expected_hours or 0
@@ -391,6 +392,7 @@ class AttendanceCalculation(Document):
 								# Calculate and create attendance
 								attendance = frappe.new_doc('Attendance')
 								attendance.employee = employee_name
+								attendance.company = frappe.db.get_value('Employee', employee_name, 'company')
 								attendance.attendance_date = current_date
 								attendance.working_hours = 0
 								attendance.leave = 0
