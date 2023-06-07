@@ -89,6 +89,7 @@
   },
   {
    "default": "0",
+   "depends_on": "eval:frappe.boot.attendance_import_enabled",
    "fieldname": "import_from_lark",
    "fieldtype": "Check",
    "label": "Import from Lark",
@@ -125,7 +126,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-03-17 20:12:50.131251",
+ "modified": "2023-06-07 19:51:22.626423",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Attendance Calculation",

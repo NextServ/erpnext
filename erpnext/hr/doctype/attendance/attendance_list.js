@@ -135,9 +135,11 @@ frappe.listview_settings['Attendance'] = {
 			dialog.show();
 		});
 
-    list_view.page.add_inner_button(__("Import Lark Attendance"), async function () {
-			frappe.new_doc("Attendance Calculation", {}, function(doc) { doc.import_from_lark = true; })
-    });
+		if (frappe.boot.attendance_import_enabled) {
+			list_view.page.add_inner_button(__("Import Lark Attendance"), async function () {
+				frappe.new_doc("Attendance Calculation", {}, function(doc) { doc.import_from_lark = true; })
+			});
+		}
 
     list_view.page.add_inner_button(__("Compute Attendance"), async function () {
 			frappe.new_doc("Attendance Calculation", {});

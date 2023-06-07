@@ -54,7 +54,7 @@ class AttendanceCalculation(Document):
 		self.save()
 		frappe.publish_realtime("calculation_progress_update", { "attendance_calculation": self.name })
 
-	def log(self, employee, success, date=None, error=None):
+	def log(self, employee, success, date=None, error=None, response=None):
 		log = frappe.new_doc('Attendance Calculation Log')
 		log.attendance_calculation = self.name
 		log.date = date
@@ -64,6 +64,10 @@ class AttendanceCalculation(Document):
 		if error:
 			log.error = str(error)
 			log.trace = traceback.format_exc()
+
+			if response:
+				log.trace = log.trace + '\n\n' + str(response)
+
 			self.has_failure = True
 
 		if success:
@@ -106,6 +110,7 @@ class AttendanceCalculation(Document):
 
 			if lark_user_info:
 				lark_settings = frappe.get_doc('Lark Settings')
+				r = None
 
 				try:
 					if lark_user_info[1]:
@@ -116,6 +121,7 @@ class AttendanceCalculation(Document):
 					r = requests.get('https://open.larksuite.com/open-apis/contact/v3/users/' + lark_user_info[0], headers={
 						'Authorization': 'Bearer ' + tenant_access_token,
 					}).json()
+					r = r.json()
 					lark_settings.handle_response_error(r)
 					lark_user_id = r.get('data').get('user').get('user_id')
 
@@ -128,7 +134,8 @@ class AttendanceCalculation(Document):
 						'end_date': frappe.utils.getdate(date_to).strftime('%Y%m%d'),
 						'stats_type': 'daily',
 						'locale': 'en'
-					}).json()
+					})
+					r = r.json()
 					lark_settings.handle_response_error(r)
 
 					for day in r.get('data').get('user_datas'):
@@ -283,7 +290,7 @@ class AttendanceCalculation(Document):
 						except Exception as e:
 							self.log(employee_name, False, error=e, date=date)
 				except Exception as e:
-					self.log(employee_name, False, error=e)
+					self.log(employee_name, False, error=e, response=r)
 
 			self.update_progress(status='In Progress', processed_employees=i + 1)
 
