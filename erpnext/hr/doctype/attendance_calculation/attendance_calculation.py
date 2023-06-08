@@ -120,7 +120,7 @@ class AttendanceCalculation(Document):
 
 					r = requests.get('https://open.larksuite.com/open-apis/contact/v3/users/' + lark_user_info[0], headers={
 						'Authorization': 'Bearer ' + tenant_access_token,
-					}).json()
+					})
 					r = r.json()
 					lark_settings.handle_response_error(r)
 					lark_user_id = r.get('data').get('user').get('user_id')
