@@ -446,13 +446,14 @@ class PayrollEntry(Document):
 	@frappe.whitelist()
 	def validate_employee_attendance(self):
 		employees_to_mark_attendance = []
-		days_in_payroll, days_holiday, days_attendance_marked = 0, 0, 0
+
 		for employee_detail in self.employees:
-			if validate_attendance_for_employee(employee_detail.employee):
+			if validate_attendance_for_employee(employee_detail.employee, self.start_date, self.end_date):
 				employees_to_mark_attendance.append({
 					"employee": employee_detail.employee,
 					"employee_name": employee_detail.employee_name
 				})
+
 		return employees_to_mark_attendance
 
 def get_sal_struct(company, currency, salary_slip_based_on_timesheet, condition):
