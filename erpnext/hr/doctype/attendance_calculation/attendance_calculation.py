@@ -156,6 +156,9 @@ class AttendanceCalculation(Document):
 								if data.get('code') == '51201':
 									date = data.get('value')
 
+									if len(date) == 10:
+										date = date[0:4] + date[5:7] + date[8:]
+
 								if data.get('code') == '51303':
 									working_hours = flt(data.get('value').split(' ')[0])
 
