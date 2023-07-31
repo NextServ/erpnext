@@ -11,6 +11,7 @@ from erpnext.hr.utils import get_holidays_for_employee
 from datetime import datetime, timedelta
 import traceback
 import requests
+import json
 
 from erpnext.hr.doctype.shift_assignment.shift_assignment import (
 	get_employee_shift
@@ -286,8 +287,10 @@ class AttendanceCalculation(Document):
 								if holiday.category in ['Special Non-working Holiday', 'Special Working Holiday']:
 									attendance.special_holiday = True
 
-							if not no_attendance:
-								attendance.save()
+							if no_attendance:
+								attendance.status = 'Rest day'
+
+							attendance.save()
 
 							self.log(employee_name, True, date=date)
 						except Exception as e:
