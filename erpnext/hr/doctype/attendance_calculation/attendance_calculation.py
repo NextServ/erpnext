@@ -101,6 +101,28 @@ class AttendanceCalculation(Document):
 		except Exception as e:
 			self.update_progress(status='Error', message=str(e) + '\n' + traceback.format_exc())
 
+	def is_leave_paid(self, lark_settings, tenant_access_token, lark_user_id, date):
+		lr = requests.post('https://open.larksuite.com/open-apis/attendance/v1/user_approvals/query?employee_type=employee_id', headers={
+			'Authorization': 'Bearer ' + tenant_access_token,
+		}, json={
+			'user_ids': [lark_user_id],
+			'user_id': lark_user_id,
+			'check_date_from': date,
+			'check_date_to': date
+		})
+		lr = lr.json()
+		lark_settings.handle_response_error(lr)
+
+		for approval in lr.get('data').get('user_approvals', []):
+			for leave_instance in approval.get('leaves', []):
+				for name in leave_instance.get('i18n_names'):
+					if leave_instance.get('i18n_names')[name][:2] == 'UL':
+						return False
+					if leave_instance.get('i18n_names')[name][:2] == 'PL':
+						return True
+
+		return False
+
 	def import_lark_checkin(self, date_from, date_to, employees=[]):
 		for i, employee_name in enumerate(employees):
 			frappe.publish_progress(percent=i / len(employees) * 100, title=_("Importing checkins from Lark..."))
@@ -232,6 +254,7 @@ class AttendanceCalculation(Document):
 							attendance.expected_working_hours = expected_hours or 0
 							attendance.leave = leave or 0
 							attendance.overtime = overtime or 0
+							attendance.paid_leave = 0
 							attendance.undertime = 0
 							attendance.night_differential = 0
 							attendance.night_differential_overtime = 0
@@ -253,6 +276,11 @@ class AttendanceCalculation(Document):
 									attendance.status = 'Half Day'
 								else:
 									attendance.status = 'On Leave'
+								
+								# Find leave type
+								if self.is_leave_paid(lark_settings, tenant_access_token, lark_user_id, date):
+									attendance.paid_leave = attendance.leave
+									attendance.leave = 0
 							else:
 								if in_result == 'No record' or out_result == 'No record' or not in_result or not out_result:
 									attendance.status = 'Absent'
