@@ -253,7 +253,6 @@ class AttendanceCalculation(Document):
 							if shift_in and shift_out and shift_out <= shift_in:
 								shift_out = shift_out + timedelta(hours=24)
 
-							no_attendance = False
 							attendance = frappe.new_doc('Attendance')
 							attendance.employee = employee_name
 							attendance.company = frappe.db.get_value('Employee', employee_name, 'company')
@@ -266,6 +265,7 @@ class AttendanceCalculation(Document):
 							attendance.undertime = 0
 							attendance.night_differential = 0
 							attendance.night_differential_overtime = 0
+							attendance.rest_day = False
 
 							attendance.late_entry = in_result == 'Late in'
 							attendance.early_exit = out_result == 'Early out'
@@ -273,7 +273,7 @@ class AttendanceCalculation(Document):
 							if in_result == 'Late in':
 								attendance.late_in = (time_in - shift_in).seconds / 3600
 
-							if in_result == 'Optional' or out_result == 'Optional' and not leave_type:
+							if (in_result == 'Optional' or out_result == 'Optional') and not leave_type:
 								attendance.rest_day = True
 
 								if not working_hours and not leave and not overtime:
