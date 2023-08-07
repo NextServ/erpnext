@@ -273,7 +273,7 @@ class AttendanceCalculation(Document):
 							if in_result == 'Late in':
 								attendance.late_in = (time_in - shift_in).seconds / 3600
 
-							if in_result == 'Optional' or out_result == 'Optional':
+							if in_result == 'Optional' or out_result == 'Optional' and not leave_type:
 								attendance.rest_day = True
 
 								if not working_hours and not leave and not overtime:
