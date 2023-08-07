@@ -286,7 +286,7 @@ class AttendanceCalculation(Document):
 									attendance.status = 'On Leave'
 								
 								# Find leave type
-								if leave_type and leave_type[:2] == 'UL':
+								if leave_type and leave_type[:2] == 'PL':
 									attendance.paid_leave = attendance.leave
 									attendance.leave = 0
 							else:
