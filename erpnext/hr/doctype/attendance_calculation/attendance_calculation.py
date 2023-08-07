@@ -101,28 +101,6 @@ class AttendanceCalculation(Document):
 		except Exception as e:
 			self.update_progress(status='Error', message=str(e) + '\n' + traceback.format_exc())
 
-	def is_leave_paid(self, lark_settings, tenant_access_token, lark_user_id, date):
-		lr = requests.post('https://open.larksuite.com/open-apis/attendance/v1/user_approvals/query?employee_type=employee_id', headers={
-			'Authorization': 'Bearer ' + tenant_access_token,
-		}, json={
-			'user_ids': [lark_user_id],
-			'user_id': lark_user_id,
-			'check_date_from': date,
-			'check_date_to': date
-		})
-		lr = lr.json()
-		lark_settings.handle_response_error(lr)
-
-		for approval in lr.get('data').get('user_approvals', []):
-			for leave_instance in approval.get('leaves', []):
-				for name in leave_instance.get('i18n_names'):
-					if leave_instance.get('i18n_names')[name][:2] == 'UL':
-						return False
-					if leave_instance.get('i18n_names')[name][:2] == 'PL':
-						return True
-
-		return False
-
 	def import_lark_checkin(self, date_from, date_to, employees=[]):
 		for i, employee_name in enumerate(employees):
 			frappe.publish_progress(percent=i / len(employees) * 100, title=_("Importing checkins from Lark..."))
@@ -147,6 +125,32 @@ class AttendanceCalculation(Document):
 					r = r.json()
 					lark_settings.handle_response_error(r)
 					lark_user_id = r.get('data').get('user').get('user_id')
+
+					# Retrieve all columns
+					r = requests.post('https://open.larksuite.com/open-apis/attendance/v1/user_stats_views/query?employee_type=employee_id', headers={
+						'Authorization': 'Bearer ' + tenant_access_token,
+					}, json={
+						'user_ids': [lark_user_id],
+						'user_id': lark_user_id,
+						'start_date': frappe.utils.getdate(date_from).strftime('%Y%m%d'),
+						'end_date': frappe.utils.getdate(date_to).strftime('%Y%m%d'),
+						'stats_type': 'daily',
+						'locale': 'en'
+					})
+					r = r.json()
+					lark_settings.handle_response_error(r)
+
+					for field in r.get('data', { }).get('view', { }).get('items', []):
+						for child_item in field.get('child_items', []):
+							child_item['value'] = '1'
+
+					r = requests.put('https://open.larksuite.com/open-apis/attendance/v1/user_stats_views/query?employee_type=employee_id', headers={
+						'Authorization': 'Bearer ' + tenant_access_token,
+					}, json={
+						'view': r.get('data').get('view')
+					})
+					r = r.json()
+					lark_settings.handle_response_error(r)
 
 					r = requests.post('https://open.larksuite.com/open-apis/attendance/v1/user_stats_datas/query?employee_type=employee_id', headers={
 						'Authorization': 'Bearer ' + tenant_access_token,
@@ -173,6 +177,7 @@ class AttendanceCalculation(Document):
 						time_out = None
 						shift_in = None
 						shift_out = None
+						leave_type = None
 
 						try:
 							for data in day.get('datas'):
@@ -193,6 +198,9 @@ class AttendanceCalculation(Document):
 
 								if data.get('code') == '51401' and data.get('value') != '-':
 									leave = data.get('value')
+
+								if data.get('code') == '51402' and data.get('value') != '-':
+									leave_type = data.get('value')
 
 								if data.get('code') == '51503-1-1' and data.get('value') != '-':
 									for feature in data.get('features'):
@@ -269,7 +277,7 @@ class AttendanceCalculation(Document):
 								attendance.rest_day = True
 
 								if not working_hours and not leave and not overtime:
-									no_attendance = True
+									attendance.status = 'Rest day'
 
 							if attendance.leave > 0:
 								if attendance.working_hours > 0 or attendance.overtime > 0:
@@ -278,7 +286,7 @@ class AttendanceCalculation(Document):
 									attendance.status = 'On Leave'
 								
 								# Find leave type
-								if self.is_leave_paid(lark_settings, tenant_access_token, lark_user_id, date):
+								if leave_type and leave_type[:2] == 'UL':
 									attendance.paid_leave = attendance.leave
 									attendance.leave = 0
 							else:
@@ -287,7 +295,6 @@ class AttendanceCalculation(Document):
 									attendance.undertime = 0
 									attendance.working_hours = 0
 								else:
-
 									attendance.status = 'Present'
 									attendance.undertime = max((expected_hours or 0) - (working_hours or 0), 0)
 
@@ -314,9 +321,6 @@ class AttendanceCalculation(Document):
 									attendance.legal_holiday = True
 								if holiday.category in ['Special Non-working Holiday', 'Special Working Holiday']:
 									attendance.special_holiday = True
-
-							if no_attendance:
-								attendance.status = 'Rest day'
 
 							attendance.save()
 
