@@ -6,7 +6,6 @@ import json
 
 import frappe
 from frappe import _
-from frappe.integrations.utils import get_payment_gateway_controller
 from frappe.model.document import Document
 from frappe.utils import flt, get_url, nowdate
 from frappe.utils.background_jobs import enqueue
@@ -91,6 +90,7 @@ class PaymentRequest(Document):
 			self.request_phone_payment()
 
 	def request_phone_payment(self):
+		from frappe.integrations.utils import get_payment_gateway_controller
 		controller = get_payment_gateway_controller(self.payment_gateway)
 		request_amount = self.get_request_amount()
 
