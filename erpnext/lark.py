@@ -101,7 +101,7 @@ def update_lark_user_from_employee(employee, method):
       'name': employee.employee_name,
       'email': employee.prefered_email,
       'mobile': employee.cell_number,
-      'department_ids': [department]
+    #   'department_ids': [department]
     }).json()
 
     lark_settings.handle_response_error(r)
