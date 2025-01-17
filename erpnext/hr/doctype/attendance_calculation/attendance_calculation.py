@@ -278,7 +278,7 @@ class AttendanceCalculation(Document):
 
 								if not working_hours and not leave and not overtime:
 									attendance.status = 'Rest day'
-
+							
 							if attendance.leave > 0:
 								if attendance.working_hours > 0 or attendance.overtime > 0:
 									attendance.status = 'Half Day'
@@ -287,8 +287,21 @@ class AttendanceCalculation(Document):
 								
 								# Find leave type
 								if leave_type and leave_type[:2] == 'PL':
-									attendance.paid_leave = attendance.leave
-									attendance.leave = 0
+
+									print(f"Processing Paid Leave: {leave_type}")
+
+									if 'Morning' in leave_type or 'Afternoon' in leave_type: 
+										paid_leave_hours = 4
+									else:
+										paid_leave_hours = 8
+									
+									paid_leave_hours = min(paid_leave_hours, attendance.leave)
+
+
+									attendance.paid_leave = paid_leave_hours
+									attendance.leave -= paid_leave_hours
+								else:
+									attendance.paid_leave = 0
 							else:
 								if in_result == 'No record' or out_result == 'No record' or not in_result or not out_result:
 									attendance.status = 'Absent'
