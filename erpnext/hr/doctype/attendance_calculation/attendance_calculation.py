@@ -278,7 +278,7 @@ class AttendanceCalculation(Document):
 
 								if not working_hours and not leave and not overtime:
 									attendance.status = 'Rest day'
-							
+							#
 							if attendance.leave > 0:
 								if attendance.working_hours > 0 or attendance.overtime > 0:
 									attendance.status = 'Half Day'
