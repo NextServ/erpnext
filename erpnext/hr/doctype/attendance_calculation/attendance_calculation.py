@@ -489,6 +489,27 @@ class AttendanceCalculation(Document):
 										if checkin_time_pairs[0][0] - clockin_time > timedelta(minutes=shift_type.get('absent_grace_period')):
 											attendance.status = 'Absent'
 
+									# Handle second clock-in after break (if applicable)
+									if len(checkin_time_pairs) > 1:  
+										# Ensure there is a second clock-in
+										# Calculate scheduled return time after break
+										scheduled_return_time = checkin_time_pairs[0][1] + total_break_time  # Use total_break_time
+
+										# Check if the second clock-in is late
+										if checkin_time_pairs[1][0] > scheduled_return_time:
+											late_duration = checkin_time_pairs[1][0] - scheduled_return_time
+
+											# Check if the late duration is within the grace period
+											if late_duration <= timedelta(minutes=shift_type.get('grace_period', 0)):
+												checkin_time_pairs[1][0] = scheduled_return_time  # Adjust to scheduled return time
+											else:
+												if shift_type.get('computation_method') == 'Fixed':
+													attendance.late_entry = True  # Mark as late entry
+
+											# Check if the late duration exceeds the absent grace period
+											if late_duration > timedelta(minutes=shift_type.get('absent_grace_period', 0)):
+												attendance.status = 'Absent'  # Mark as absent
+
 									# Check if the last out is within the grace period
 									if checkin_time_pairs[-1][1] < clockout_time:
 										if clockout_time - checkin_time_pairs[-1][1] <= timedelta(minutes=shift_type.get('early_out_grace_period')):
