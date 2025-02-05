@@ -253,6 +253,21 @@ class AttendanceCalculation(Document):
 							if shift_in and shift_out and shift_out <= shift_in:
 								shift_out = shift_out + timedelta(hours=24)
 
+							#create Employee Check
+							if time_in:
+								checkin_record = frappe.new_doc("Employee Checkin")
+								checkin_record.employee = employee_name
+								checkin_record.time = datetime.combine(parse(date), datetime.min.time()) + time_in
+								checkin_record.log_type = "IN"  # Or determine from Lark data if possible
+								checkin_record.insert(ignore_permissions=True)
+
+							if time_out:
+								checkout_record = frappe.new_doc("Employee Checkin")
+								checkout_record.employee = employee_name
+								checkout_record.time = datetime.combine(parse(date), datetime.min.time()) + time_out
+								checkout_record.log_type = "OUT"  # Or determine from Lark data if possible
+								checkout_record.insert(ignore_permissions=True)
+
 							attendance = frappe.new_doc('Attendance')
 							attendance.employee = employee_name
 							attendance.company = frappe.db.get_value('Employee', employee_name, 'company')
@@ -266,6 +281,10 @@ class AttendanceCalculation(Document):
 							attendance.night_differential = 0
 							attendance.night_differential_overtime = 0
 							attendance.rest_day = False
+							attendance.time_in = time_in
+							attendance.time_out = time_out
+							attendance.in_result = in_result
+							attendance.out_result = out_result
 
 							attendance.late_entry = in_result == 'Late in'
 							attendance.early_exit = out_result == 'Early out'
@@ -309,7 +328,8 @@ class AttendanceCalculation(Document):
 									attendance.working_hours = 0
 								else:
 									attendance.status = 'Present'
-									attendance.undertime = max((expected_hours or 0) - (working_hours or 0), 0)
+									# attendance.undertime = max((expected_hours or 0) - (working_hours or 0), 0)
+									attendance.undertime = (time_out - shift_out).seconds / 3600
 
 							# Assume night differential based on in/out
 							if time_in and time_out:
@@ -462,6 +482,11 @@ class AttendanceCalculation(Document):
 								attendance.late_in = 0
 								attendance.shift = shift_type.get('name')
 								approved_attendance_ot = -1
+								attendance.check_in_time_pairs = checkin_time_pairs
+								attendance.clockin_time = clockin_time
+								attendance.clockout_time = clockout_time
+
+
 
 								if len(checkin_time_pairs) == 0:
 									if attendance.leave:
@@ -488,27 +513,6 @@ class AttendanceCalculation(Document):
 										# Check if they should be considered absent
 										if checkin_time_pairs[0][0] - clockin_time > timedelta(minutes=shift_type.get('absent_grace_period')):
 											attendance.status = 'Absent'
-
-									# Handle second clock-in after break (if applicable)
-									if len(checkin_time_pairs) > 1:  
-										# Ensure there is a second clock-in
-										# Calculate scheduled return time after break
-										scheduled_return_time = checkin_time_pairs[0][1] + total_break_time  # Use total_break_time
-
-										# Check if the second clock-in is late
-										if checkin_time_pairs[1][0] > scheduled_return_time:
-											late_duration = checkin_time_pairs[1][0] - scheduled_return_time
-
-											# Check if the late duration is within the grace period
-											if late_duration <= timedelta(minutes=shift_type.get('grace_period', 0)):
-												checkin_time_pairs[1][0] = scheduled_return_time  # Adjust to scheduled return time
-											else:
-												if shift_type.get('computation_method') == 'Fixed':
-													attendance.late_entry = True  # Mark as late entry
-
-											# Check if the late duration exceeds the absent grace period
-											if late_duration > timedelta(minutes=shift_type.get('absent_grace_period', 0)):
-												attendance.status = 'Absent'  # Mark as absent
 
 									# Check if the last out is within the grace period
 									if checkin_time_pairs[-1][1] < clockout_time:
