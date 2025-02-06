@@ -288,9 +288,12 @@ class AttendanceCalculation(Document):
 
 							attendance.late_entry = in_result == 'Late in'
 							attendance.early_exit = out_result == 'Early out'
-
-							if in_result == 'Late in':
-								attendance.late_in = (time_in - shift_in).seconds / 3600
+							
+							if time_in and shift_in:  # Check if both time_in and shift_in exist
+								time_diff = time_in - shift_in
+								if in_result == 'Late in' or time_diff > timedelta(0):
+									attendance.late_in = (time_in - shift_in).seconds / 3600
+									attendance.late_entry = True
 
 							if (in_result == 'Optional' or out_result == 'Optional') and not leave_type:
 								attendance.rest_day = True
@@ -330,6 +333,7 @@ class AttendanceCalculation(Document):
 									attendance.status = 'Present'
 									# attendance.undertime = max((expected_hours or 0) - (working_hours or 0), 0)
 									attendance.undertime = (time_out - shift_out).seconds / 3600
+									attendance.early_exit = True
 
 							# Assume night differential based on in/out
 							if time_in and time_out:
