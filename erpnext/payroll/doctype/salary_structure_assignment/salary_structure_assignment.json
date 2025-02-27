@@ -2,7 +2,7 @@
  "actions": [],
  "allow_import": 1,
  "autoname": "HR-SSA-.YY.-.MM.-.#####",
- "creation": "2022-07-14 16:29:14.932895",
+ "creation": "2022-10-24 23:18:33.841098",
  "default_import_order": "0",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -180,13 +180,14 @@
   {
    "default": "8",
    "fieldname": "daily_hours",
-   "fieldtype": "Int",
-   "label": "Daily Hours"
+   "fieldtype": "Float",
+   "label": "Daily Hours",
+   "precision": "2"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-10-24 23:12:42.300522",
+ "modified": "2025-02-27 14:54:26.935951",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure Assignment",
