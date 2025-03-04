@@ -181,9 +181,12 @@ class AttendanceCalculation(Document):
 
 						try:
 							all_time_in = []
+							all_time_out = []
 							all_shift_in = []
+							all_shift_out = []
 
 							for data in day.get('datas'):
+								print(data)
 								if data.get('code') == '51201':
 									date = data.get('value')
 
@@ -227,6 +230,7 @@ class AttendanceCalculation(Document):
 
 											if shift_out:
 												shift_out = timedelta(hours=shift_out.hour, minutes=shift_out.minute)
+												all_shift_out.append(shift_out)
 
 								if data.get('code') == '51502-1-1' and data.get('value') != '-':
 									time_in = datetime.strptime(data.get('value'), "%H:%M")
@@ -240,6 +244,36 @@ class AttendanceCalculation(Document):
 
 									if time_out:
 										time_out = timedelta(hours=time_out.hour, minutes=time_out.minute)
+										all_time_out.append(time_out)  # Append to the list
+
+								if data.get('code') == '51502-1-3' and data.get('value') != '-':
+									second_time_in = datetime.strptime(data.get('value'), "%H:%M")
+
+									if second_time_in:
+										second_time_in = timedelta(hours=second_time_in.hour, minutes=second_time_in.minute)
+										all_time_in.append(second_time_in)  # Append to the list
+
+								if data.get('code') == '51502-1-4' and data.get('value') != '-':
+									second_time_out = datetime.strptime(data.get('value'), "%H:%M")
+
+									if second_time_out:
+										second_time_out = timedelta(hours=second_time_out.hour, minutes=second_time_out.minute)
+										all_time_out.append(second_time_out)  # Append to the list
+
+
+								if data.get('code') == '51502-2-1' and data.get('value') != '-':
+									other_time_in = datetime.strptime(data.get('value'), "%H:%M")
+
+									if other_time_in:
+										other_time_in = timedelta(hours=other_time_in.hour, minutes=other_time_in.minute)
+										all_time_in.append(other_time_in)  # Append to the list
+
+								if data.get('code') == '51502-2-1' and data.get('value') != '-':
+									other_time_out = datetime.strptime(data.get('value'), "%H:%M")
+
+									if other_time_out:
+										other_time_out = timedelta(hours=other_time_out.hour, minutes=other_time_out.minute)
+										all_time_out.append(other_time_out)  # Append to the list
 
 							if date:
 								date = date[0:4] + '-' + date[4:6] + '-' + date[6:8]
@@ -258,29 +292,14 @@ class AttendanceCalculation(Document):
 							if shift_in and shift_out and shift_out <= shift_in:
 								shift_out = shift_out + timedelta(hours=24)
 
-							#create Employee Check
-							if time_in:
-								checkin_record = frappe.new_doc("Employee Checkin")
-								checkin_record.employee = employee_name
-								checkin_record.time = datetime.combine(parse(date), datetime.min.time()) + time_in
-								checkin_record.log_type = "IN"  # Or determine from Lark data if possible
-								checkin_record.insert(ignore_permissions=True)
-
-							if time_out:
-								checkout_record = frappe.new_doc("Employee Checkin")
-								checkout_record.employee = employee_name
-								checkout_record.time = datetime.combine(parse(date), datetime.min.time()) + time_out
-								checkout_record.log_type = "OUT"  # Or determine from Lark data if possible
-								checkout_record.insert(ignore_permissions=True)
-
 							# Check for second time_in and shift_in
-							second_time_in = None
-							second_shift_in = None
-							if len(all_time_in) > 1:
-								second_time_in = all_time_in[1]
+							# second_time_in = None
+							# second_shift_in = None
+							# if len(all_time_in) > 1:
+							# 	second_time_in = all_time_in[1]
 
-							if len(all_shift_in) > 1:
-								second_shift_in = all_shift_in[1]
+							# if len(all_shift_in) > 1:
+							# 	second_shift_in = all_shift_in[1]
 
 							attendance = frappe.new_doc('Attendance')
 							attendance.employee = employee_name
@@ -302,7 +321,10 @@ class AttendanceCalculation(Document):
 							attendance.in_result = in_result
 							attendance.out_result = out_result
 							attendance.second_time_in = second_time_in
-							attendance.second_shift_in = second_shift_in
+							attendance.other_time_in = other_time_in
+							attendance.second_time_out = second_time_out
+							attendance.other_time_out = other_time_out
+							# attendance.second_shift_in = second_shift_in
 
 
 							attendance.late_entry = in_result == 'Late in'
