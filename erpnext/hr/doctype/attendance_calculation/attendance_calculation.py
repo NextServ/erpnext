@@ -212,10 +212,10 @@ class AttendanceCalculation(Document):
 									duration_undertime = flt(data.get('value').split(' ')[0])
 								
 								if data.get('code') == '51408' and data.get('value') != '-':
-									missed_clock_ins = data.get('value')
+									missed_clock_ins = flt(data.get('value'))
 
 								if data.get('code') == '51409' and data.get('value') != '-':
-									missed_clock_outs = data.get('value')
+									missed_clock_outs = flt(data.get('value'))
 
 
 								if data.get('code') == '51503-1-1' and data.get('value') != '-':
@@ -295,11 +295,8 @@ class AttendanceCalculation(Document):
 							attendance.shift_out = shift_out
 							attendance.in_result = in_result
 							attendance.out_result = out_result
-							attendance.missed_clock = 0
-
-							if missed_clock_ins > 0 or missed_clock_outs > 0:
-								attendance.missed_clock = missed_clock_ins + missed_clock_outs
-
+							attendance.missed_clock_count = 0
+							attendance.hours_deducted_per_missed_clock = 0.0
 
 							attendance.late_entry = in_result == 'Late in'
 							if duration_late_in > 0:
@@ -322,7 +319,7 @@ class AttendanceCalculation(Document):
 
 								if not working_hours and not leave and not overtime:
 									attendance.status = 'Rest day'
-							#
+							
 							if attendance.leave > 0:
 								if attendance.working_hours > 0 or attendance.overtime > 0:
 									attendance.status = 'Half Day'
@@ -346,6 +343,25 @@ class AttendanceCalculation(Document):
 									attendance.leave -= paid_leave_hours
 								else:
 									attendance.paid_leave = 0
+
+							hours_deducted_per_missed_clock = 0.0
+							if missed_clock_ins > 0 or missed_clock_outs > 0:
+								attendance.missed_clock = missed_clock_ins + missed_clock_outs
+								missed_clock_count = attendance.missed_clock
+								attendance.status = 'Present'
+								
+								if missed_clock_count == 1:
+									hours_deducted_per_missed_clock = .25 * expected_hours
+								elif missed_clock_count == 2:
+									hours_deducted_per_missed_clock = .5 * expected_hours
+								elif missed_clock_count == 3:
+									hours_deducted_per_missed_clock = .75 * expected_hours
+								elif missed_clock_count == 4:
+									attendance.status = 'Absent'
+								
+								if attendance.status != 'Absent':
+									attendance.hours_deducted_per_missed_clock = hours_deducted_per_missed_clock
+									attendance.working_hours = max(attendance.working_hours - hours_deducted_per_missed_clock, 0)
 							else:
 								if in_result == 'No record' and out_result == 'No record' or not in_result and not out_result:
 									attendance.status = 'Absent'
