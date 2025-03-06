@@ -180,10 +180,7 @@ class AttendanceCalculation(Document):
 						leave_type = None
 
 						try:
-							all_time_in = []
-							all_time_out = []
-							all_shift_in = []
-							all_shift_out = []
+
 
 							for data in day.get('datas'):
 								print(data)
@@ -208,6 +205,19 @@ class AttendanceCalculation(Document):
 								if data.get('code') == '51402' and data.get('value') != '-':
 									leave_type = data.get('value')
 
+								if data.get('code') == '51305' and data.get('value') != '-':
+									duration_late_in = flt(data.get('value').split(' ')[0])
+								
+								if data.get('code') == '51306' and data.get('value') != '-':
+									duration_undertime = flt(data.get('value').split(' ')[0])
+								
+								if data.get('code') == '51408' and data.get('value') != '-':
+									missed_clock_ins = data.get('value')
+
+								if data.get('code') == '51409' and data.get('value') != '-':
+									missed_clock_outs = data.get('value')
+
+
 								if data.get('code') == '51503-1-1' and data.get('value') != '-':
 									for feature in data.get('features'):
 										if feature.get('key') == 'StatusMsg':
@@ -218,7 +228,7 @@ class AttendanceCalculation(Document):
 
 											if shift_in:
 												shift_in = timedelta(hours=shift_in.hour, minutes=shift_in.minute)
-												all_shift_in.append(shift_in)
+									
 
 								if data.get('code') == '51503-1-2' and data.get('value') != '-':
 									for feature in data.get('features'):
@@ -230,50 +240,22 @@ class AttendanceCalculation(Document):
 
 											if shift_out:
 												shift_out = timedelta(hours=shift_out.hour, minutes=shift_out.minute)
-												all_shift_out.append(shift_out)
+											
 
 								if data.get('code') == '51502-1-1' and data.get('value') != '-':
 									time_in = datetime.strptime(data.get('value'), "%H:%M")
 
 									if time_in:
 										time_in = timedelta(hours=time_in.hour, minutes=time_in.minute)
-										all_time_in.append(time_in)  # Append to the list
+			
 
 								if data.get('code') == '51502-1-2' and data.get('value') != '-':
 									time_out = datetime.strptime(data.get('value'), "%H:%M")
 
 									if time_out:
 										time_out = timedelta(hours=time_out.hour, minutes=time_out.minute)
-										all_time_out.append(time_out)  # Append to the list
+	
 
-								if data.get('code') == '51502-1-3' and data.get('value') != '-':
-									second_time_in = datetime.strptime(data.get('value'), "%H:%M")
-
-									if second_time_in:
-										second_time_in = timedelta(hours=second_time_in.hour, minutes=second_time_in.minute)
-										all_time_in.append(second_time_in)  # Append to the list
-
-								if data.get('code') == '51502-1-4' and data.get('value') != '-':
-									second_time_out = datetime.strptime(data.get('value'), "%H:%M")
-
-									if second_time_out:
-										second_time_out = timedelta(hours=second_time_out.hour, minutes=second_time_out.minute)
-										all_time_out.append(second_time_out)  # Append to the list
-
-
-								if data.get('code') == '51502-2-1' and data.get('value') != '-':
-									other_time_in = datetime.strptime(data.get('value'), "%H:%M")
-
-									if other_time_in:
-										other_time_in = timedelta(hours=other_time_in.hour, minutes=other_time_in.minute)
-										all_time_in.append(other_time_in)  # Append to the list
-
-								if data.get('code') == '51502-2-1' and data.get('value') != '-':
-									other_time_out = datetime.strptime(data.get('value'), "%H:%M")
-
-									if other_time_out:
-										other_time_out = timedelta(hours=other_time_out.hour, minutes=other_time_out.minute)
-										all_time_out.append(other_time_out)  # Append to the list
 
 							if date:
 								date = date[0:4] + '-' + date[4:6] + '-' + date[6:8]
@@ -292,14 +274,6 @@ class AttendanceCalculation(Document):
 							if shift_in and shift_out and shift_out <= shift_in:
 								shift_out = shift_out + timedelta(hours=24)
 
-							# Check for second time_in and shift_in
-							# second_time_in = None
-							# second_shift_in = None
-							# if len(all_time_in) > 1:
-							# 	second_time_in = all_time_in[1]
-
-							# if len(all_shift_in) > 1:
-							# 	second_shift_in = all_shift_in[1]
 
 							attendance = frappe.new_doc('Attendance')
 							attendance.employee = employee_name
@@ -310,6 +284,7 @@ class AttendanceCalculation(Document):
 							attendance.leave = leave or 0
 							attendance.overtime = overtime or 0
 							attendance.paid_leave = 0
+							attendance.late_in = 0
 							attendance.undertime = 0
 							attendance.night_differential = 0
 							attendance.night_differential_overtime = 0
@@ -320,27 +295,27 @@ class AttendanceCalculation(Document):
 							attendance.shift_out = shift_out
 							attendance.in_result = in_result
 							attendance.out_result = out_result
-							attendance.second_time_in = second_time_in
-							attendance.other_time_in = other_time_in
-							attendance.second_time_out = second_time_out
-							attendance.other_time_out = other_time_out
-							# attendance.second_shift_in = second_shift_in
+							attendance.missed_clock = 0
+
+							if missed_clock_ins > 0 or missed_clock_outs > 0:
+								attendance.missed_clock = missed_clock_ins + missed_clock_outs
 
 
 							attendance.late_entry = in_result == 'Late in'
-							attendance.early_exit = out_result == 'Early out'
+							if duration_late_in > 0:
+								attendance.late_entry = True
+								attendance.late_in = duration_late_in
 							
+							attendance.early_exit = out_result == 'Early out'
+							if duration_undertime > 0:
+								attendance.early_exit = True
+								attendance.undertime = duration_undertime
+
 							if time_in and shift_in:
 								time_diff = time_in - shift_in
 								if in_result == 'Late in' or time_diff > timedelta(0):
 									attendance.late_in = time_diff.seconds / 3600
 									attendance.late_entry = True
-
-								if second_time_in and second_shift_in:
-									second_time_diff = second_time_in - second_shift_in
-									if second_time_diff > timedelta(0):
-										attendance.late_in += second_time_diff.seconds / 3600 # Add the late time from the second entry
-										attendance.late_entry = True
 
 							if (in_result == 'Optional' or out_result == 'Optional') and not leave_type:
 								attendance.rest_day = True
@@ -372,7 +347,7 @@ class AttendanceCalculation(Document):
 								else:
 									attendance.paid_leave = 0
 							else:
-								if in_result == 'No record' or out_result == 'No record' or not in_result or not out_result:
+								if in_result == 'No record' and out_result == 'No record' or not in_result and not out_result:
 									attendance.status = 'Absent'
 									attendance.undertime = 0
 									attendance.working_hours = 0
@@ -383,9 +358,7 @@ class AttendanceCalculation(Document):
 										if time_diff > timedelta(0):
 											attendance.undertime = time_diff.seconds / 3600
 											attendance.early_exit = True
-										else: 
-											attendance.undertime = 0
-											attendance.early_exit = False
+
 
 
 							# Assume night differential based on in/out
