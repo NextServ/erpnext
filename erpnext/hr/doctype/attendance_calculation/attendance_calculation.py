@@ -347,9 +347,8 @@ class AttendanceCalculation(Document):
 							hours_deducted_per_missed_clock = 0.0
 							if missed_clock_ins > 0 or missed_clock_outs > 0:
 								attendance.missed_clock_count = missed_clock_ins + missed_clock_outs
-								missed_clock_count = attendance.missed_clock
+								missed_clock_count = attendance.missed_clock_count
 								attendance.status = 'Present'
-								attendance.overtime = 0
 								
 								if missed_clock_count == 1:
 									hours_deducted_per_missed_clock = .25 * expected_hours
@@ -362,7 +361,7 @@ class AttendanceCalculation(Document):
 								
 								if attendance.status != 'Absent':
 									attendance.hours_deducted_per_missed_clock = hours_deducted_per_missed_clock
-									attendance.working_hours = max(attendance.expected_working_hours - hours_deducted_per_missed_clock, 0)
+
 							else:
 								if in_result == 'No record' and out_result == 'No record' or not in_result and not out_result:
 									attendance.status = 'Absent'
@@ -395,6 +394,10 @@ class AttendanceCalculation(Document):
 								attendance.night_differential_ot = compute_time_total(night_differential_ot_times).seconds / 3600
 
 							holidays_for_date = get_holidays_for_employee(employee_name, date, date, False, True)
+
+
+							if missed_clock_ins > 0 or missed_clock_outs > 0:
+								attendance.overtime = 0
 
 							for holiday in holidays_for_date:
 								if holiday.category in ['Regular Holiday']:
