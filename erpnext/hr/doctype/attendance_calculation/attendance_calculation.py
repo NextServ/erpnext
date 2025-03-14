@@ -374,7 +374,14 @@ class AttendanceCalculation(Document):
 										if time_diff > timedelta(0):
 											attendance.undertime = time_diff.seconds / 3600
 											attendance.early_exit = True
-
+							
+							# Handle Rest Day Duty
+							if (in_result == 'Optional' or out_result == 'Optional') and not leave_type:
+								if attendance.status == 'Present':
+									attendance.late_entry = False
+									attendance.early_exit = False
+									attendance.undertime = 0
+									attendance.late_in = 0
 
 
 							# Assume night differential based on in/out
