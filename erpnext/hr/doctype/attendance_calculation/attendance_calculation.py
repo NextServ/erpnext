@@ -6,6 +6,7 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import flt
 from dateutil.parser import parse
+import math
 
 from erpnext.hr.utils import get_holidays_for_employee
 from datetime import datetime, timedelta
@@ -388,13 +389,16 @@ class AttendanceCalculation(Document):
 							if time_in and time_out:
 								night_differential_clock_times = [
 									[
-										datetime.combine(parse(date), datetime.min.time()) + timedelta(hours=21),
+										datetime.combine(parse(date), datetime.min.time()) + timedelta(hours=22),
 										datetime.combine(parse(date), datetime.min.time()) + timedelta(hours=30)
 									]
 								]
 
+								night_differential = 0
+
 								night_differential_times = overlap_times([[datetime.combine(parse(date), datetime.min.time()) + time_in, datetime.combine(parse(date), datetime.min.time()) + time_out]], night_differential_clock_times)
-								attendance.night_differential = compute_time_total(night_differential_times).seconds / 3600
+								night_differential = compute_time_total(night_differential_times).seconds / 3600
+								attendance.night_differential = math.floor(night_differential)
 
 								overtime_in = time_out - timedelta(hours=(overtime or 0))
 								night_differential_ot_times = overlap_times([[datetime.combine(parse(date), datetime.min.time()) + overtime_in, datetime.combine(parse(date), datetime.min.time()) + time_out]], night_differential_clock_times)
