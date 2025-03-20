@@ -333,13 +333,10 @@ class AttendanceCalculation(Document):
 									print(f"Processing Paid Leave: {leave_type}")
 
 									if 'Morning' in leave_type or 'Afternoon' in leave_type: 
-										paid_leave_hours = 4
+										paid_leave_hours = leave / 2
 									else:
-										paid_leave_hours = 8
+										paid_leave_hours = leave
 									
-									paid_leave_hours = min(paid_leave_hours, attendance.leave)
-
-
 									attendance.paid_leave = paid_leave_hours
 									attendance.leave -= paid_leave_hours
 								else:
