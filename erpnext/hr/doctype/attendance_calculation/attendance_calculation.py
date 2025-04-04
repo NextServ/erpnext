@@ -179,6 +179,7 @@ class AttendanceCalculation(Document):
 						shift_in = None
 						shift_out = None
 						leave_type = None
+						actual_attendance = None
 
 						try:
 
@@ -211,6 +212,7 @@ class AttendanceCalculation(Document):
 								
 								if data.get('code') == '51306' and data.get('value') != '-':
 									duration_undertime = flt(data.get('value').split(' ')[0])
+								
 								
 								if data.get('code') == '51408' and data.get('value') != '-':
 									missed_clock_ins = flt(data.get('value'))
@@ -256,8 +258,12 @@ class AttendanceCalculation(Document):
 									if time_out:
 										time_out = timedelta(hours=time_out.hour, minutes=time_out.minute)
 	
-
-
+								if data.get('code') == '51309' and data.get('value') != '-':
+									actual_attendance = flt(data.get('value'))
+         
+								if data.get('code') == '51314' and data.get('value') != '-':
+									undertime_count = flt(data.get('value'))
+         	
 							if date:
 								date = date[0:4] + '-' + date[4:6] + '-' + date[6:8]
 
@@ -309,11 +315,12 @@ class AttendanceCalculation(Document):
 								attendance.early_exit = True
 								attendance.undertime = duration_undertime
 
-							if time_in and shift_in:
-								time_diff = time_in - shift_in
-								if in_result == 'Late in' or time_diff > timedelta(0):
-									attendance.late_in = time_diff.seconds / 3600
-									attendance.late_entry = True
+							#Calculation no longer needed. Overwrites duration_late_in from LARK
+							# if time_in and shift_in:
+							# 	time_diff = time_in - shift_in
+							# 	if in_result == 'Late in' or time_diff > timedelta(0):
+							# 		attendance.late_in = time_diff.seconds / 3600
+							# 		attendance.late_entry = True
 
 							if (in_result == 'Optional' or out_result == 'Optional') and not leave_type:
 								attendance.rest_day = True
@@ -329,14 +336,12 @@ class AttendanceCalculation(Document):
 								
 								# Find leave type
 								if leave_type and leave_type[:2] == 'PL':
-
-									print(f"Processing Paid Leave: {leave_type}")
-
-									if 'Morning' in leave_type or 'Afternoon' in leave_type: 
-										paid_leave_hours = leave / 2
-									else:
+        
+									if leave != expected_hours: # if half day leave
 										paid_leave_hours = leave
-									
+										if undertime_count == 0:
+											attendance.undertime = 0
+
 									attendance.paid_leave = paid_leave_hours
 									attendance.leave -= paid_leave_hours
 								else:
@@ -352,6 +357,11 @@ class AttendanceCalculation(Document):
 									hours_deducted_per_missed_clock = .25 * expected_hours
 								elif missed_clock_count == 2:
 									hours_deducted_per_missed_clock = .5 * expected_hours
+         
+									# for personnel with only two clock in/out
+									if actual_attendance and actual_attendance == 0:
+										attendance.status = 'Absent'
+										hours_deducted_per_missed_clock = 0
 								elif missed_clock_count == 3:
 									hours_deducted_per_missed_clock = .75 * expected_hours
 								elif missed_clock_count == 4:
@@ -367,11 +377,11 @@ class AttendanceCalculation(Document):
 									attendance.working_hours = 0
 								else:
 									attendance.status = 'Present'
-									if time_out and shift_out:
-										time_diff = shift_out - time_out
-										if time_diff > timedelta(0):
-											attendance.undertime = time_diff.seconds / 3600
-											attendance.early_exit = True
+									# if time_out and shift_out:
+									# 	time_diff = shift_out - time_out
+									# 	if time_diff > timedelta(0):
+									# 		attendance.undertime = time_diff.seconds / 3600
+									# 		attendance.early_exit = True
 							
 							# Handle Rest Day Duty
 							if (in_result == 'Optional' or out_result == 'Optional') and not leave_type:
