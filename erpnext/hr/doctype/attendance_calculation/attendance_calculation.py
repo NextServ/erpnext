@@ -260,6 +260,11 @@ class AttendanceCalculation(Document):
 	
 								if data.get('code') == '51309' and data.get('value') != '-':
 									actual_attendance = flt(data.get('value'))
+									frappe.msgprint(f"Actual Attendance data: {actual_attendance}")
+         
+								if data.get('code') == '61' and data.get('value') != '-':
+									absent_days = flt(data.get('value'))
+									frappe.msgprint(f"Absent Days: {absent_days}")
          
 								if data.get('code') == '51314' and data.get('value') != '-':
 									undertime_count = flt(data.get('value'))
@@ -337,7 +342,7 @@ class AttendanceCalculation(Document):
 								# Find leave type
 								paid_leave_hours = 0
 								if leave_type and leave_type[:2] == 'PL':
-        
+									paid_leave_hours = leave
 									if leave != expected_hours: # if half day leave
 										paid_leave_hours = leave
 										if undertime_count == 0:
@@ -360,12 +365,14 @@ class AttendanceCalculation(Document):
 									hours_deducted_per_missed_clock = .5 * expected_hours
          
 									# for personnel with only two clock in/out
-									if actual_attendance:
-										frappe.msgprint(f"Check Actual Attendance: {actual_attendance}")
+									if actual_attendance or absent_days > 0:
+										frappe.msgprint(f"Checking Actual Attendance...")
+										frappe.msgprint(f"Checking Absent Days...")
              
-										if actual_attendance == 0:
+										if actual_attendance == 0 or absent_days:
 											attendance.status = 'Absent'
 											frappe.msgprint(f"Actual Attendance: {actual_attendance}")
+											frappe.msgprint(f"Absent Days: {absent_days}")
 											frappe.msgprint("There is an actual attendance log")
 											hours_deducted_per_missed_clock = 0
 									else: 
@@ -379,7 +386,7 @@ class AttendanceCalculation(Document):
 								if attendance.status != 'Absent':
 									attendance.hours_deducted_per_missed_clock = hours_deducted_per_missed_clock
 
-							else:
+							if in_result == 'No record':
 								if in_result == 'No record' and out_result == 'No record' or not in_result and not out_result:
 									attendance.status = 'Absent'
 									attendance.undertime = 0
