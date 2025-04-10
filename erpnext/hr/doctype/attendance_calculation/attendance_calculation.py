@@ -335,6 +335,7 @@ class AttendanceCalculation(Document):
 									attendance.status = 'On Leave'
 								
 								# Find leave type
+								paid_leave_hours = 0
 								if leave_type and leave_type[:2] == 'PL':
         
 									if leave != expected_hours: # if half day leave
@@ -359,9 +360,17 @@ class AttendanceCalculation(Document):
 									hours_deducted_per_missed_clock = .5 * expected_hours
          
 									# for personnel with only two clock in/out
-									if actual_attendance and actual_attendance == 0:
-										attendance.status = 'Absent'
-										hours_deducted_per_missed_clock = 0
+									if actual_attendance:
+										frappe.msgprint(f"Check Actual Attendance: {actual_attendance}")
+             
+										if actual_attendance == 0:
+											attendance.status = 'Absent'
+											frappe.msgprint(f"Actual Attendance: {actual_attendance}")
+											frappe.msgprint("There is an actual attendance log")
+											hours_deducted_per_missed_clock = 0
+									else: 
+										frappe.msgprint("No actual attendance log")
+
 								elif missed_clock_count == 3:
 									hours_deducted_per_missed_clock = .75 * expected_hours
 								elif missed_clock_count == 4:
@@ -377,6 +386,7 @@ class AttendanceCalculation(Document):
 									attendance.working_hours = 0
 								else:
 									attendance.status = 'Present'
+									frappe.msgprint("The employee is present")
 									# if time_out and shift_out:
 									# 	time_diff = shift_out - time_out
 									# 	if time_diff > timedelta(0):
