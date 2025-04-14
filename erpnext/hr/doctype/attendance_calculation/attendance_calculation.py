@@ -309,6 +309,7 @@ class AttendanceCalculation(Document):
 							attendance.out_result = out_result
 							attendance.missed_clock_count = 0
 							attendance.hours_deducted_per_missed_clock = 0.0
+							attendance.leave_type = leave_type
 
 							attendance.late_entry = in_result == 'Late in'
 							if duration_late_in > 0:
@@ -366,17 +367,14 @@ class AttendanceCalculation(Document):
          
 									# for personnel with only two clock in/out
 									if actual_attendance or absent_days > 0:
-										frappe.msgprint(f"Checking Actual Attendance...")
-										frappe.msgprint(f"Checking Absent Days...")
              
 										if actual_attendance == 0 or absent_days:
 											attendance.status = 'Absent'
 											frappe.msgprint(f"Actual Attendance: {actual_attendance}")
 											frappe.msgprint(f"Absent Days: {absent_days}")
-											frappe.msgprint("There is an actual attendance log")
 											hours_deducted_per_missed_clock = 0
-									else: 
-										frappe.msgprint("No actual attendance log")
+									# else: 
+									# 	frappe.msgprint("No actual attendance log")
 
 								elif missed_clock_count == 3:
 									hours_deducted_per_missed_clock = .75 * expected_hours
