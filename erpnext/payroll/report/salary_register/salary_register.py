@@ -59,14 +59,13 @@ def execute(filters=None):
 def get_columns(salary_slips):
 	"""
 	columns = [
-		_("Salary Slip ID") + ":Link/Salary Slip:150",
+		_("Company") + ":Link/Company:120",
 		_("Employee") + ":Link/Employee:120",
 		_("Employee Name") + "::140",
 		_("Date of Joining") + "::80",
 		_("Branch") + ":Link/Branch:120",
 		_("Department") + ":Link/Department:120",
 		_("Designation") + ":Link/Designation:120",
-		_("Company") + ":Link/Company:120",
 		_("Start Date") + "::80",
 		_("End Date") + "::80",
 		_("Leave Without Pay") + ":Float:130",
