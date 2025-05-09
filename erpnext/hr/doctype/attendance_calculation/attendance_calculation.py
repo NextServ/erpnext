@@ -279,6 +279,17 @@ class AttendanceCalculation(Document):
 									leave = flt(leave_time_data[0]) * expected_hours
 								else:
 									leave = flt(leave_time_data[0])
+							elif not expected_hours and leave:
+								leave_time_data = leave.split(' ')
+
+								if leave_time_data[1] == 'days':
+									leave = flt(leave_time_data[0]) * 8
+								else:
+									leave = flt(leave_time_data[0])
+							else:
+								leave = leave = 0
+         
+        
 
 							if time_in and time_out and time_out <= time_in:
 								time_out = time_out + timedelta(hours=24)
