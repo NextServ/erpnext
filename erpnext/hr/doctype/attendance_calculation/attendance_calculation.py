@@ -125,7 +125,7 @@ class AttendanceCalculation(Document):
 					})
 					r = r.json()
 					lark_settings.handle_response_error(r)
-					lark_user_id = r.get('data').get('user').get('user Dental id')
+					lark_user_id = r.get('data').get('user').get('user_id')
 
 					# Retrieve all columns
 					r = requests.post('https://open.larksuite.com/open-apis/attendance/v1/user_stats_views/query?employee_type=employee_id', headers={
@@ -138,7 +138,7 @@ class AttendanceCalculation(Document):
 						'stats_type': 'daily',
 						'locale': 'en'
 					})
-					attr = r.json()
+					r = r.json()
 					lark_settings.handle_response_error(r)
 
 					for field in r.get('data', { }).get('view', { }).get('items', []):
@@ -180,16 +180,9 @@ class AttendanceCalculation(Document):
 						shift_out = None
 						leave_type = None
 						actual_attendance = None
-						duration_late_in = 0
-						duration_undertime = 0
-						missed_clock_ins = 0
-						missed_clock_outs = 0
-						absent_days = 0
-						undertime_count = 0
 
 						try:
 							for data in day.get('datas'):
-								print(data)
 								if data.get('code') == '51201':
 									date = data.get('value')
 									if len(date) == 10:
@@ -278,11 +271,6 @@ class AttendanceCalculation(Document):
 									leave = flt(leave_time_data[0])
 							else:
 								leave = 0
-
-							# Fallback for overtime if not provided by Lark
-							if working_hours and expected_hours and not overtime:
-								overtime = max(0, working_hours - expected_hours)
-								frappe.msgprint(f"Calculated overtime: {overtime} hours (working_hours: {working_hours}, expected_hours: {expected_hours})")
 
 							if time_in and time_out and time_out <= time_in:
 								time_out = time_out + timedelta(hours=24)
@@ -400,15 +388,14 @@ class AttendanceCalculation(Document):
 								attendance.night_differential = math.floor(night_differential)
 
 								# Overtime night differential
-								if overtime and time_out > shift_out:
-									overtime_start = datetime.combine(parse(date), datetime.min.time()) + shift_out
+								calculated_overtime = max(0, working_hours - expected_hours) if working_hours and expected_hours else overtime or 0
+								if calculated_overtime > 0 and time_out > shift_out:
+									overtime_start = datetime.combine(parse(date), datetime.min.time()) + max(time_in, shift_out)
 									overtime_end = datetime.combine(parse(date), datetime.min.time()) + time_out
 									night_differential_ot_times = overlap_times([[overtime_start, overtime_end]], night_differential_clock_times)
 									attendance.night_differential_overtime = compute_time_total(night_differential_ot_times).seconds / 3600
-									frappe.msgprint(f"Overtime night differential calculated: {attendance.night_differential_overtime} hours (overtime_start: {overtime_start}, overtime_end: {overtime_end})")
 								else:
 									attendance.night_differential_overtime = 0
-									frappe.msgprint(f"No overtime night differential: overtime={overtime}, time_out={time_out}, shift_out={shift_out}")
 
 							holidays_for_date = get_holidays_for_employee(employee_name, date, date, False, True)
 
@@ -647,19 +634,15 @@ def get_employees(**kwargs):
 
 def overlap_times(set_a=[], set_b=[]):
 	overlaps = []
-
 	for a in set_a:
 		for b in set_b:
 			new_set = [max(a[0], b[0]), min(a[1], b[1])]
 			if new_set[1] > new_set[0]:
 				overlaps.append(new_set)
-
 	return overlaps
 
 def compute_time_total(pairs=[]):
 	time = timedelta(0)
-
 	for pair in pairs:
 		time += (pair[1] - pair[0])
-
 	return time
