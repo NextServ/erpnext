@@ -395,7 +395,15 @@ class AttendanceCalculation(Document):
 								
 								if attendance.status != 'Absent':
 									attendance.hours_deducted_per_missed_clock = hours_deducted_per_missed_clock
-
+									
+							holidays_for_date = get_holidays_for_employee(employee_name, date, date, False, True)
+							for holiday in holidays_for_date:
+								if holiday.category in ['Regular Holiday']:
+									attendance.legal_holiday = True
+								if holiday.category in ['Special Non-working Holiday', 'Special Working Holiday']:
+									attendance.special_holiday = True
+							if attendance.legal_holiday and attendance.working_hours == 0:
+								attendance.status = 'Holiday Off
 							if in_result == 'No record':
 								if in_result == 'No record' and out_result == 'No record' or not in_result and not out_result:
 									attendance.status = 'Absent'
