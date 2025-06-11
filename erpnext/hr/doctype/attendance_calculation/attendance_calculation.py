@@ -402,9 +402,9 @@ class AttendanceCalculation(Document):
 									attendance.legal_holiday = True
 								if holiday.category in ['Special Non-working Holiday', 'Special Working Holiday']:
 									attendance.special_holiday = True
-							if attendance.legal_holiday and attendance.working_hours == 0:
+							if attendance.legal_holiday and attendance.working_hours == 0:       
 								attendance.status = 'Holiday Off'
-							if in_result == 'No record':
+							if in_result == 'No record' and attendance.status != 'Holiday Off':
 								if in_result == 'No record' and out_result == 'No record' or not in_result and not out_result:
 									attendance.status = 'Absent'
 									attendance.undertime = 0
@@ -446,18 +446,10 @@ class AttendanceCalculation(Document):
 								night_differential_ot_times = overlap_times([[datetime.combine(parse(date), datetime.min.time()) + overtime_in, datetime.combine(parse(date), datetime.min.time()) + time_out]], night_differential_clock_times)
 								attendance.night_differential_ot = compute_time_total(night_differential_ot_times).seconds / 3600
 
-							holidays_for_date = get_holidays_for_employee(employee_name, date, date, False, True)
 
 
 							if missed_clock_ins > 0 or missed_clock_outs > 0:
 								attendance.overtime = 0
-
-							for holiday in holidays_for_date:
-								if holiday.category in ['Regular Holiday']:
-									attendance.legal_holiday = True
-								if holiday.category in ['Special Non-working Holiday', 'Special Working Holiday']:
-									attendance.special_holiday = True
-
 							attendance.save()
 
 							self.log(employee_name, True, date=date)
