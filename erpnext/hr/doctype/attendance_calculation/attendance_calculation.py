@@ -420,7 +420,7 @@ class AttendanceCalculation(Document):
 
 
 							# Assume night differential based on in/out
-							if time_in and time_out:
+							if time_in and time_out and shift_in and shift_out:
 								night_differential_clock_times = [
 									[
 										datetime.combine(parse(date), datetime.min.time()) + timedelta(hours=22),
@@ -430,7 +430,7 @@ class AttendanceCalculation(Document):
 
 								night_differential = 0
 
-								night_differential_times = overlap_times([[datetime.combine(parse(date), datetime.min.time()) + time_in, datetime.combine(parse(date), datetime.min.time()) + time_out]], night_differential_clock_times)
+								night_differential_times = overlap_times([[datetime.combine(parse(date), datetime.min.time()) + shift_in, datetime.combine(parse(date), datetime.min.time()) + shift_out]], night_differential_clock_times)
 								night_differential = compute_time_total(night_differential_times).seconds / 3600
 								attendance.night_differential = math.floor(night_differential)
 
