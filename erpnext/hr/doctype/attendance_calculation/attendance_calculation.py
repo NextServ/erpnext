@@ -449,9 +449,9 @@ class AttendanceCalculation(Document):
                                         overtime_end = datetime.combine(parsed_date, datetime.min.time()) + time_out
                                         night_differential_ot_times = overlap_times([[overtime_start, overtime_end]], night_differential_clock_times)
                                         night_differential_overtime = compute_time_total(night_differential_ot_times).seconds / 3600
-                                        attendance.night_differential_overtime = round(night_differential_overtime / 0.5) * 0.5
-                                        attendance.night_differential_overtime = night_differential_overtime
-                                        frappe.msgprint(f"Night differential overtime: {attendance.night_differential_overtime} hours")
+                                        rounded_night_differential_overtime = round(night_differential_overtime / 0.5) * 0.5
+                                        attendance.night_differential_overtime = rounded_night_differential_overtime
+                                        frappe.msgprint(f"Night differential overtime: {night_differential_overtime} hours")
                                     else:
                                         attendance.night_differential_overtime = 0
                                 except Exception as e:
