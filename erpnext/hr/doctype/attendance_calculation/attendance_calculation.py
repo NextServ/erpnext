@@ -192,10 +192,19 @@ class AttendanceCalculation(Document):
                                             out_result = feature.get('value')
                                         if feature.get('key') == 'ShiftTime' and feature.get('value') != '-':
                                             frappe.msgprint(f"Raw shift_out value: {feature.get('value')}")
-                                            shift_out = datetime.strptime(feature.get('value'), "%H:%M")
-                                            if shift_out:
-                                                shift_out = timedelta(hours=shift_out.hour, minutes=shift_out.minute)
-                                                frappe.msgprint(f"Parsed shift_out: {shift_out}")
+                                            try:
+                                                shift_out = datetime.strptime(feature.get('value'), "%H:%M")
+                                                if shift_out:
+                                                    # Treat 00:00 as 24:00 (next day)
+                                                    if feature.get('value') == '00:00':
+                                                        shift_out = timedelta(hours=24)
+                                                        frappe.msgprint(f"Shift_out set to 24:00 for midnight: {shift_out}")
+                                                    else:
+                                                        shift_out = timedelta(hours=shift_out.hour, minutes=shift_out.minute)
+                                                    frappe.msgprint(f"Parsed shift_out: {shift_out}")
+                                            except Exception as e:
+                                                frappe.msgprint(f"Shift out parsing error: {e}, Raw value: {feature.get('value')}")
+                                                shift_out = None
                                 if data.get('code') == '51502-1-1' and data.get('value') != '-':
                                     time_in = datetime.strptime(data.get('value'), "%H:%M")
                                     if time_in:
@@ -239,11 +248,6 @@ class AttendanceCalculation(Document):
                             if time_in and time_out and time_out <= time_in:
                                 time_out = time_out + timedelta(hours=24)
                                 frappe.msgprint(f"Adjusted time_out: {time_out}")
-                            if shift_in and shift_out:
-                                frappe.msgprint(f"Before adjustment - shift_in: {shift_in}, shift_out: {shift_out}")
-                                if shift_out <= shift_in:
-                                    shift_out = shift_out + timedelta(hours=24)
-                                    frappe.msgprint(f"Adjusted shift_out: {shift_out}")
                             attendance = frappe.new_doc('Attendance')
                             attendance.employee = employee_name
                             attendance.company = frappe.db.get_value('Employee', employee_name, 'company')
@@ -337,7 +341,7 @@ class AttendanceCalculation(Document):
                                     attendance.undertime = 0
                                     attendance.late_in = 0
                             frappe.msgprint(f"Pre-night diff check: time_in={time_in}, time_out={time_out}, shift_in={shift_in}, shift_out={shift_out}, date={date}")
-                            if time_in and time_out and shift_in and shift_out and date:
+                            if time_in and time_out and shift_in and shift_out and date and isinstance(shift_out, timedelta):
                                 try:
                                     parsed_date = parse(date)
                                     night_differential_clock_times = [
@@ -356,6 +360,8 @@ class AttendanceCalculation(Document):
                                     frappe.msgprint(f"Night differential window: {night_differential_clock_times}")
                                     night_differential_times = overlap_times(shift_period, night_differential_clock_times)
                                     frappe.msgprint(f"Night differential times: {night_differential_times}")
+                                    if not night_differential_times:
+                                        frappe.msgprint("No night differential overlap found")
                                     night_differential = compute_time_total(night_differential_times).seconds / 3600
                                     attendance.night_differential = math.floor(night_differential)
                                     frappe.msgprint(f"Night differential: {attendance.night_differential} hours")
@@ -373,7 +379,7 @@ class AttendanceCalculation(Document):
                                     attendance.night_differential = 0
                                     attendance.night_differential_overtime = 0
                             else:
-                                frappe.msgprint(f"Night differential skipped: Missing time_in={time_in}, time_out={time_out}, shift_in={shift_in}, shift_out={shift_out}, date={date}")
+                                frappe.msgprint(f"Night differential skipped: time_in={time_in}, time_out={time_out}, shift_in={shift_in}, shift_out={shift_out}, date={date}, shift_out_type={type(shift_out)}")
                             holidays_for_date = get_holidays_for_employee(employee_name, date, date, False, True)
                             if missed_clock_ins > 0 or missed_clock_outs > 0:
                                 attendance.overtime = 0
