@@ -182,9 +182,13 @@ class AttendanceCalculation(Document):
 						actual_attendance = None
 
 						try:
+
+
 							for data in day.get('datas'):
+								print(data)
 								if data.get('code') == '51201':
 									date = data.get('value')
+
 									if len(date) == 10:
 										date = date[0:4] + date[5:7] + date[8:]
 
@@ -209,74 +213,90 @@ class AttendanceCalculation(Document):
 								if data.get('code') == '51306' and data.get('value') != '-':
 									duration_undertime = flt(data.get('value').split(' ')[0])
 								
+								
 								if data.get('code') == '51408' and data.get('value') != '-':
 									missed_clock_ins = flt(data.get('value'))
 
 								if data.get('code') == '51409' and data.get('value') != '-':
 									missed_clock_outs = flt(data.get('value'))
 
+
 								if data.get('code') == '51503-1-1' and data.get('value') != '-':
 									for feature in data.get('features'):
 										if feature.get('key') == 'StatusMsg':
 											in_result = feature.get('value')
+
 										if feature.get('key') == 'ShiftTime' and feature.get('value') != '-':
 											shift_in = datetime.strptime(feature.get('value'), "%H:%M")
+
 											if shift_in:
 												shift_in = timedelta(hours=shift_in.hour, minutes=shift_in.minute)
+									
 
 								if data.get('code') == '51503-1-2' and data.get('value') != '-':
 									for feature in data.get('features'):
 										if feature.get('key') == 'StatusMsg':
 											out_result = feature.get('value')
+
 										if feature.get('key') == 'ShiftTime' and feature.get('value') != '-':
 											shift_out = datetime.strptime(feature.get('value'), "%H:%M")
+
 											if shift_out:
 												shift_out = timedelta(hours=shift_out.hour, minutes=shift_out.minute)
+											
 
 								if data.get('code') == '51502-1-1' and data.get('value') != '-':
 									time_in = datetime.strptime(data.get('value'), "%H:%M")
+
 									if time_in:
 										time_in = timedelta(hours=time_in.hour, minutes=time_in.minute)
+			
 
 								if data.get('code') == '51502-1-2' and data.get('value') != '-':
 									time_out = datetime.strptime(data.get('value'), "%H:%M")
+
 									if time_out:
 										time_out = timedelta(hours=time_out.hour, minutes=time_out.minute)
-
+	
 								if data.get('code') == '51309' and data.get('value') != '-':
 									actual_attendance = flt(data.get('value'))
 									frappe.msgprint(f"Actual Attendance data: {actual_attendance}")
-
+         
 								if data.get('code') == '61' and data.get('value') != '-':
 									absent_days = flt(data.get('value'))
 									frappe.msgprint(f"Absent Days: {absent_days}")
-
+         
 								if data.get('code') == '51314' and data.get('value') != '-':
 									undertime_count = flt(data.get('value'))
-
+         	
 							if date:
 								date = date[0:4] + '-' + date[4:6] + '-' + date[6:8]
 
 							if expected_hours and leave:
 								leave_time_data = leave.split(' ')
+
 								if leave_time_data[1] == 'days':
 									leave = flt(leave_time_data[0]) * expected_hours
 								else:
 									leave = flt(leave_time_data[0])
 							elif not expected_hours and leave:
 								leave_time_data = leave.split(' ')
+
 								if leave_time_data[1] == 'days':
 									leave = flt(leave_time_data[0]) * 8
 								else:
 									leave = flt(leave_time_data[0])
 							else:
-								leave = 0
+								leave = leave = 0
+         
+        
 
 							if time_in and time_out and time_out <= time_in:
 								time_out = time_out + timedelta(hours=24)
 
 							if shift_in and shift_out and shift_out <= shift_in:
 								shift_out = shift_out + timedelta(hours=24)
+
 
 							attendance = frappe.new_doc('Attendance')
 							attendance.employee = employee_name
@@ -312,24 +332,35 @@ class AttendanceCalculation(Document):
 								attendance.early_exit = True
 								attendance.undertime = duration_undertime
 
+							#Calculation no longer needed. Overwrites duration_late_in from LARK
+							# if time_in and shift_in:
+							# 	time_diff = time_in - shift_in
+							# 	if in_result == 'Late in' or time_diff > timedelta(0):
+							# 		attendance.late_in = time_diff.seconds / 3600
+							# 		attendance.late_entry = True
+
 							if (in_result == 'Optional' or out_result == 'Optional') and not leave_type:
 								attendance.rest_day = True
+
 								if not working_hours and not leave and not overtime:
 									attendance.status = 'Rest day'
-
+         
+							frappe.msgprint(f"attendance.leave: {attendance.leave}")
 							if attendance.leave > 0:
 								if attendance.working_hours > 0 or attendance.overtime > 0:
 									attendance.status = 'Half Day'
 								else:
 									attendance.status = 'On Leave'
 								
+								# Find leave type
 								paid_leave_hours = 0
 								if leave_type and leave_type[:2] == 'PL':
 									paid_leave_hours = leave
-									if leave != expected_hours:
+									if leave != expected_hours: # if half day leave
 										paid_leave_hours = leave
 										if undertime_count == 0:
 											attendance.undertime = 0
+
 									attendance.paid_leave = paid_leave_hours
 									attendance.leave -= paid_leave_hours
 								else:
@@ -345,10 +376,18 @@ class AttendanceCalculation(Document):
 									hours_deducted_per_missed_clock = .25 * expected_hours
 								elif missed_clock_count == 2:
 									hours_deducted_per_missed_clock = .5 * expected_hours
+         
+									# for personnel with only two clock in/out
 									if actual_attendance or absent_days > 0:
+             
 										if actual_attendance == 0 or absent_days:
 											attendance.status = 'Absent'
+											frappe.msgprint(f"Actual Attendance: {actual_attendance}")
+											frappe.msgprint(f"Absent Days: {absent_days}")
 											hours_deducted_per_missed_clock = 0
+									# else: 
+									# 	frappe.msgprint("No actual attendance log")
+
 								elif missed_clock_count == 3:
 									hours_deducted_per_missed_clock = .75 * expected_hours
 								elif missed_clock_count == 4:
@@ -365,13 +404,20 @@ class AttendanceCalculation(Document):
 								else:
 									attendance.status = 'Present'
 									frappe.msgprint("The employee is present")
-
+									# if time_out and shift_out:
+									# 	time_diff = shift_out - time_out
+									# 	if time_diff > timedelta(0):
+									# 		attendance.undertime = time_diff.seconds / 3600
+									# 		attendance.early_exit = True
+							
+							# Handle Rest Day Duty
 							if (in_result == 'Optional' or out_result == 'Optional') and not leave_type:
 								if attendance.status == 'Present':
 									attendance.late_entry = False
 									attendance.early_exit = False
 									attendance.undertime = 0
 									attendance.late_in = 0
+
 
 							# Night differential calculation
 							if time_in and time_out:
@@ -383,7 +429,10 @@ class AttendanceCalculation(Document):
 								]
 
 								# Regular night differential
-								night_differential_times = overlap_times([[datetime.combine(parse(date), datetime.min.time()) + time_in, datetime.combine(parse(date), datetime.min.time()) + time_out]], night_differential_clock_times)
+								night_differential_times = overlap_times(
+                                    [[datetime.combine(parse(date), datetime.min.time()) + shift_in,
+                                      datetime.combine(parse(date), datetime.min.time()) + shift_out]],
+                                    night_differential_clock_times)
 								night_differential = compute_time_total(night_differential_times).seconds / 3600
 								attendance.night_differential = math.floor(night_differential)
 
@@ -399,6 +448,7 @@ class AttendanceCalculation(Document):
 									attendance.night_differential_overtime = 0
 
 							holidays_for_date = get_holidays_for_employee(employee_name, date, date, False, True)
+
 
 							if missed_clock_ins > 0 or missed_clock_outs > 0:
 								attendance.overtime = 0
@@ -442,6 +492,7 @@ class AttendanceCalculation(Document):
 								total_working_hours = clockout_time - clockin_time
 								total_break_time = (shift_type.get('break_time_end') - shift_type.get('break_time_start')) if shift_type.get('break_time_start') else timedelta(0)
 
+								# clock_times stores all time that is considered "regular working hours"
 								clock_times = [
 									[clockin_time, clockout_time]
 								]
@@ -458,11 +509,13 @@ class AttendanceCalculation(Document):
 									clockout_time = max(clockout_time, clockin_out_time)
 									clock_times.append([clockin_in_time, clockin_out_time])
 
+								# overtime_clock_times stores all the time that is considered "overtime hours"
 								overtime_clock_times = [
 									[datetime.min, clockin_time],
 									[clockout_time, datetime.max]
 								]
 
+								# For breaks
 								break_clock_times = []
 
 								if shift_type.get('break_time_start'):
@@ -471,6 +524,7 @@ class AttendanceCalculation(Document):
 										datetime.combine(current_date, datetime.min.time()) + shift_type.get('break_time_end')
 									])
 
+								# For night differential
 								night_differential_clock_times = [
 									[
 										datetime.combine(current_date, datetime.min.time()) + timedelta(hours=21),
@@ -480,6 +534,7 @@ class AttendanceCalculation(Document):
 
 								total_working_hours -= total_break_time
 
+								# Retrieve checkin and sort into pairs
 								employee_checkins = frappe.db.get_list(
 									'Employee Checkin',
 									filters=[
@@ -516,6 +571,7 @@ class AttendanceCalculation(Document):
 											pair[1].get('time')
 										])
 
+								# Calculate and create attendance
 								attendance = frappe.new_doc('Attendance')
 								attendance.employee = employee_name
 								attendance.company = frappe.db.get_value('Employee', employee_name, 'company')
@@ -534,6 +590,8 @@ class AttendanceCalculation(Document):
 								attendance.clockin_time = clockin_time
 								attendance.clockout_time = clockout_time
 
+
+
 								if len(checkin_time_pairs) == 0:
 									if attendance.leave:
 										attendance.status = 'On Leave'
@@ -546,6 +604,9 @@ class AttendanceCalculation(Document):
 									if shift_type.get('computation_method') == 'Flexible':
 										attendance.undertime = 0
 
+									# Regular fixed schedule
+									# Calculate regular working hours
+									# Check if the first in is within the grace period
 									if checkin_time_pairs[0][0] > clockin_time:
 										if checkin_time_pairs[0][0] - clockin_time <= timedelta(minutes=shift_type.get('grace_period')):
 											checkin_time_pairs[0][0] = clockin_time
@@ -553,9 +614,11 @@ class AttendanceCalculation(Document):
 											if shift_type.get('computation_method') == 'Fixed':
 												attendance.late_entry = True
 
+										# Check if they should be considered absent
 										if checkin_time_pairs[0][0] - clockin_time > timedelta(minutes=shift_type.get('absent_grace_period')):
 											attendance.status = 'Absent'
 
+									# Check if the last out is within the grace period
 									if checkin_time_pairs[-1][1] < clockout_time:
 										if clockout_time - checkin_time_pairs[-1][1] <= timedelta(minutes=shift_type.get('early_out_grace_period')):
 											checkin_time_pairs[-1][1] = clockout_time
@@ -566,18 +629,23 @@ class AttendanceCalculation(Document):
 										if clockout_time - checkin_time_pairs[-1][1] > timedelta(minutes=shift_type.get('early_out_absent_grace_period')):
 											attendance.status = 'Absent'
 
+									# Calculate regular working hours
 									working_times = overlap_times(checkin_time_pairs, clock_times)
 									working_time = compute_time_total(working_times)
 
+									# Calculate overtime
 									overtime_times = overlap_times(checkin_time_pairs, overtime_clock_times)
 									overtime_time = compute_time_total(overtime_times)
 
+									# Calculate break time
 									break_times = overlap_times(checkin_time_pairs, break_clock_times)
 									break_time = compute_time_total(break_times)
 
+									# Calculate night differential
 									night_differential_times = overlap_times(working_times, night_differential_clock_times)
 									night_differential_time = compute_time_total(night_differential_times)
 
+									# Calculate OT night differential
 									night_differential_overtimes = overlap_times(overtime_times, night_differential_clock_times)
 									night_differential_overtime = compute_time_total(night_differential_overtimes)
 
@@ -620,6 +688,7 @@ def get_employees(**kwargs):
 			if isinstance(value, list):
 				if len(value):
 					conditions.append(("{0} IN (" + ', '.join(map(lambda x: '%s', value)) + ")").format(field))
+
 					for val in value:
 						values.append(val.get('value'))
 			else:
@@ -635,15 +704,20 @@ def get_employees(**kwargs):
 
 def overlap_times(set_a=[], set_b=[]):
 	overlaps = []
+
 	for a in set_a:
 		for b in set_b:
 			new_set = [max(a[0], b[0]), min(a[1], b[1])]
+
 			if new_set[1] > new_set[0]:
 				overlaps.append(new_set)
+
 	return overlaps
 
 def compute_time_total(pairs=[]):
 	time = timedelta(0)
+
 	for pair in pairs:
 		time += (pair[1] - pair[0])
+
 	return time
