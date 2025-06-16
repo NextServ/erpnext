@@ -440,21 +440,21 @@ class AttendanceCalculation(Document):
                                             datetime.combine(parsed_date, datetime.min.time()) + timedelta(hours=30)
                                         ]
                                     ]
-                                    shift_period = [
+                                    # Use actual clock times, capped at shift_out
+                                    effective_end = min(time_out, shift_out)
+                                    clock_period = [
                                         [
-                                            datetime.combine(parsed_date, datetime.min.time()) + shift_in,
-                                            datetime.combine(parsed_date, datetime.min.time()) + shift_out
+                                            datetime.combine(parsed_date, datetime.min.time()) + time_in,
+                                            datetime.combine(parsed_date, datetime.min.time()) + effective_end
                                         ]
                                     ]
-
-                                    night_differential_times = overlap_times(shift_period, night_differential_clock_times)
-
+                                    frappe.msgprint(f"Clock period for night differential: {clock_period}")
+                                    night_differential_times = overlap_times(clock_period, night_differential_clock_times)
                                     if not night_differential_times:
                                         frappe.msgprint("No night differential overlap found")
                                     night_differential = compute_time_total(night_differential_times).seconds / 3600
                                     attendance.night_differential = math.floor(night_differential)
                                     frappe.msgprint(f"Night differential: {attendance.night_differential} hours")
-
                                     if overtime and overtime > 0 and time_out > shift_out:
                                         overtime_start = datetime.combine(parsed_date, datetime.min.time()) + max(time_in, shift_out)
                                         overtime_end = datetime.combine(parsed_date, datetime.min.time()) + time_out
