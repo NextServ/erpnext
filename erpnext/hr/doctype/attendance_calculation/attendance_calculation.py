@@ -339,6 +339,9 @@ class AttendanceCalculation(Document):
                                     'attendance_date': prev_working_day.strftime('%Y-%m-%d')
                                 }, 'status')
                                 if prev_attendance == 'Absent':
+                                    formatted_date = frappe.utils.getdate(date).strftime('%m-%d-%Y')
+                                    frappe.msgprint(f"{formatted_date} is a legal holiday but {employee_name} is  Absent before the holiday")
+                                    
                                     attendance.status = 'Absent'
                                 else:
                                     # If present on previous working day
