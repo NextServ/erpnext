@@ -265,7 +265,13 @@ class AttendanceCalculation(Document):
                             if shift_in and shift_out and shift_out <= shift_in:
                                 shift_out = shift_out + timedelta(hours=24)
 
-                            attendance = frappe.new_doc('Attendance')
+                            try:
+                                attendance = frappe.new_doc('Attendance')
+                            except ImportError as e:
+                                error_msg = f"Failed to create Attendance document for employee {employee_name} on {date}: {str(e)}"
+                                self.log(employee_name, False, date=date, error=error_msg)
+                                continue
+
                             attendance.employee = employee_name
                             attendance.company = frappe.db.get_value('Employee', employee_name, 'company')
                             attendance.attendance_date = date
@@ -538,7 +544,13 @@ class AttendanceCalculation(Document):
                                     if len(pair) == 2:
                                         checkin_time_pairs.append([pair[0].get('time'), pair[1].get('time')])
 
-                                attendance = frappe.new_doc('Attendance')
+                                try:
+                                    attendance = frappe.new_doc('Attendance')
+                                except ImportError as e:
+                                    error_msg = f"Failed to create Attendance document for employee {employee_name} on {current_date}: {str(e)}"
+                                    self.log(employee_name, False, date=current_date, error=error_msg)
+                                    continue
+
                                 attendance.employee = employee_name
                                 attendance.company = frappe.db.get_value('Employee', employee_name, 'company')
                                 attendance.attendance_date = current_date
