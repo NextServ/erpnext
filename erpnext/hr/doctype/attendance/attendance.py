@@ -13,7 +13,9 @@ import traceback
 import requests
 import json
 from erpnext.hr.utils import get_holidays_for_employee
-from erpnext.hr.doctype.shift_assignment.shift_assignment import get_employee_shift
+from erpnext.hr.doctype.shift_assignment.shift_assignment import (
+    get_employee_shift
+)
 
 class AttendanceCalculation(Document):
     def dispatch(self):
