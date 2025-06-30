@@ -88,11 +88,9 @@ class AttendanceCalculation(Document):
         """Get the previous working day (excluding weekends and holidays) for the employee."""
         date = frappe.utils.getdate(current_date) - timedelta(days=1)
         while True:
-            # Check if the date is a holiday
             holidays = get_holidays_for_employee(employee_name, date, date, False, True)
             is_holiday = any(holiday.category in ['Regular Holiday', 'Special Non-working Holiday', 'Special Working Holiday'] for holiday in holidays)
-            # Check if the date is a weekend (assuming Saturday and Sunday are non-working)
-            is_weekend = date.weekday() >= 5  # 5 = Saturday, 6 = Sunday
+            is_weekend = date.weekday() >= 5
             if not is_holiday and not is_weekend:
                 return date
             date -= timedelta(days=1)
@@ -332,7 +330,6 @@ class AttendanceCalculation(Document):
                                 if holiday.category in ['Special Non-working Holiday', 'Special Working Holiday']:
                                     attendance.special_holiday = True
                             if attendance.legal_holiday:
-                                # Check previous working day's attendance
                                 prev_working_day = self.get_previous_working_day(employee_name, date)
                                 prev_attendance = frappe.db.get_value('Attendance', {
                                     'employee': employee_name,
@@ -340,13 +337,10 @@ class AttendanceCalculation(Document):
                                 }, 'status')
                                 if prev_attendance == 'Absent':
                                     formatted_date = frappe.utils.getdate(date).strftime('%m-%d-%Y')
-                                    frappe.msgprint(f"{formatted_date} is a legal holiday but {employee_name} is  Absent before the holiday")
-                                    
+                                    frappe.msgprint(f"{formatted_date} is a legal holiday but {employee_name} is absent: Absent before the holiday")
                                     attendance.status = 'Absent'
                                 else:
-                                    # If present on previous working day
-                                    employee_shift = get_employee_shift(employee_name, frappe.utils.getdate(date))
-                                    if employee_shift and working_hours > 0:
+                                    if working_hours > 0:
                                         attendance.status = 'Present'
                                     else:
                                         attendance.status = 'Holiday Off'
