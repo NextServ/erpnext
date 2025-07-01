@@ -1,6 +1,3 @@
-# Copyright (c) 2023, Frappe Technologies Pvt. Ltd. and contributors
-# For license information, please see license.txt
-
 import frappe
 from frappe import _
 from frappe.model.document import Document
@@ -219,6 +216,7 @@ class AttendanceCalculation(Document):
                                             shift_in = datetime.strptime(feature.get('value'), "%H:%M")
                                             if shift_in:
                                                 shift_in = timedelta(hours=shift_in.hour, minutes=shift_in.minute)
+                                                frappe.msgprint(f"Shift in from API: {shift_in}")
 
                                 if data.get('code') == '51503-1-2' and data.get('value') != '-':
                                     for feature in data.get('features'):
@@ -233,6 +231,7 @@ class AttendanceCalculation(Document):
                                                         frappe.msgprint(f"Shift_out set to 24:00 for midnight: {shift_out}")
                                                     else:
                                                         shift_out = timedelta(hours=shift_out.hour, minutes=shift_out.minute)
+                                                        frappe.msgprint(f"Shift out from API: {shift_out}")
                                             except Exception as e:
                                                 frappe.msgprint(f"Shift out parsing error: {e}, Raw value: {feature.get('value')}")
                                                 shift_out = None
@@ -248,7 +247,7 @@ class AttendanceCalculation(Document):
                                         time_out = datetime.strptime(data.get('value'), "%H:%M")
                                         time_out = timedelta(hours=time_out.hour, minutes=time_out.minute)
                                         if time_out <= current_in:
-                                            time_out += timedelta(hours=24)
+                                            time_out += timedelta(days=1)
                                             frappe.msgprint(f"Adjusted time_out to next day: {time_out}")
                                         clock_pairs.append([current_in, time_out])
                                         current_in = None
@@ -297,6 +296,7 @@ class AttendanceCalculation(Document):
                             attendance.night_differential = 0
                             attendance.night_differential_overtime = 0
                             attendance.rest_day = False
+                            # Set time_in and time_out as timedelta
                             attendance.time_in = clock_pairs[0][0] if clock_pairs else None
                             attendance.time_out = clock_pairs[-1][1] if clock_pairs else None
                             attendance.shift_in = shift_in
@@ -404,14 +404,19 @@ class AttendanceCalculation(Document):
                                     if shift_out <= shift_in:
                                         shift_end += timedelta(days=1)
 
-                                    # Process clock pair
+                                    # Process clock pair for night differential
                                     for time_in, time_out in clock_pairs:
-                                        effective_start = max(time_in, shift_in)
-                                        effective_end = min(time_out, shift_out) if time_out <= shift_out else shift_out
+                                        # Extend clock period to match working_hours
+                                        clock_period_end = datetime.combine(parsed_date, datetime.min.time()) + time_out
+                                        if working_hours and (time_out - time_in).total_seconds() / 3600 < working_hours:
+                                            hours_to_add = working_hours - (time_out - time_in).total_seconds() / 3600
+                                            clock_period_end += timedelta(hours=hours_to_add)
+                                            frappe.msgprint(f"Extended clock period to match working hours: {clock_period_end}")
+
                                         clock_period = [
                                             [
-                                                datetime.combine(parsed_date, datetime.min.time()) + effective_start,
-                                                datetime.combine(parsed_date, datetime.min.time()) + effective_end
+                                                datetime.combine(parsed_date, datetime.min.time()) + time_in,
+                                                clock_period_end
                                             ]
                                         ]
                                         frappe.msgprint(f"Clock period for night differential: {clock_period}")
@@ -444,6 +449,10 @@ class AttendanceCalculation(Document):
                             if missed_clock_ins > 0 or missed_clock_outs > 0:
                                 attendance.overtime = 0
 
+                            # Log field values before saving
+                            frappe.msgprint(f"Attendance before save: time_in={attendance.time_in}, time_out={attendance.time_out}, "
+                                            f"shift_in={attendance.shift_in}, shift_out={attendance.shift_out}, "
+                                            f"in_result={attendance.in_result}, out_result={attendance.out_result}")
                             attendance.save()
                             self.log(employee_name, True, date=date)
                         except Exception as e:
