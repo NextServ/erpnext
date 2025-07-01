@@ -159,6 +159,7 @@ class AttendanceCalculation(Document):
                         duration_late_in = 0
                         duration_undertime = 0
                         undertime_count = 0
+                        shift_type = None
                         try:
                             for data in day.get('datas'):
                                 print(data)
@@ -224,6 +225,9 @@ class AttendanceCalculation(Document):
                                     frappe.msgprint(f"Absent Days: {absent_days}")
                                 if data.get('code') == '51314' and data.get('value') != '-':
                                     undertime_count = flt(data.get('value'))
+                                if data.get('code') == '51202' and data.get('value') != '-':
+                                    shift_type = data.get('value').split(' ')[0]  # Extract shift type, e.g., 'SHIFT-91'
+                                    frappe.msgprint(f"Shift type from API: {shift_type}")
                             if date:
                                 date = date[0:4] + '-' + date[4:6] + '-' + date[6:8]
                             if expected_hours and leave:
@@ -347,13 +351,14 @@ class AttendanceCalculation(Document):
                                     ]
                                     frappe.msgprint(f"Time in: {time_in}, Time out: {time_out}")
                                     frappe.msgprint(f"Shift in: {shift_in}, Shift out: {shift_out}")
-                                    # Dynamically fetch shift type
-                                    shift_type = frappe.db.get_value('Shift Assignment', {
+                                    # Dynamically fetch shift type from Shift Assignment or API
+                                    shift_type_db = frappe.db.get_value('Shift Assignment', {
                                         'employee': employee_name,
                                         'start_date': ['<=', date],
                                         'end_date': ['>=', date]
                                     }, 'shift_type') or ''
-                                    frappe.msgprint(f"Shift type: {shift_type}")
+                                    shift_type = shift_type_db or shift_type
+                                    frappe.msgprint(f"Shift type (DB: {shift_type_db}, API: {shift_type}): Final {shift_type}")
                                     if shift_type == 'SHIFT-91':
                                         shift_periods = [
                                             [timedelta(hours=20), timedelta(days=1, hours=0)],
@@ -366,7 +371,7 @@ class AttendanceCalculation(Document):
                                         # Override shift_out for SHIFT-91
                                         shift_out = timedelta(days=1, hours=6)
                                         frappe.msgprint(f"Adjusted shift_out for SHIFT-91: {shift_out}")
-                                        # Override time_out if it's near first period's end
+                                        # Override time_out if near first period's end
                                         if time_out <= timedelta(days=1, hours=1):
                                             time_out = timedelta(days=1, hours=6)
                                             frappe.msgprint(f"Adjusted time_out for SHIFT-91: {time_out}")
