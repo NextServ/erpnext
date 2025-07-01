@@ -173,12 +173,11 @@ class AttendanceCalculation(Document):
                         duration_late_in = 0
                         duration_undertime = 0
                         undertime_count = 0
-                        clock_pairs = []  # Store multiple clock-in/out pairs
+                        clock_pairs = []
                         current_in = None
 
                         try:
                             for data in day.get('datas'):
-                                # Log raw data for debugging
                                 frappe.msgprint(f"API data: {json.dumps(data, indent=2)}")
 
                                 if data.get('code') == '51201':
@@ -242,7 +241,6 @@ class AttendanceCalculation(Document):
                                                 frappe.msgprint(f"Shift out parsing error: {e}, Raw value: {feature.get('value')}")
                                                 shift_out = None
 
-                                # Handle multiple clock-in/out pairs
                                 if data.get('code') == '51502-1-1' and data.get('value') != '-':
                                     frappe.msgprint(f"Clock-in value: {data.get('value')}")
                                     current_in = datetime.strptime(data.get('value'), "%H:%M")
@@ -270,11 +268,9 @@ class AttendanceCalculation(Document):
                                 if data.get('code') == '51314' and data.get('value') != '-':
                                     undertime_count = flt(data.get('value'))
 
-                            # Process date
                             if date:
                                 date = date[0:4] + '-' + date[4:6] + '-' + date[6:8]
 
-                            # Handle leave calculations
                             if expected_hours and leave:
                                 leave_time_data = leave.split(' ')
                                 if leave_time_data[1] == 'days':
@@ -290,12 +286,11 @@ class AttendanceCalculation(Document):
                             else:
                                 leave = 0
 
-                            # Define shift periods for multiple shifts (e.g., SHIFT-91)
+                            # Define shift periods for SHIFT-91
                             shift_periods = [
-                                [timedelta(hours=20), timedelta(hours=24)],  # 20:00 to 00:00 next day
-                                [timedelta(days=1, hours=2), timedelta(days=1, hours=6)]  # 02:00 to 06:00 next day
+                                [timedelta(hours=20), timedelta(hours=24)],
+                                [timedelta(days=1, hours=2), timedelta(days=1, hours=6)]
                             ]
-                            # Use earliest shift_in and latest shift_out for single values
                             shift_in = shift_periods[0][0] if shift_periods else shift_in
                             shift_out = shift_periods[-1][1] if shift_periods else shift_out
 
@@ -377,7 +372,6 @@ class AttendanceCalculation(Document):
                                 if attendance.status != 'Absent':
                                     attendance.hours_deducted_per_missed_clock = hours_deducted_per_missed_clock
 
-                            # Holiday Off Condition
                             holidays_for_date = get_holidays_for_employee(employee_name, date, date, False, True)
                             for holiday in holidays_for_date:
                                 if holiday.category in ['Regular Holiday']:
@@ -396,7 +390,6 @@ class AttendanceCalculation(Document):
                                     attendance.status = 'Present'
                                     frappe.msgprint("The employee is present")
 
-                            # Handle Rest Day Duty
                             if (in_result == 'Optional' or out_result == 'Optional') and not leave_type:
                                 if attendance.status == 'Present':
                                     attendance.late_entry = False
@@ -405,7 +398,7 @@ class AttendanceCalculation(Document):
                                     attendance.late_in = 0
 
                             # Night differential and overtime calculation
-                            if clock_pairs and date and isinstance(shift_out, timedelta):
+                            if date:
                                 try:
                                     parsed_date = parse(date)
                                     night_differential_clock_times = [
@@ -422,36 +415,57 @@ class AttendanceCalculation(Document):
                                             datetime.combine(parsed_date, datetime.min.time()) + end
                                         ] for start, end in shift_periods
                                     ]
-                                    for time_in, time_out in clock_pairs:
-                                        # Night differential: use clock times capped at shift periods
-                                        for shift_start, shift_end in shift_periods_datetime:
-                                            effective_start = max(time_in, shift_start - datetime.combine(parsed_date, datetime.min.time()))
-                                            effective_end = min(time_out, shift_end - datetime.combine(parsed_date, datetime.min.time()))
-                                            clock_period = [
-                                                [
-                                                    datetime.combine(parsed_date, datetime.min.time()) + effective_start,
-                                                    datetime.combine(parsed_date, datetime.min.time()) + effective_end
-                                                ]
-                                            ]
-                                            frappe.msgprint(f"Clock period for night differential: {clock_period}")
+
+                                    # Match clock pairs to shift periods
+                                    used_shifts = []
+                                    for shift_start, shift_end in shift_periods_datetime:
+                                        shift_start_timedelta = shift_start - datetime.combine(parsed_date, datetime.min.time())
+                                        shift_end_timedelta = shift_end - datetime.combine(parsed_date, datetime.min.time())
+                                        matched = False
+                                        for time_in, time_out in clock_pairs:
+                                            # Check if clock pair overlaps with shift period
+                                            if (time_in <= shift_end_timedelta and time_out >= shift_start_timedelta):
+                                                effective_start = max(time_in, shift_start_timedelta)
+                                                effective_end = min(time_out, shift_end_timedelta)
+                                                if effective_end > effective_start:
+                                                    clock_period = [
+                                                        [
+                                                            datetime.combine(parsed_date, datetime.min.time()) + effective_start,
+                                                            datetime.combine(parsed_date, datetime.min.time()) + effective_end
+                                                        ]
+                                                    ]
+                                                    frappe.msgprint(f"Clock period for night differential: {clock_period}")
+                                                    night_differential_times = overlap_times(clock_period, night_differential_clock_times)
+                                                    if not night_differential_times:
+                                                        frappe.msgprint("No night differential overlap found")
+                                                    night_differential = compute_time_total(night_differential_times).seconds / 3600
+                                                    total_night_differential += night_differential
+                                                    matched = True
+                                                    # Overtime calculation
+                                                    if overtime and overtime > 0 and time_out > shift_end_timedelta:
+                                                        overtime_start = datetime.combine(parsed_date, datetime.min.time()) + max(time_in, shift_end_timedelta)
+                                                        overtime_end = datetime.combine(parsed_date, datetime.min.time()) + time_out
+                                                        night_differential_ot_times = overlap_times([[overtime_start, overtime_end]], night_differential_clock_times)
+                                                        night_differential_overtime = compute_time_total(night_differential_ot_times).seconds / 3600
+                                                        total_night_differential_overtime += night_differential_overtime
+                                                        frappe.msgprint(f"Night differential overtime: {night_differential_overtime} hours")
+                                        if not matched and working_hours >= (shift_end_timedelta - shift_start_timedelta).total_seconds() / 3600:
+                                            # Use shift period if no clock pair and working_hours covers it
+                                            clock_period = [[shift_start, shift_end]]
+                                            frappe.msgprint(f"Using shift period for night differential (no clock pair): {clock_period}")
                                             night_differential_times = overlap_times(clock_period, night_differential_clock_times)
                                             if not night_differential_times:
                                                 frappe.msgprint("No night differential overlap found")
                                             night_differential = compute_time_total(night_differential_times).seconds / 3600
                                             total_night_differential += night_differential
-                                        # Night differential overtime
-                                        if overtime and overtime > 0 and time_out > (shift_end - datetime.combine(parsed_date, datetime.min.time())):
-                                            overtime_start = datetime.combine(parsed_date, datetime.min.time()) + max(time_in, shift_end - datetime.combine(parsed_date, datetime.min.time()))
-                                            overtime_end = datetime.combine(parsed_date, datetime.min.time()) + time_out
-                                            night_differential_ot_times = overlap_times([[overtime_start, overtime_end]], night_differential_clock_times)
-                                            night_differential_overtime = compute_time_total(night_differential_ot_times).seconds / 3600
-                                            total_night_differential_overtime += night_differential_overtime
-                                            frappe.msgprint(f"Night differential overtime: {night_differential_overtime} hours")
+                                        used_shifts.append((shift_start, shift_end))
+
                                     attendance.night_differential = math.floor(total_night_differential)
                                     frappe.msgprint(f"Night differential: {attendance.night_differential} hours")
                                     attendance.night_differential_overtime = round(total_night_differential_overtime / 0.5) * 0.5
                                     if total_night_differential_overtime > 0:
                                         frappe.msgprint(f"Total night differential overtime: {total_night_differential_overtime} hours")
+
                                 except Exception as e:
                                     frappe.msgprint(f"Night differential calculation error: {e}")
                                     attendance.night_differential = 0
