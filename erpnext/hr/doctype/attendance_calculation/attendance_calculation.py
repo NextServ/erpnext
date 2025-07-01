@@ -13,7 +13,9 @@ import requests
 import json
 
 from erpnext.hr.utils import get_holidays_for_employee
-from erpnext.hr.doctype.shift_assignment.shift_assignment import get_employee_shift
+from erpnext.hr.doctype.shift_assignment.shift_assignment import (
+    get_employee_shift
+)
 
 class AttendanceCalculation(Document):
     def dispatch(self):
@@ -36,13 +38,13 @@ class AttendanceCalculation(Document):
         return False
 
     def update_progress(self, processed_employees=None, total_employees=None, status=None, message=None):
-        if processed_employees != None:
+        if processed_employees is not None:
             self.processed_employees = processed_employees
-        if total_employees != None:
+        if total_employees is not None:
             self.total_employees = total_employees
-        if status != None and status != 'In Progress':
+        if status is not None and status != 'In Progress':
             self.status = status
-        if message != None:
+        if message is not None:
             self.message = message
         self.save()
         frappe.publish_realtime("calculation_progress_update", { "attendance_calculation": self.name })
@@ -339,19 +341,30 @@ class AttendanceCalculation(Document):
                                 try:
                                     parsed_date = parse(date)
                                     night_differential_clock_times = [
-                                        [
-                                            datetime.combine(parsed_date, datetime.min.time()) + timedelta(hours=22),
-                                            datetime.combine(parsed_date, datetime.min.time()) + timedelta(hours=30)
+                                        [datetime.combine(parsed_date, datetime.min.time()) + timedelta(hours=22),
+                                         datetime.combine(parsed_date, datetime.min.time()) + timedelta(hours=30)]
+                                    ]
+                                    frappe.msgprint(f"Time in: {time_in}, Time out: {time_out}")
+                                    frappe.msgprint(f"Shift in: {shift_in}, Shift out: {shift_out}")
+                                    # Dynamically fetch shift type
+                                    shift_type = frappe.db.get_value('Shift Assignment', {
+                                        'employee': employee_name,
+                                        'start_date': ['<=', date],
+                                        'end_date': ['>=', date]
+                                    }, 'shift_type')
+                                    if shift_type == 'SHIFT-91':
+                                        shift_periods = [
+                                            [timedelta(hours=20), timedelta(days=1, hours=0)],
+                                            [timedelta(days=1, hours=2), timedelta(days=1, hours=6)]
                                         ]
-                                    ]
-                                    shift_periods = [
-                                        [timedelta(hours=20), timedelta(days=1, hours=0)],
-                                        [timedelta(days=1, hours=2), timedelta(days=1, hours=6)]
-                                    ]
-                                    break_period = [
-                                        [datetime.combine(parsed_date, datetime.min.time()) + timedelta(days=1, hours=0),
-                                         datetime.combine(parsed_date, datetime.min.time()) + timedelta(days=1, hours=2)]
-                                    ]
+                                        break_period = [
+                                            [datetime.combine(parsed_date, datetime.min.time()) + timedelta(days=1, hours=0),
+                                             datetime.combine(parsed_date, datetime.min.time()) + timedelta(days=1, hours=2)]
+                                        ]
+                                    else:
+                                        shift_periods = [[shift_in, shift_out]]
+                                        break_period = []
+                                    # Fetch check-in/out pairs
                                     employee_checkins = frappe.db.get_list(
                                         'Employee Checkin',
                                         filters=[
@@ -362,6 +375,7 @@ class AttendanceCalculation(Document):
                                         fields=['name', 'time', 'log_type'],
                                         order_by='time asc'
                                     )
+                                    frappe.msgprint(f"Employee Checkin: {employee_checkins}")
                                     checkin_pairs = []
                                     current_pair = []
                                     for checkin in employee_checkins:
@@ -372,9 +386,18 @@ class AttendanceCalculation(Document):
                                             current_pair.append(checkin.get('time'))
                                             checkin_pairs.append(current_pair)
                                             current_pair = []
-                                    if not checkin_pairs:
+                                    # Fallback for SHIFT-91
+                                    if not checkin_pairs and shift_type == 'SHIFT-91':
+                                        checkin_pairs = [
+                                            [datetime.combine(parsed_date, datetime.min.time()) + time_in,
+                                             datetime.combine(parsed_date, datetime.min.time()) + timedelta(days=1, hours=0)],
+                                            [datetime.combine(parsed_date, datetime.min.time()) + timedelta(days=1, hours=2),
+                                             datetime.combine(parsed_date, datetime.min.time()) + time_out]
+                                        ]
+                                    elif not checkin_pairs:
                                         checkin_pairs = [[datetime.combine(parsed_date, datetime.min.time()) + time_in,
                                                          datetime.combine(parsed_date, datetime.min.time()) + time_out]]
+                                    frappe.msgprint(f"Checkin pairs: {checkin_pairs}")
                                     total_night_differential = 0
                                     for pair in checkin_pairs:
                                         for shift_period in shift_periods:
@@ -388,6 +411,7 @@ class AttendanceCalculation(Document):
                                                 night_diff = compute_time_total(night_diff_times).seconds / 3600
                                                 night_diff -= break_time
                                                 total_night_differential += max(0, night_diff)
+                                                frappe.msgprint(f"Pair {pair}: Night diff {night_diff}, Break {break_time}")
                                     attendance.night_differential = math.floor(total_night_differential)
                                     frappe.msgprint(f"Night differential: {attendance.night_differential} hours")
                                     if overtime and overtime > 0 and time_out > shift_out:
