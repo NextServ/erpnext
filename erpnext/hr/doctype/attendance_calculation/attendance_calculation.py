@@ -139,6 +139,7 @@ class AttendanceCalculation(Document):
                     })
                     r = r.json()
                     lark_settings.handle_response_error(r)
+                    frappe.msgprint(f"Lark response: {json.dumps(r, indent=2)}")
                     for day in r.get('data').get('user_datas'):
                         date = None
                         working_hours = None
@@ -351,7 +352,8 @@ class AttendanceCalculation(Document):
                                         'employee': employee_name,
                                         'start_date': ['<=', date],
                                         'end_date': ['>=', date]
-                                    }, 'shift_type')
+                                    }, 'shift_type') or ''
+                                    frappe.msgprint(f"Shift type: {shift_type}")
                                     if shift_type == 'SHIFT-91':
                                         shift_periods = [
                                             [timedelta(hours=20), timedelta(days=1, hours=0)],
@@ -361,6 +363,13 @@ class AttendanceCalculation(Document):
                                             [datetime.combine(parsed_date, datetime.min.time()) + timedelta(days=1, hours=0),
                                              datetime.combine(parsed_date, datetime.min.time()) + timedelta(days=1, hours=2)]
                                         ]
+                                        # Override shift_out for SHIFT-91
+                                        shift_out = timedelta(days=1, hours=6)
+                                        frappe.msgprint(f"Adjusted shift_out for SHIFT-91: {shift_out}")
+                                        # Override time_out if it's near first period's end
+                                        if time_out <= timedelta(days=1, hours=1):
+                                            time_out = timedelta(days=1, hours=6)
+                                            frappe.msgprint(f"Adjusted time_out for SHIFT-91: {time_out}")
                                     else:
                                         shift_periods = [[shift_in, shift_out]]
                                         break_period = []
