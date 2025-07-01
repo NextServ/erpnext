@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 import traceback
 import requests
 import json
+import re
 
 from erpnext.hr.utils import get_holidays_for_employee
 from erpnext.hr.doctype.shift_assignment.shift_assignment import (
@@ -105,6 +106,23 @@ class AttendanceCalculation(Document):
                     r = r.json()
                     lark_settings.handle_response_error(r)
                     lark_user_id = r.get('data').get('user').get('user_id')
+                    
+                    # Call user_stats_views/query to get statistical report settings
+                    stats_view_r = requests.post('https://open.larksuite.com/open-apis/attendance/v1/user_stats_views/query?employee_type=employee_id', headers={
+                        'Authorization': 'Bearer ' + tenant_access_token,
+                        'Content-Type': 'application/json; charset=utf-8'
+                    }, json={
+                        'user_ids': [lark_user_id],
+                        'user_id': lark_user_id,
+                        'start_date': frappe.utils.getdate(date_from).strftime('%Y%m%d'),
+                        'end_date': frappe.utils.getdate(date_to).strftime('%Y%m%d'),
+                        'stats_type': 'daily',
+                        'locale': 'en'
+                    })
+                    stats_view_r = stats_view_r.json()
+                    lark_settings.handle_response_error(stats_view_r)
+                    frappe.msgprint(f"Stats View Response: {json.dumps(stats_view_r, indent=2)}")
+
                     r = requests.post('https://open.larksuite.com/open-apis/attendance/v1/user_stats_views/query?employee_type=employee_id', headers={
                         'Authorization': 'Bearer ' + tenant_access_token,
                     }, json={
@@ -160,9 +178,10 @@ class AttendanceCalculation(Document):
                         duration_undertime = 0
                         undertime_count = 0
                         shift_type = None
+                        shift_periods = []
+                        break_period = []
                         try:
                             for data in day.get('datas'):
-                                print(data)
                                 if data.get('code') == '51201':
                                     date = data.get('value')
                                     if len(date) == 10:
@@ -226,8 +245,27 @@ class AttendanceCalculation(Document):
                                 if data.get('code') == '51314' and data.get('value') != '-':
                                     undertime_count = flt(data.get('value'))
                                 if data.get('code') == '51202' and data.get('value') != '-':
-                                    shift_type = data.get('value').split(' ')[0]  # Extract shift type, e.g., 'SHIFT-91'
+                                    shift_type = data.get('value').split(' ')[0]
                                     frappe.msgprint(f"Shift type from API: {shift_type}")
+                                    # Parse shift periods dynamically
+                                    shift_def = data.get('value').split(' ')[1]
+                                    periods = shift_def.split(';')
+                                    for period in periods:
+                                        match = re.match(r'(\w+\sday\s)?(\d{2}:\d{2})-(\w+\sday\s)?(\d{2}:\d{2})', period)
+                                        if match:
+                                            start_prefix, start_time, end_prefix, end_time = match.groups()
+                                            start = datetime.strptime(start_time, "%H:%M")
+                                            end = datetime.strptime(end_time, "%H:%M")
+                                            start_delta = timedelta(days=1 if start_prefix else 0, hours=start.hour, minutes=start.minute)
+                                            end_delta = timedelta(days=1 if end_prefix else 0, hours=end.hour, minutes=end.minute)
+                                            shift_periods.append([start_delta, end_delta])
+                                    if len(periods) > 1:
+                                        break_period = [[
+                                            datetime.combine(parse(date), datetime.min.time()) + shift_periods[0][1],
+                                            datetime.combine(parse(date), datetime.min.time()) + shift_periods[1][0]
+                                        ]]
+                                    frappe.msgprint(f"Parsed shift periods: {shift_periods}")
+                                    frappe.msgprint(f"Break period: {break_period}")
                             if date:
                                 date = date[0:4] + '-' + date[4:6] + '-' + date[6:8]
                             if expected_hours and leave:
@@ -351,7 +389,6 @@ class AttendanceCalculation(Document):
                                     ]
                                     frappe.msgprint(f"Time in: {time_in}, Time out: {time_out}")
                                     frappe.msgprint(f"Shift in: {shift_in}, Shift out: {shift_out}")
-                                    # Dynamically fetch shift type from Shift Assignment or API
                                     shift_type_db = frappe.db.get_value('Shift Assignment', {
                                         'employee': employee_name,
                                         'start_date': ['<=', date],
@@ -359,26 +396,17 @@ class AttendanceCalculation(Document):
                                     }, 'shift_type') or ''
                                     shift_type = shift_type_db or shift_type
                                     frappe.msgprint(f"Shift type (DB: {shift_type_db}, API: {shift_type}): Final {shift_type}")
-                                    if shift_type == 'SHIFT-91':
-                                        shift_periods = [
-                                            [timedelta(hours=20), timedelta(days=1, hours=0)],
-                                            [timedelta(days=1, hours=2), timedelta(days=1, hours=6)]
-                                        ]
-                                        break_period = [
-                                            [datetime.combine(parsed_date, datetime.min.time()) + timedelta(days=1, hours=0),
-                                             datetime.combine(parsed_date, datetime.min.time()) + timedelta(days=1, hours=2)]
-                                        ]
-                                        # Override shift_out for SHIFT-91
-                                        shift_out = timedelta(days=1, hours=6)
-                                        frappe.msgprint(f"Adjusted shift_out for SHIFT-91: {shift_out}")
-                                        # Override time_out if near first period's end
-                                        if time_out <= timedelta(days=1, hours=1):
-                                            time_out = timedelta(days=1, hours=6)
-                                            frappe.msgprint(f"Adjusted time_out for SHIFT-91: {time_out}")
+                                    if shift_periods:
+                                        # Use parsed shift periods from API
+                                        if shift_periods[-1][1] > shift_out:
+                                            shift_out = shift_periods[-1][1]
+                                            frappe.msgprint(f"Adjusted shift_out to last period: {shift_out}")
+                                        if time_out <= shift_periods[0][1] + timedelta(hours=1):
+                                            time_out = shift_periods[-1][1]
+                                            frappe.msgprint(f"Adjusted time_out to last period: {time_out}")
                                     else:
                                         shift_periods = [[shift_in, shift_out]]
                                         break_period = []
-                                    # Fetch check-in/out pairs
                                     employee_checkins = frappe.db.get_list(
                                         'Employee Checkin',
                                         filters=[
@@ -400,17 +428,23 @@ class AttendanceCalculation(Document):
                                             current_pair.append(checkin.get('time'))
                                             checkin_pairs.append(current_pair)
                                             current_pair = []
-                                    # Fallback for SHIFT-91
-                                    if not checkin_pairs and shift_type == 'SHIFT-91':
-                                        checkin_pairs = [
-                                            [datetime.combine(parsed_date, datetime.min.time()) + time_in,
-                                             datetime.combine(parsed_date, datetime.min.time()) + timedelta(days=1, hours=0)],
-                                            [datetime.combine(parsed_date, datetime.min.time()) + timedelta(days=1, hours=2),
-                                             datetime.combine(parsed_date, datetime.min.time()) + time_out]
-                                        ]
-                                    elif not checkin_pairs:
-                                        checkin_pairs = [[datetime.combine(parsed_date, datetime.min.time()) + time_in,
-                                                         datetime.combine(parsed_date, datetime.min.time()) + time_out]]
+                                    if not checkin_pairs:
+                                        if shift_periods and len(shift_periods) > 1:
+                                            checkin_pairs = []
+                                            for i, period in enumerate(shift_periods):
+                                                start = period[0]
+                                                end = period[1]
+                                                pair_start = time_in if i == 0 else start
+                                                pair_end = end if i == len(shift_periods) - 1 else end
+                                                if i == len(shift_periods) - 1:
+                                                    pair_end = time_out
+                                                checkin_pairs.append([
+                                                    datetime.combine(parsed_date, datetime.min.time()) + pair_start,
+                                                    datetime.combine(parsed_date, datetime.min.time()) + pair_end
+                                                ])
+                                        else:
+                                            checkin_pairs = [[datetime.combine(parsed_date, datetime.min.time()) + time_in,
+                                                             datetime.combine(parsed_date, datetime.min.time()) + time_out]]
                                     frappe.msgprint(f"Checkin pairs: {checkin_pairs}")
                                     total_night_differential = 0
                                     for pair in checkin_pairs:
