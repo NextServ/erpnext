@@ -1,3 +1,4 @@
+
 # Copyright (c) 2023, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
@@ -244,7 +245,7 @@ class AttendanceCalculation(Document):
                                     leave = flt(leave_time_data[0])
                             else:
                                 leave = 0
-                            if time_in and time_out and shift_out > shift_in and time_out < shift_in:
+                            if time_in and time_out and shift_out and shift_in and shift_out > shift_in and time_out < shift_in:
                                 time_out = time_out + timedelta(hours=24)
                                 frappe.msgprint(f"Adjusted time_out to next day: {time_out}")
 
@@ -384,10 +385,12 @@ class AttendanceCalculation(Document):
                                             last_end_time = timedelta(days=end_time.day - datetime.min.day, hours=end_time.hour, minutes=end_time.minute)
                                         # Override shift_out to the end of the last period
                                         shift_out = last_end_time
+                                        attendance.shift_out = shift_out
                                         frappe.msgprint(f"Adjusted shift_out for {shift_type}: {shift_out}")
                                         # Adjust time_out if it ends near the first period
                                         if len(shift_periods) > 1 and time_out <= shift_periods[0][1] + timedelta(hours=1):
                                             time_out = last_end_time
+                                            attendance.time_out = time_out
                                             frappe.msgprint(f"Adjusted time_out for {shift_type}: {time_out}")
                                     else:
                                         shift_periods = [[shift_in, shift_out]]
@@ -502,7 +505,7 @@ class AttendanceCalculation(Document):
                                 if shift_type.get('break_time_start'):
                                     break_clock_times.append([
                                         datetime.combine(current_date, datetime.min.time()) + shift_type.get('break_time_start'),
-                                        datetime.combine(parsed_date, datetime.min.time()) + shift_type.get('break_time_end')
+                                        datetime.combine(current_date, datetime.min.time()) + shift_type.get('break_time_end')
                                     ])
                                 night_differential_clock_times = [
                                     [
