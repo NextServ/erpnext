@@ -364,8 +364,13 @@ class AttendanceCalculation(Document):
                                     # Parse shift periods dynamically from API's 51202 code
                                     shift_periods = []
                                     break_period = []
-                                    if shift_type and data.get('code') == '51202' and data.get('value') != '-':
-                                        shift_period_str = data.get('value').split(' ')[1].split(';')
+                                    shift_definition = None
+                                    for data in day.get('datas'):
+                                        if data.get('code') == '51202' and data.get('value') != '-':
+                                            shift_definition = data.get('value')
+                                            break
+                                    if shift_definition:
+                                        shift_period_str = shift_definition.split(' ')[1].split(';')
                                         last_end_time = None
                                         for i, period in enumerate(shift_period_str):
                                             start_str, end_str = period.split('-')
