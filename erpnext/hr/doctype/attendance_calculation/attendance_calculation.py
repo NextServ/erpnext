@@ -506,7 +506,7 @@ class AttendanceCalculation(Document):
                                     ])
                                 night_differential_clock_times = [
                                     [
-                                        datetime.combine(current_date, datetime.min.time()) + timedelta(hours=21),
+                                        datetime.combine(current_date, datetime.min.time()) + timedelta(hours=22),
                                         datetime.combine(current_date, datetime.min.time()) + timedelta(hours=30)
                                     ]
                                 ]
