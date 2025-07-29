@@ -188,13 +188,7 @@ class LeaveApplication(Document):
 
 	def create_or_update_attendance(self, attendance_name, date):
 		status = "Half Day" if self.half_day_date and getdate(date) == getdate(self.half_day_date) else "On Leave"
-        # Fetch total_leave_hours directly from LeaveApplication
-        leave_hours = flt(self.total_leave_hours) if hasattr(self, 'total_leave_hours') else 0
-        # Determine which field to set based on LWP status
-        is_lwp_type = is_lwp(self.leave_type)
-        leave_field = leave_hours if is_lwp_type else 0
-        paid_leave_field = leave_hours if not is_lwp_type else 0
-
+		
 		if attendance_name:
 			# update existing attendance, change absent to on leave
 			doc = frappe.get_doc('Attendance', attendance_name)
