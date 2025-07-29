@@ -208,6 +208,7 @@ class LeaveApplication(Document):
 			doc.leave_type = self.leave_type
 			doc.leave_application = self.name
 			doc.status = status
+			doc.expected_working_hours = 8
 			doc.flags.ignore_validate = True
 			doc.insert(ignore_permissions=True)
 			doc.submit()
