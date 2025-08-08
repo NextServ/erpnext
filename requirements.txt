@@ -1,7 +1,9 @@
 # frappe   # https://github.com/frappe/frappe is installed during bench-init
 gocardless-pro~=1.22.0
 googlemaps
-pandas~=1.1.5
+numpy~=2.2.6
+pandas~=2.3.1
+# pandas~=1.1.5 prev version NELC HOW Issue
 plaid-python~=7.2.1
 pycountry~=20.7.3
 PyGithub~=1.55
