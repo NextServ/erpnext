@@ -90,7 +90,7 @@ class PaymentRequest(Document):
 			self.request_phone_payment()
 
 	def request_phone_payment(self):
-		from frappe.integrations.utils import get_payment_gateway_controller
+		from payments.utils import get_payment_gateway_controller
 		controller = get_payment_gateway_controller(self.payment_gateway)
 		request_amount = self.get_request_amount()
 

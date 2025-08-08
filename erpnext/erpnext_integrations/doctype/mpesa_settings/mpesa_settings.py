@@ -7,7 +7,8 @@ from json import dumps, loads
 
 import frappe
 from frappe import _
-from frappe.integrations.utils import create_payment_gateway, create_request_log
+from frappe.integrations.utils import create_request_log
+from payments.utils import create_payment_gateway
 from frappe.model.document import Document
 from frappe.utils import call_hook_method, fmt_money, get_request_site_address
 

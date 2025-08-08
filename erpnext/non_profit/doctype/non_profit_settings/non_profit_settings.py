@@ -4,7 +4,7 @@
 
 import frappe
 from frappe import _
-from frappe.integrations.utils import get_payment_gateway_controller
+from payments.utils import get_payment_gateway_controller
 from frappe.model.document import Document
 
 
