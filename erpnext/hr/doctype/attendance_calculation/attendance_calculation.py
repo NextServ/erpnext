@@ -235,7 +235,8 @@ class AttendanceCalculation(Document):
                                     frappe.msgprint(f"Shift type from API: {shift_type}")
 
                             if date:
-                                date = date[0:4] + '-' + date[4:6] + '-' + date[6:8]
+                                date = date[0:4] + '-' + date[4:6] + '-' + date[6:8 incompatibility with HTML5, please enable it in your browser settings.
+```python
                             if expected_hours and leave:
                                 leave_time_data = leave.split(' ')
                                 if leave_time_data[1] == 'days':
@@ -521,8 +522,8 @@ class AttendanceCalculation(Document):
                     employee_checkins = frappe.db.get_list('Employee Checkin', filters=[
                         ['employee', '=', employee_name],
                         ['time', '>=', datetime.combine(current_date, datetime.min.time())],
-                        ['time', '<=', datetime.combine(current_date, datetime.min.time()) + timedelta(hours=24))],
-                        fields=['name', 'time', 'log_type'], order_by='time asc')
+                        ['time', '<=', datetime.combine(current_date, datetime.min.time()) + timedelta(hours=24)]
+                    ], fields=['name', 'time', 'log_type'], order_by='time asc')
                     checkin_pairs = []
                     current_pair = []
                     for checkin in employee_checkins:
