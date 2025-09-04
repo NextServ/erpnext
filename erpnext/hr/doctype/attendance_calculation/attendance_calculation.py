@@ -140,7 +140,7 @@ class AttendanceCalculation(Document):
                     })
                     r = r.json()
                     lark_settings.handle_response_error(r)
-                    frappe.msgprint(f"Lark response: {json.dumps(r, indent=2)}")
+                    # frappe.msgprint(f"Lark response: {json.dumps(r, indent=2)}")
                     for day in r.get('data').get('user_datas'):
                         date = None
                         working_hours = None
