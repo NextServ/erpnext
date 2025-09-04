@@ -1,3 +1,4 @@
+
 # Copyright (c) 2023, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
@@ -463,7 +464,8 @@ class AttendanceCalculation(Document):
                                     frappe.msgprint(f"Calculated working hours: {attendance.working_hours}, Overtime: {attendance.overtime}")
                                     total_night_differential = 0
                                     for pair in checkin_pairs:
-                                        clock_period = [[pair[0], pair[1]]]
+                                        # Use full shift period for night differential, up to shift_out
+                                        clock_period = [[pair[0], min(pair[1], datetime.combine(parsed_date, datetime.min.time()) + shift_out)]]
                                         if clock_period[0][1] > clock_period[0][0]:
                                             break_overlap = overlap_times(clock_period, break_period)
                                             break_time = compute_time_total(break_overlap).seconds / 3600
@@ -471,17 +473,17 @@ class AttendanceCalculation(Document):
                                             night_diff = compute_time_total(night_diff_times).seconds / 3600
                                             night_diff -= break_time
                                             total_night_differential += max(0, night_diff)
-                                            frappe.msgprint(f"Pair {pair}: Night diff {night_diff}, Break {break_time}")
-                                    attendance.night_differential = math.ceil(total_night_differential)
+                                            frappe.msgprint(f"Pair {clock_period}: Night diff {night_diff}, Break {break_time}")
+                                    attendance.night_differential = math.floor(total_night_differential)
                                     frappe.msgprint(f"Night differential: {attendance.night_differential} hours")
                                     if total_overtime > 0:
                                         overtime_start = datetime.combine(parsed_date, datetime.min.time()) + shift_out
                                         overtime_end = datetime.combine(parsed_date, datetime.min.time()) + time_out
                                         night_differential_ot_times = overlap_times([[overtime_start, overtime_end]], night_differential_clock_times)
                                         night_differential_overtime = compute_time_total(night_differential_ot_times).seconds / 3600
-                                        rounded_night_differential_overtime = math.ceil(night_differential_overtime)
+                                        rounded_night_differential_overtime = min(total_overtime, night_differential_overtime)
                                         attendance.night_differential_overtime = rounded_night_differential_overtime
-                                        frappe.msgprint(f"Night differential overtime: {night_differential_overtime} hours, Rounded: {rounded_night_differential_overtime}")
+                                        frappe.msgprint(f"Night differential overtime: {night_differential_overtime} hours, Capped: {rounded_night_differential_overtime}")
                                     else:
                                         attendance.night_differential_overtime = 0
                                     if missed_clock_ins > 0 or missed_clock_outs > 0:
