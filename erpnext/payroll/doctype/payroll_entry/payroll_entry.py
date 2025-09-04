@@ -148,8 +148,8 @@ class PayrollEntry(Document):
 				"exchange_rate": self.exchange_rate,
 				"currency": self.currency
 			})
-			if len(employees) > 30:
-				frappe.enqueue(create_salary_slips_for_employees, timeout=600, employees=employees, args=args)
+			if len(employees) > 5:
+				frappe.enqueue(create_salary_slips_for_employees, timeout=1500, employees=employees, args=args)
 			else:
 				create_salary_slips_for_employees(employees, args, publish_progress=False)
 				# since this method is called via frm.call this doc needs to be updated manually
