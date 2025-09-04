@@ -235,8 +235,7 @@ class AttendanceCalculation(Document):
                                     frappe.msgprint(f"Shift type from API: {shift_type}")
 
                             if date:
-                                date = date[0:4] + '-' + date[4:6] + '-' + date[6:8 incompatibility with HTML5, please enable it in your browser settings.
-```python
+                                date = date[0:4] + '-' + date[4:6] + '-' + date[6:8]
                             if expected_hours and leave:
                                 leave_time_data = leave.split(' ')
                                 if leave_time_data[1] == 'days':
