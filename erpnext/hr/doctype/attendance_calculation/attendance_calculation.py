@@ -1,4 +1,4 @@
-```python
+
 # Copyright (c) 2023, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
@@ -642,4 +642,4 @@ def compute_time_total(pairs=[]):
     for pair in pairs:
         time += (pair[1] - pair[0])
     return time
-```
+
