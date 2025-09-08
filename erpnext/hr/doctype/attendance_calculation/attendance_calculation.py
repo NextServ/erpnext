@@ -1,3 +1,6 @@
+```python
+# Copyright (c) 2023, Frappe Technologies Pvt. Ltd. and contributors
+# For license information, please see license.txt
 
 import frappe
 from frappe import _
@@ -467,7 +470,8 @@ class AttendanceCalculation(Document):
                             clockin_time = min(clockin_time, clockin_in_time)
                             clockout_time = max(clockout_time, clockin_out_time)
                             clock_times.append([clockin_in_time, clockin_out_time])
-                        overtime_clock_times = [[datetime.min, clockin_time], [clockout_time, datetime.max]]
+                        # Define overtime period as time after shift end
+                        overtime_clock_times = [[clockout_time, clockout_time + timedelta(hours=24)]]
                         break_clock_times = []
                         if shift_type.get('break_time_start'):
                             break_clock_times.append([
@@ -572,6 +576,7 @@ class AttendanceCalculation(Document):
                             attendance.overtime = min(overtime, approved_attendance_ot)
                             attendance.night_differential = math.floor(night_differential_time.seconds / 3600)
                             attendance.night_differential_overtime = min(round(night_differential_overtime.seconds / 3600 / 0.5) * 0.5, 0.5)
+                            frappe.msgprint(f"Overtime period: {overtime_clock_times}, Check-in pairs: {checkin_time_pairs}")
                             frappe.msgprint(f"Calculated working hours: {attendance.working_hours}, Overtime: {attendance.overtime}")
                             frappe.msgprint(f"Night differential: {attendance.night_differential} hours, Night differential overtime: {attendance.night_differential_overtime} hours")
 
@@ -637,3 +642,4 @@ def compute_time_total(pairs=[]):
     for pair in pairs:
         time += (pair[1] - pair[0])
     return time
+```
