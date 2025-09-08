@@ -425,44 +425,17 @@ class AttendanceCalculation(Document):
                         attendance.status = 'Present'
                         approved_attendance_ot = -1
 
-                        # Check for leave
-                        leave_record = frappe.db.get_value('Leave Application', {
-                            'employee': employee_name,
-                            'from_date': ['<=', current_date],
-                            'to_date': ['>=', current_date],
-                            'status': 'Approved'
-                        }, ['leave_type', 'total_leave_days', 'half_day', 'half_day_date'], as_dict=True)
-                        if leave_record:
-                            expected_hours = 8.0  # Default expected hours if no shift
-                            leave_hours = leave_record.total_leave_days * expected_hours
-                            if leave_record.half_day and leave_record.half_day_date == current_date.date():
-                                leave_hours = expected_hours / 2
-                            attendance.leave = leave_hours
-                            attendance.leave_type = leave_record.leave_type
-                            if leave_record.leave_type.startswith('Paid'):
-                                attendance.paid_leave = leave_hours
-                            if leave_hours < expected_hours:
-                                attendance.status = 'Half Day'
-                            else:
-                                attendance.status = 'On Leave'
-                                attendance.working_hours = 0
-                                attendance.overtime = 0
-                                attendance.night_differential = 0
-                                attendance.night_differential_overtime = 0
-                            frappe.msgprint(f"Leave detected for {employee_name} on {current_date}: {leave_hours} hours, type: {attendance.leave_type}")
-
                         # Get shift details
                         employee_shift = get_employee_shift(employee_name, current_date.date(), True)
                         if not employee_shift:
-                            # No shift assigned, assume rest day if not on leave
-                            if not leave_record:
-                                attendance.status = 'Rest day'
-                                attendance.rest_day = True
-                                attendance.working_hours = 0
-                                attendance.overtime = 0
-                                attendance.night_differential = 0
-                                attendance.night_differential_overtime = 0
-                                frappe.msgprint(f"No shift assigned for {employee_name} on {current_date}, marking as Rest day")
+                            # No shift assigned, mark as rest day
+                            attendance.status = 'Rest day'
+                            attendance.rest_day = True
+                            attendance.working_hours = 0
+                            attendance.overtime = 0
+                            attendance.night_differential = 0
+                            attendance.night_differential_overtime = 0
+                            frappe.msgprint(f"No shift assigned for {employee_name} on {current_date}, marking as Rest day")
                             try:
                                 attendance.save()
                                 self.log(employee_name, True, date=current_date.strftime('%Y-%m-%d'))
@@ -541,30 +514,29 @@ class AttendanceCalculation(Document):
 
                         # Process attendance based on check-ins
                         if len(checkin_time_pairs) == 0:
-                            if attendance.status not in ['On Leave', 'Rest day']:
-                                holidays_for_date = get_holidays_for_employee(employee_name, current_date, current_date, False, True)
-                                attendance.legal_holiday = False
-                                attendance.special_holiday = False
-                                for holiday in holidays_for_date:
-                                    if holiday.category in ['Regular Holiday']:
-                                        attendance.legal_holiday = True
-                                    if holiday.category in ['Special Non-working Holiday', 'Special Working Holiday']:
-                                        attendance.special_holiday = True
-                                if attendance.legal_holiday:
-                                    prev_working_day = self.get_previous_working_day(employee_name, current_date)
-                                    prev_attendance = frappe.db.get_value('Attendance', {
-                                        'employee': employee_name,
-                                        'attendance_date': prev_working_day.strftime('%Y-%m-%d')
-                                    }, 'status')
-                                    if prev_attendance == 'Absent':
-                                        formatted_date = current_date.strftime('%m-%d-%Y')
-                                        frappe.msgprint(f"{formatted_date} is a legal holiday but {employee_name} is absent: Absent before the holiday")
-                                        attendance.status = 'Absent'
-                                    else:
-                                        attendance.status = 'Holiday Off'
-                                else:
+                            holidays_for_date = get_holidays_for_employee(employee_name, current_date, current_date, False, True)
+                            attendance.legal_holiday = False
+                            attendance.special_holiday = False
+                            for holiday in holidays_for_date:
+                                if holiday.category in ['Regular Holiday']:
+                                    attendance.legal_holiday = True
+                                if holiday.category in ['Special Non-working Holiday', 'Special Working Holiday']:
+                                    attendance.special_holiday = True
+                            if attendance.legal_holiday:
+                                prev_working_day = self.get_previous_working_day(employee_name, current_date)
+                                prev_attendance = frappe.db.get_value('Attendance', {
+                                    'employee': employee_name,
+                                    'attendance_date': prev_working_day.strftime('%Y-%m-%d')
+                                }, 'status')
+                                if prev_attendance == 'Absent':
+                                    formatted_date = current_date.strftime('%m-%d-%Y')
+                                    frappe.msgprint(f"{formatted_date} is a legal holiday but {employee_name} is absent: Absent before the holiday")
                                     attendance.status = 'Absent'
-                                    attendance.undertime = 0
+                                else:
+                                    attendance.status = 'Holiday Off'
+                            else:
+                                attendance.status = 'Absent'
+                                attendance.undertime = 0
                         else:
                             attendance.status = 'Present'
                             if shift_type.get('computation_method') == 'Flexible':
