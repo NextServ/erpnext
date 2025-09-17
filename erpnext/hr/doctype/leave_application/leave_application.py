@@ -801,14 +801,11 @@ def add_leaves(events, start, end, filter_conditions=None):
 		query += filter_conditions
 
 	for d in frappe.db.sql(query, {"start":start, "end": end}, as_dict=True):
-		to_date = d.to_date
-		if not d.half_day:
-		    to_date = add_days(to_date, 1)
 		e = {
 			"name": d.name,
 			"doctype": "Leave Application",
 			"from_date": d.from_date,
-			"to_date": d.to_date,
+			"to_date": frappe.utils.add_days(d.to_date, 1),
 			"docstatus": d.docstatus,
 			"color": d.color,
 			"all_day": int(not d.half_day),
