@@ -792,8 +792,8 @@ def add_leaves(events, start, end, filter_conditions=None):
 		e = {
 			"name": d.name,
 			"doctype": "Leave Application",
-			"from_date": d.from_date,
-			"to_date": d.to_date,
+			"from_date": frappe.utils.add_days(d.from_date, 1),
+			"to_date": frappe.utils.add_days(d.to_date, 1),
 			"docstatus": d.docstatus,
 			"color": d.color,
 			"all_day": int(not d.half_day),
