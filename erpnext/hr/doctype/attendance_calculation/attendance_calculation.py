@@ -33,7 +33,6 @@ class AttendanceCalculation(Document):
                 start_calculation,
                 calculation=self.name,
                 job_name=self.name,
-                now=frappe.conf.developer_mode or frappe.flags.in_test,
 				timeout=3000  
             )
 
