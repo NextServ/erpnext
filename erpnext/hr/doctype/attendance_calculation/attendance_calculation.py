@@ -430,7 +430,7 @@ class AttendanceCalculation(Document):
                                     attendance.status = 'Present'
 
                             # Handle Rest Day Duty
-                            if (in_result == 'Optional' or out_result == 'Optional') and not leave_type:
+                            if (in_result == 'Optional' and out_result == 'Optional') and not leave_type:
                                 if attendance.status == 'Present':
                                     attendance.late_entry = False
                                     attendance.early_exit = False
