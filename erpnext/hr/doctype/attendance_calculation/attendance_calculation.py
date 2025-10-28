@@ -34,6 +34,8 @@ class AttendanceCalculation(Document):
                 start_calculation,
                 calculation=self.name,
                 job_name=self.name,
+				# now=frappe.conf.developer_mode or frappe.flags.in_test,
+				# uncomment line above if you want to display the print and throw message
 				timeout=3000  
             )
 
@@ -107,27 +109,21 @@ class AttendanceCalculation(Document):
         for i, employee_name in enumerate(employees):
             frappe.publish_progress(percent=i / len(employees) * 100, title=_("Importing checkins from Lark..."))
             employee = frappe.get_doc('Employee', employee_name)
-
             # Get lark user info
             lark_user_info = frappe.db.get_value('User Social Login', { 'parent': employee.get('user_id'), 'provider': 'lark' }, ['userid', 'tenantid'])
-
             if lark_user_info:
                 lark_settings = frappe.get_doc('Lark Settings')
                 r = None
-
                 try:
                     if lark_user_info[1]:
                         lark_settings.for_tenant(lark_user_info[1])
-
                     tenant_access_token = lark_settings.get_tenant_access_token()
-
                     r = requests.get('https://open.larksuite.com/open-apis/contact/v3/users/' + lark_user_info[0], headers={
                         'Authorization': 'Bearer ' + tenant_access_token,
                     })
                     r = r.json()
                     lark_settings.handle_response_error(r)
                     lark_user_id = r.get('data').get('user').get('user_id')
-
                     # Retrieve all columns
                     r = requests.post('https://open.larksuite.com/open-apis/attendance/v1/user_stats_views/query?employee_type=employee_id', headers={
                         'Authorization': 'Bearer ' + tenant_access_token,
@@ -141,11 +137,9 @@ class AttendanceCalculation(Document):
                     })
                     r = r.json()
                     lark_settings.handle_response_error(r)
-
                     for field in r.get('data', { }).get('view', { }).get('items', []):
                         for child_item in field.get('child_items', []):
                             child_item['value'] = '1'
-
                     r = requests.put('https://open.larksuite.com/open-apis/attendance/v1/user_stats_views/query?employee_type=employee_id', headers={
                         'Authorization': 'Bearer ' + tenant_access_token,
                     }, json={
@@ -153,7 +147,6 @@ class AttendanceCalculation(Document):
                     })
                     r = r.json()
                     lark_settings.handle_response_error(r)
-
                     r = requests.post('https://open.larksuite.com/open-apis/attendance/v1/user_stats_datas/query?employee_type=employee_id', headers={
                         'Authorization': 'Bearer ' + tenant_access_token,
                     }, json={
@@ -166,7 +159,6 @@ class AttendanceCalculation(Document):
                     })
                     r = r.json()
                     lark_settings.handle_response_error(r)
-
                     for day in r.get('data').get('user_datas'):
                         date = None
                         working_hours = None
@@ -186,54 +178,49 @@ class AttendanceCalculation(Document):
                         duration_late_in = 0
                         duration_undertime = 0
                         undertime_count = 0
-
                         try:
-                            for data in day.get('datas'):
-                                print(data)
+                            for data in day.get('datas', []):
                                 if data.get('code') == '51201':
                                     date = data.get('value')
-
                                     if len(date) == 10:
                                         date = date[0:4] + date[5:7] + date[8:]
-
                                 if data.get('code') == '51303':
-                                    working_hours = flt(data.get('value').split(' ')[0])
-
+                                    working_hours = flt(data.get('value').split(' ')[0], 2)
                                 if data.get('code') == '51302':
-                                    expected_hours = flt(data.get('value').split(' ')[0])
-							
+                                    expected_hours = flt(data.get('value').split(' ')[0], 2)
                                 if data.get('code') == '51307' and data.get('value') != '-':
-                                    overtime = flt(data.get('value').split(' ')[0])
-
+                                    raw_val = str(data.get('value')).lower().strip()
+                                    frappe.msgprint(f"LARK OVERTIME VALUE RAW: {raw_val}") # for testing
+                                    hours = 0
+                                    minutes = 0
+                                    # Find numbers before 'hr' and 'min'
+                                    hour_match = re.search(r"(\d+(?:\.\d+)?)\s*hr", raw_val)
+                                    minute_match = re.search(r"(\d+(?:\.\d+)?)\s*min", raw_val)
+                                    if hour_match:
+                                        hours = flt(hour_match.group(1))
+                                    if minute_match:
+                                        minutes = flt(minute_match.group(1))
+                                    overtime = hours + (minutes / 60)
                                 if data.get('code') == '51401' and data.get('value') != '-':
                                     leave = data.get('value')
-
                                 if data.get('code') == '51402' and data.get('value') != '-':
                                     leave_type = data.get('value')
-
                                 if data.get('code') == '51305' and data.get('value') != '-':
                                     duration_late_in = flt(data.get('value').split(' ')[0])
-
                                 if data.get('code') == '51306' and data.get('value') != '-':
                                     duration_undertime = flt(data.get('value').split(' ')[0])
-
                                 if data.get('code') == '51408' and data.get('value') != '-':
                                     missed_clock_ins = flt(data.get('value'))
-
                                 if data.get('code') == '51409' and data.get('value') != '-':
                                     missed_clock_outs = flt(data.get('value'))
-
                                 if data.get('code') == '51503-1-1' and data.get('value') != '-':
                                     for feature in data.get('features'):
                                         if feature.get('key') == 'StatusMsg':
                                             in_result = feature.get('value')
-
                                         if feature.get('key') == 'ShiftTime' and feature.get('value') != '-':
                                             shift_in = datetime.strptime(feature.get('value'), "%H:%M")
-
                                             if shift_in:
                                                 shift_in = timedelta(hours=shift_in.hour, minutes=shift_in.minute)
-
                                 if data.get('code') == '51503-1-2' and data.get('value') != '-':
                                     for feature in data.get('features'):
                                         if feature.get('key') == 'StatusMsg':
@@ -251,56 +238,42 @@ class AttendanceCalculation(Document):
                                             except Exception as e:
                                                 frappe.msgprint(f"Shift out parsing error: {e}, Raw value: {feature.get('value')}")
                                                 shift_out = None
-
                                 if data.get('code') == '51502-1-1' and data.get('value') != '-':
                                     time_in = datetime.strptime(data.get('value'), "%H:%M")
-
                                     if time_in:
                                         time_in = timedelta(hours=time_in.hour, minutes=time_in.minute)
-
                                 if data.get('code') == '51502-1-2' and data.get('value') != '-':
                                     time_out = datetime.strptime(data.get('value'), "%H:%M")
-
                                     if time_out:
                                         time_out = timedelta(hours=time_out.hour, minutes=time_out.minute)
-
                                 if data.get('code') == '51309' and data.get('value') != '-':
                                     actual_attendance = flt(data.get('value'))
                                     frappe.msgprint(f"Actual Attendance data: {actual_attendance}")
-
                                 if data.get('code') == '61' and data.get('value') != '-':
                                     absent_days = flt(data.get('value'))
                                     frappe.msgprint(f"Absent Days: {absent_days}")
-
                                 if data.get('code') == '51314' and data.get('value') != '-':
                                     undertime_count = flt(data.get('value'))
-
                             if date:
                                 date = date[0:4] + '-' + date[4:6] + '-' + date[6:8]
-
                             if expected_hours and leave:
                                 leave_time_data = leave.split(' ')
-
                                 if leave_time_data[1] == 'days':
                                     leave = flt(leave_time_data[0]) * expected_hours
                                 else:
                                     leave = flt(leave_time_data[0])
                             elif not expected_hours and leave:
                                 leave_time_data = leave.split(' ')
-
                                 if leave_time_data[1] == 'days':
                                     leave = flt(leave_time_data[0]) * 8
                                 else:
                                     leave = flt(leave_time_data[0])
                             else:
                                 leave = leave = 0
-
                             if time_in and time_out and time_out <= time_in:
                                 time_out = time_out + timedelta(hours=24)
-
                             if shift_in and shift_out and shift_out <= shift_in:
                                 shift_out = shift_out + timedelta(hours=24)
-
                             attendance = frappe.new_doc('Attendance')
                             attendance.employee = employee_name
                             attendance.company = frappe.db.get_value('Employee', employee_name, 'company')
@@ -324,37 +297,30 @@ class AttendanceCalculation(Document):
                             attendance.missed_clock_count = 0
                             attendance.hours_deducted_per_missed_clock = 0.0
                             attendance.leave_type = leave_type
-
                             attendance.late_entry = in_result == 'Late in'
                             if duration_late_in > 0:
                                 attendance.late_entry = True
                                 attendance.late_in = duration_late_in
-
                             attendance.early_exit = out_result == 'Early out'
                             if duration_undertime > 0:
                                 attendance.early_exit = True
                                 attendance.undertime = duration_undertime
-
                             #Calculation no longer needed. Overwrites duration_late_in from LARK
                             # if time_in and shift_in:
-                            # 	time_diff = time_in - shift_in
-                            # 	if in_result == 'Late in' or time_diff > timedelta(0):
-                            # 		attendance.late_in = time_diff.seconds / 3600
-                            # 		attendance.late_entry = True
-
+                            # time_diff = time_in - shift_in
+                            # if in_result == 'Late in' or time_diff > timedelta(0):
+                            # attendance.late_in = time_diff.seconds / 3600
+                            # attendance.late_entry = True
                             if (in_result == 'Optional' and out_result == 'Optional') and not leave_type:
                                 attendance.rest_day = True
-
                                 if not working_hours and not leave and not overtime:
                                     attendance.status = 'Rest day'
-
                             frappe.msgprint(f"attendance.leave: {attendance.leave}")
                             if attendance.leave > 0:
                                 if attendance.working_hours > 0 or attendance.overtime > 0:
                                     attendance.status = 'Half Day'
                                 else:
                                     attendance.status = 'On Leave'
-
                                 # Find leave type
                                 paid_leave_hours = 0
                                 if leave_type and leave_type[:2] == 'PL':
@@ -363,23 +329,19 @@ class AttendanceCalculation(Document):
                                         paid_leave_hours = leave
                                         if undertime_count == 0:
                                             attendance.undertime = 0
-
                                     attendance.paid_leave = paid_leave_hours
                                     attendance.leave -= paid_leave_hours
                                 else:
                                     attendance.paid_leave = 0
-
                             hours_deducted_per_missed_clock = 0.0
                             if missed_clock_ins > 0 or missed_clock_outs > 0:
                                 attendance.missed_clock_count = missed_clock_ins + missed_clock_outs
                                 missed_clock_count = attendance.missed_clock_count
                                 attendance.status = 'Present'
-
                                 if missed_clock_count == 1:
                                     hours_deducted_per_missed_clock = .25 * expected_hours
                                 elif missed_clock_count == 2:
                                     hours_deducted_per_missed_clock = .5 * expected_hours
-
                                     # for personnel with only two clock in/out
                                     if actual_attendance or absent_days > 0:
                                         if actual_attendance == 0 or absent_days:
@@ -388,16 +350,14 @@ class AttendanceCalculation(Document):
                                             frappe.msgprint(f"Absent Days: {absent_days}")
                                             hours_deducted_per_missed_clock = 0
                                     # else:
-                                    # 	frappe.msgprint("No actual attendance log")
-
+                                    # frappe.msgprint("No actual attendance log")
                                 elif missed_clock_count == 3:
                                     hours_deducted_per_missed_clock = .75 * expected_hours
                                 elif missed_clock_count == 4:
                                     attendance.status = 'Absent'
-
                                 if attendance.status != 'Absent':
                                     attendance.hours_deducted_per_missed_clock = hours_deducted_per_missed_clock
-                                    
+                                   
                             # Holiday Off Condition
                             holidays_for_date = get_holidays_for_employee(employee_name, date, date, False, True)
                             attendance.legal_holiday = False
@@ -429,7 +389,6 @@ class AttendanceCalculation(Document):
                                     attendance.working_hours = 0
                                 else:
                                     attendance.status = 'Present'
-
                             # Handle Rest Day Duty
                             if (in_result == 'Optional' or out_result == 'Optional') and not leave_type:
                                 if attendance.status == 'Present':
@@ -437,7 +396,6 @@ class AttendanceCalculation(Document):
                                     attendance.early_exit = False
                                     attendance.undertime = 0
                                     attendance.late_in = 0
-
                             # Assume night differential based on in/out
                             if time_in and time_out and shift_in and shift_out and date and isinstance(shift_out, timedelta):
                                 try:
@@ -477,20 +435,16 @@ class AttendanceCalculation(Document):
                                     frappe.msgprint(f"Night differential calculation error: {e}")
                                     attendance.night_differential = 0
                                     attendance.night_differential_overtime = 0
-
                             if missed_clock_ins > 0 or missed_clock_outs > 0:
                                 attendance.overtime = 0
-
                             attendance.save()
-
                             self.log(employee_name, True, date=date)
                         except Exception as e:
                             self.log(employee_name, False, error=e, date=date)
                 except Exception as e:
                     self.log(employee_name, False, error=e, response=r)
-
             self.update_progress(status='In Progress', processed_employees=i + 1)
-
+			
     def compute_attendance(self, date_from, date_to, employees=[]):
         for i, employee_name in enumerate(employees):
             try:
