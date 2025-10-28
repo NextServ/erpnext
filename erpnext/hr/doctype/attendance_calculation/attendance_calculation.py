@@ -202,23 +202,8 @@ class AttendanceCalculation(Document):
                                 if data.get('code') == '51302':
                                     expected_hours = flt(data.get('value').split(' ')[0])
 							
-								if data.get('code') == '51307' and data.get('value') != '-':
-								    raw_val = str(data.get('value')).lower().strip()
-								    frappe.msgprint(f"LARK OVERTIME VALUE RAW: {raw_val}")  # for testing
-								
-								    hours = 0
-								    minutes = 0
-								
-								    # Find numbers before 'hr' and 'min'
-								    hour_match = re.search(r"(\d+(?:\.\d+)?)\s*hr", raw_val)
-								    minute_match = re.search(r"(\d+(?:\.\d+)?)\s*min", raw_val)
-								
-								    if hour_match:
-								        hours = flt(hour_match.group(1))
-								    if minute_match:
-								        minutes = flt(minute_match.group(1))
-								
-								    overtime = hours + (minutes / 60)
+                                if data.get('code') == '51307' and data.get('value') != '-':
+                                    overtime = flt(data.get('value').split(' ')[0])
 
                                 if data.get('code') == '51401' and data.get('value') != '-':
                                     leave = data.get('value')
