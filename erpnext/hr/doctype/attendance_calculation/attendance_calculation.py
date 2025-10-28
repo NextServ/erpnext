@@ -14,6 +14,7 @@ import traceback
 import requests
 import json
 import re
+
 from erpnext.hr.doctype.shift_assignment.shift_assignment import (
     get_employee_shift
 )
@@ -203,6 +204,8 @@ class AttendanceCalculation(Document):
 							
 								if data.get('code') == '51307' and data.get('value') != '-':
 								    raw_val = str(data.get('value')).lower().strip()
+									
+								
 								    hours = 0
 								    minutes = 0
 								
